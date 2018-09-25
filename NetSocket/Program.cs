@@ -12,9 +12,8 @@ namespace NetSocket
         private static void Main(string[] args)
         {
             using (var ls = new LinkedStream())
-            using (var bw = new StreamWriter(ls) { AutoFlush = true })
+            using (var br = new BinaryReader(ls))
             {
-                var br = new BinaryReader(ls);
                 var counter = 1;
                 var showCounter = 0;
                 while (true)
@@ -38,7 +37,7 @@ namespace NetSocket
                                 Debugger.Break();
                             }
                         }
-                        catch (EndOfStreamException e)
+                        catch (EndOfStreamException)
                         {
                             break;
                         }

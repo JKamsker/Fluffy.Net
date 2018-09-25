@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Buffer\BufferObject.cs" />
     <Compile Include="Buffer\LinkableBufferObject.cs" />
+    <Compile Include="Buffer\LinkedStream.cs" />
     <Compile Include="Buffer\ObjectRecyclingFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
