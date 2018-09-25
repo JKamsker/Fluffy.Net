@@ -7,6 +7,7 @@ namespace Fluffy.IO.Buffer
         public LinkableBufferObject<byte> Head { get; set; }
         public LinkableBufferObject<byte> Body { get; set; }
         private ObjectRecyclingFactory<LinkableBufferObject<byte>> _recyclingFactory;
+        private long _length;
 
         public LinkedStream() : this(8 * 1024)
         {
@@ -31,12 +32,14 @@ namespace Fluffy.IO.Buffer
             int written = 0;
             while (written < count)
             {
-                written = Body.Write(buffer, offset, count);
+                written += Body.Write(buffer, offset, count);
                 if (written < count)
                 {
                     Body = _recyclingFactory.Get();
                 }
             }
+
+            _length += written;
         }
 
         public override int Read(byte[] buffer, int offset, int count)
@@ -64,7 +67,7 @@ namespace Fluffy.IO.Buffer
 
                 readBytes += Head.Read(buffer, offset, count);
             }
-
+            _length -= readBytes;
             return readBytes;
         }
 
@@ -72,7 +75,7 @@ namespace Fluffy.IO.Buffer
 
         public override void Flush()
         {
-            throw new System.NotImplementedException();
+            // throw new System.NotImplementedException();
         }
 
         public override long Seek(long offset, SeekOrigin origin)
@@ -85,11 +88,19 @@ namespace Fluffy.IO.Buffer
             throw new System.NotImplementedException();
         }
 
-        public override bool CanRead { get; }
-        public override bool CanSeek { get; }
-        public override bool CanWrite { get; }
-        public override long Length { get; }
-        public override long Position { get; set; }
+        public override bool CanRead => true;
+        public override bool CanSeek => false;
+        public override bool CanWrite => true;
+
+        public override long Length => _length;
+
+        public override long Position
+        {
+            get => 0;
+            set
+            {
+            }
+        }
 
         #endregion NotImplemented
     }

@@ -51,5 +51,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fluffy.IO\Fluffy.IO.csproj">
+      <Project>{BD4B8F33-E100-422E-866D-779A4B38D2F8}</Project>
+      <Name>Fluffy.IO</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
