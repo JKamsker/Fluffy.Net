@@ -1,0 +1,2286 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BoostedLib</name>
+    </assembly>
+    <members>
+        <member name="P:BoostedLib.BoostedConsole.Headline">
+            <summary>
+            The headline for this console.
+            </summary>
+        </member>
+        <member name="P:BoostedLib.BoostedConsole.CacheEntries">
+            <summary>
+            Should the last <see cref="P:BoostedLib.BoostedConsole.CacheLimit" /> of <see
+            cref="M:BoostedLib.BoostedConsole.ReadLine``1(System.Boolean)" /> be cached or not.
+            </summary>
+        </member>
+        <member name="P:BoostedLib.BoostedConsole.CacheLimit">
+            <summary>
+            The maximum allowed numbers of entries which should be cached.
+            </summary>
+        </member>
+        <member name="M:BoostedLib.BoostedConsole.AddCommand(System.String,System.Action{BoostedLib.BoostedConsoleArgs},System.String)">
+            <summary>
+            </summary>
+            <param name="consoleCommand">
+            </param>
+            <param name="commandCallback">
+            </param>
+            <param name="commandDelimiter">
+            </param>
+        </member>
+        <member name="M:BoostedLib.BoostedConsole.SetHeadline(System.String)">
+            <summary>
+            Set the headline for this console.
+            </summary>
+            <param name="value">
+            </param>
+        </member>
+        <member name="M:BoostedLib.BoostedConsole.AddHeadline(System.String)">
+            <summary>
+            Add an additional line to the headline for this console.
+            </summary>
+            <param name="value">
+            </param>
+        </member>
+        <member name="M:BoostedLib.BoostedConsole.DisplayHeadline">
+            <summary>
+            Display the headline without clearing the console.
+            </summary>
+        </member>
+        <member name="M:BoostedLib.BoostedConsole.Clear(System.Boolean)">
+            <summary>
+            Clears the console buffer and corresponding console window of display information.
+            </summary>
+        </member>
+        <member name="M:BoostedLib.BoostedConsole.Write(System.String)">
+            <summary>
+            </summary>
+            <param name="value">
+            </param>
+        </member>
+        <member name="M:BoostedLib.BoostedConsole.WriteLine(System.String,System.Object[])">
+            <summary>
+            </summary>
+            <param name="value">
+            </param>
+            <param name="args">
+            </param>
+        </member>
+        <member name="M:BoostedLib.BoostedConsole.WriteLine(System.String,System.ConsoleColor,System.Object[])">
+            <summary>
+            </summary>
+            <param name="value">
+            </param>
+            <param name="color">
+            </param>
+            <param name="args">
+            </param>
+        </member>
+        <member name="M:BoostedLib.BoostedConsole.ReadLine(System.Boolean,System.String)">
+            <summary>
+            Reads the next line of characters from the standard input stream.
+            </summary>
+            <param name="checkCommands">
+            </param>
+            <returns>
+            The next line of characters from the input stream, or null if no more lines are available.
+            </returns>
+        </member>
+        <member name="M:BoostedLib.BoostedConsole.ReadLine``1(System.Boolean)">
+            <summary>
+            Reads the next line of characters from the standard input stream and attempts to pre-cast
+            them into the given object type.
+            </summary>
+            <typeparam name="T">
+            </typeparam>
+            <param name="checkCommands">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.BoostedConsole.ReadLineAsByte(System.Boolean)">
+            <summary>
+            Reads the next line of characters from the standard input stream and attempts to pre-cast
+            them into the given object type.
+            </summary>
+            <param name="checkCommands">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.BoostedConsole.ReadLineAsShort(System.Boolean)">
+            <summary>
+            Reads the next line of characters from the standard input stream and attempts to pre-cast
+            them into the given object type.
+            </summary>
+            <param name="checkCommands">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.BoostedConsole.ReadLineAsInt32(System.Boolean)">
+            <summary>
+            Reads the next line of characters from the standard input stream and attempts to pre-cast
+            them into the given object type.
+            </summary>
+            <param name="checkCommands">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.BoostedConsole.ReadLineAsInt64(System.Boolean)">
+            <summary>
+            Reads the next line of characters from the standard input stream and attempts to pre-cast
+            them into the given object type.
+            </summary>
+            <param name="checkCommands">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.BoostedConsole.ReadLineAsDouble(System.Boolean)">
+            <summary>
+            Reads the next line of characters from the standard input stream and attempts to pre-cast
+            them into the given object type.
+            </summary>
+            <param name="checkCommands">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="T:BoostedLib.BoostedConsoleParameter">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:BoostedLib.BoostedConsoleParameter.Parameter">
+            <summary>
+            The parameter which was specified along the command.
+            </summary>
+        </member>
+        <member name="P:BoostedLib.BoostedConsoleParameter.Value">
+            <summary>
+            The parameters value which was specified along the command.
+            </summary>
+        </member>
+        <member name="T:BoostedLib.Collections.Async.AsyncQueueFactory">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:BoostedLib.Collections.Async.AsyncQueueFactory.#cctor">
+            <summary>
+            The constructor.
+            </summary>
+        </member>
+        <member name="M:BoostedLib.Collections.Async.AsyncQueueFactory.ExpandSharedTaskWorkers(System.Int32)">
+            <summary>
+            Attempts to increase the currently available shared task workers, but please note that
+            the initial amount is ( <see cref="P:System.Environment.ProcessorCount" /> / 2), only increase it
+            if the procession delay is to high or swap to <see cref="F:BoostedLib.Collections.Async.AsyncQueueMode.Dedicated" />
+            instead of <see cref="F:BoostedLib.Collections.Async.AsyncQueueMode.FairShare" />, since a value which is too high could
+            impact your system performance negatively.
+            </summary>
+            <param name="desiredTotalWorkers">
+            The total amount of task workers you desire.
+            </param>
+        </member>
+        <member name="T:BoostedLib.Collections.Async.AsyncQueueMode">
+            <summary>
+            Defines the procession behaviour for indidivual <see cref="T:BoostedLib.Collections.Async.IAsyncQueue`1" /> implementations.
+            </summary>
+        </member>
+        <member name="F:BoostedLib.Collections.Async.AsyncQueueMode.Dedicated">
+            <summary>
+            Specifies that the <see cref="T:BoostedLib.Collections.Async.IAsyncQueue`1" /> implementation should use its own
+            dedicated <see cref="T:System.Threading.Tasks.Task" /> to asynchronously perform operations. The items are still
+            going to be processed one-by-one without blocking the calling thread.
+            </summary>
+        </member>
+        <member name="F:BoostedLib.Collections.Async.AsyncQueueMode.FairShare">
+            <summary>
+            Specifies that the <see cref="T:BoostedLib.Collections.Async.IAsyncQueue`1" /> implementation should use the <see
+            cref="T:BoostedLib.Collections.Async.AsyncQueueFactory" /> to manage the workload procession, which may yield a
+            performance gain, if theres a lot of different items to be processed with low priority in
+            comparision with the <see cref="F:BoostedLib.Collections.Async.AsyncQueueMode.Dedicated" /> mode. Every <see
+            cref="T:BoostedLib.Collections.Async.IAsyncQueue`1" /> implementation which use this mode is going to share the same
+            procession <see cref="T:System.Threading.Tasks.Task" /> with different delegates. If you encounter bottlenecks in
+            the procession performance, please consider to call the <see
+            cref="M:BoostedLib.Collections.Async.AsyncQueueFactory.ExpandSharedTaskWorkers(System.Int32)" /> method to increase the available workers.
+            </summary>
+        </member>
+        <member name="F:BoostedLib.Collections.Async.AsyncQueueMode.HighPerformance">
+            <summary>
+            Specifies that the <see cref="T:BoostedLib.Collections.Async.IAsyncQueue`1" /> implementation should attempt to process
+            its workload as fast as possible. This mode should only be used if the procession
+            delegate is more complex or takes to long to complete. However to furthermore increase
+            the performance multiple tasks are going to be run in parallel to process multiple items
+            at once, but its not guaranteed that the procession order is going to match the insert order.
+            </summary>
+        </member>
+        <member name="T:BoostedLib.Collections.Async.AsyncTaskQueue`1">
+            <summary>
+            Asynchronously process items which are enqueued by your own <see cref="T:System.Action`1" /> delegate.
+            </summary>
+            <typeparam name="T">
+            </typeparam>
+        </member>
+        <member name="E:BoostedLib.Collections.Async.AsyncTaskQueue`1.OnExceptionRaised">
+            <summary>
+            This event is going to be triggered once an exception has occured within the item
+            processor delegate.
+            </summary>
+        </member>
+        <member name="P:BoostedLib.Collections.Async.AsyncTaskQueue`1.ItemQueue">
+            <summary>
+            The item queue in which unprocessed items are going to be stored.
+            </summary>
+        </member>
+        <member name="P:BoostedLib.Collections.Async.AsyncTaskQueue`1.ItemWorkerDelegate">
+            <summary>
+            The delegate which processes the items one-by-one from the <see cref="P:BoostedLib.Collections.Async.AsyncTaskQueue`1.ItemQueue" />.
+            </summary>
+        </member>
+        <member name="P:BoostedLib.Collections.Async.AsyncTaskQueue`1.ItemQueueHandle">
+            <summary>
+            The internal wait handle to reduce wasted processor cycles if the <see cref="P:BoostedLib.Collections.Async.AsyncTaskQueue`1.ItemQueue"
+            /> is empty.
+            </summary>
+        </member>
+        <member name="P:BoostedLib.Collections.Async.AsyncTaskQueue`1.QueueMode">
+            <summary>
+            The queue mode which defines the behaviour of the <see cref="T:BoostedLib.Collections.Async.AsyncTaskQueue`1" /> instance.
+            </summary>
+        </member>
+        <member name="P:BoostedLib.Collections.Async.AsyncTaskQueue`1.ProcessDelayTicks">
+            <summary>
+            The delay between each processed item, this is optionally to eventually throttle the cpu usage.
+            </summary>
+        </member>
+        <member name="P:BoostedLib.Collections.Async.AsyncTaskQueue`1.QueueMaxSize">
+            <summary>
+            The amount of how many items can be actually stored in the queue, if the queue size
+            exceeds the specified queue size then an exception is going to be thrown.
+            </summary>
+        </member>
+        <member name="M:BoostedLib.Collections.Async.AsyncTaskQueue`1.#ctor(System.Action{`0})">
+            <summary>
+            The constructor.
+            </summary>
+            <param name="itemProcessDelegate">
+            The delegate which should be used to process individual items.
+            </param>
+        </member>
+        <member name="M:BoostedLib.Collections.Async.AsyncTaskQueue`1.#ctor(BoostedLib.Collections.Async.AsyncQueueMode,System.Action{`0})">
+            <summary>
+            The constructor.
+            </summary>
+            <param name="mode">
+            Defines the <see cref="T:BoostedLib.Collections.Async.AsyncTaskQueue`1" /> behaviour.
+            </param>
+            <param name="itemProcessDelegate">
+            The delegate which should be used to process individual items.
+            </param>
+        </member>
+        <member name="M:BoostedLib.Collections.Async.AsyncTaskQueue`1.Enqueue(`0)">
+            <summary>
+            Enqueues an item into the queue.
+            </summary>
+            <param name="item">
+            </param>
+        </member>
+        <member name="M:BoostedLib.Collections.Async.AsyncTaskQueue`1.TryEnqueue(`0)">
+            <summary>
+            Enqueues an item into the queue and exception-less checks if it works.
+            </summary>
+            <param name="item">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="T:BoostedLib.Collections.Async.IAsyncQueue`1">
+            <summary>
+            The base interface for all async queue variants within this library.
+            </summary>
+            <typeparam name="T">
+            </typeparam>
+        </member>
+        <member name="P:BoostedLib.Collections.Async.IAsyncQueue`1.ItemQueue">
+            <summary>
+            The item queue in which unprocessed items are going to be stored.
+            </summary>
+        </member>
+        <member name="P:BoostedLib.Collections.Async.IAsyncQueue`1.ItemWorkerDelegate">
+            <summary>
+            The delegate which processes the items one-by-one from the <see cref="P:BoostedLib.Collections.Async.IAsyncQueue`1.ItemQueue" />.
+            </summary>
+        </member>
+        <member name="P:BoostedLib.Collections.Async.IAsyncQueue`1.QueueMode">
+            <summary>
+            The queue mode which defines the behaviour of the <see cref="T:BoostedLib.Collections.Async.IAsyncQueue`1" /> instance.
+            </summary>
+        </member>
+        <member name="P:BoostedLib.Collections.Async.IAsyncQueue`1.ItemQueueHandle">
+            <summary>
+            The internal wait handle to reduce wasted processor cycles if the <see cref="P:BoostedLib.Collections.Async.IAsyncQueue`1.ItemQueue"
+            /> is empty.
+            </summary>
+        </member>
+        <member name="P:BoostedLib.Collections.Async.IAsyncQueue`1.QueueMaxSize">
+            <summary>
+            The amount of how many items can be actually stored in the queue, if the queue size
+            exceeds the specified queue size then an exception is going to be thrown.
+            </summary>
+        </member>
+        <member name="P:BoostedLib.Collections.Async.IAsyncQueue`1.ProcessDelayTicks">
+            <summary>
+            The delay between each processed item, this is optionally to eventually throttle the cpu usage.
+            </summary>
+        </member>
+        <member name="M:BoostedLib.Collections.Async.IAsyncQueue`1.Enqueue(`0)">
+            <summary>
+            Enqueues an item into the queue.
+            </summary>
+            <param name="item">
+            </param>
+        </member>
+        <member name="M:BoostedLib.Collections.Async.IAsyncQueue`1.TryEnqueue(`0)">
+            <summary>
+            Enqueues an item into the queue and exception-less checks if it works.
+            </summary>
+            <param name="item">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="T:BoostedLib.Collections.Concurrent.ConcurrentList`1">
+            <summary>
+            Represents a thread-safe implementation of the <see cref="T:System.Collections.Generic.List`1" /> with addtional events
+            inherited from the <see cref="T:BoostedLib.Collections.IEventBasedCollection`1" />.
+            </summary>
+            <typeparam name="T">
+            </typeparam>
+        </member>
+        <member name="E:BoostedLib.Collections.Concurrent.ConcurrentList`1.OnItemAdded">
+            <summary>
+            The event is triggered once an item has been added to the list.
+            </summary>
+        </member>
+        <member name="E:BoostedLib.Collections.Concurrent.ConcurrentList`1.OnItemRemoved">
+            <summary>
+            The event is triggered once an item has been removed from the list.
+            </summary>
+        </member>
+        <member name="E:BoostedLib.Collections.Concurrent.ConcurrentList`1.OnItemsCleared">
+            <summary>
+            The event is triggered once the list has been cleared and all items were removed.
+            </summary>
+        </member>
+        <member name="M:BoostedLib.Collections.Concurrent.ConcurrentList`1.#ctor">
+            <summary>
+            The constructor.
+            </summary>
+        </member>
+        <member name="M:BoostedLib.Collections.Concurrent.ConcurrentList`1.#ctor(System.Int32)">
+            <summary>
+            The constructor.
+            </summary>
+            <param name="capacity">
+            </param>
+        </member>
+        <member name="M:BoostedLib.Collections.Concurrent.ConcurrentList`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            The constructor.
+            </summary>
+            <param name="items">
+            </param>
+        </member>
+        <member name="M:BoostedLib.Collections.Concurrent.ConcurrentList`1.Add(`0)">
+            <summary>
+            Inserts the specified item at the end of the list.
+            </summary>
+            <param name="item">
+            </param>
+        </member>
+        <member name="M:BoostedLib.Collections.Concurrent.ConcurrentList`1.Add``1(`0,System.Func{`0,``0})">
+            <summary>
+            Inserts the specified <see cref="!:T" /> item at the end of the list and orders the list by
+            the given <see cref="T:System.Func`2" /> predicate.
+            </summary>
+            <typeparam name="TKey">
+            </typeparam>
+            <param name="item">
+            </param>
+            <param name="orderBy">
+            </param>
+        </member>
+        <member name="M:BoostedLib.Collections.Concurrent.ConcurrentList`1.Remove(`0)">
+            <summary>
+            Attempts to remove the specified <see cref="!:T" /> item from the list if it contains.
+            </summary>
+            <param name="item">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.Collections.Concurrent.ConcurrentList`1.Clear">
+            <summary>
+            Clears the whole collection and removes all content.
+            </summary>
+        </member>
+        <member name="T:BoostedLib.Exceptions.BoostedException">
+            <summary>
+            The base exception for all occuring issues within the BoostedLib and its components.
+            </summary>
+        </member>
+        <member name="T:BoostedLib.IO.Cryptography.HashUtility">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="M:BoostedLib.IO.Cryptography.HashUtility.CalculateHash``1(System.Byte[])">
+            <summary>
+            Calculates the hashvalue of the given byte array.
+            </summary>
+            <param name="input"></param>
+            <typeparam name="T">Hashalgorithm used to process the data</typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:BoostedLib.IO.Cryptography.HashUtility.CalculateHash``1(System.IO.Stream)">
+            <summary>
+            Calculates the hashvalue of the given stream.
+            </summary>
+            <param name="input"></param>
+            <typeparam name="T">Hashalgorithm used to process the data</typeparam>
+            <returns></returns>
+        </member>
+        <member name="T:BoostedLib.Text.Html.HtmlFromXamlConverter">
+            <summary>
+            HtmlToXamlConverter is a static class that takes an HTML string and converts it into XAML
+            </summary>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlFromXamlConverter.ConvertXamlToHtml(System.String)">
+            <summary>
+            Main entry point for Xaml-to-Html converter. Converts a xaml string into html string.
+            </summary>
+            <param name="xamlString">
+            Xaml strinng to convert.
+            </param>
+            <returns>
+            Html string produced from a source xaml.
+            </returns>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlFromXamlConverter.WriteFlowDocument(System.Xml.XmlTextReader,System.Xml.XmlTextWriter)">
+            <summary>
+            Processes a root level element of XAML (normally it's FlowDocument element).
+            </summary>
+            <param name="xamlReader">
+            XmlTextReader for a source xaml.
+            </param>
+            <param name="htmlWriter">
+            XmlTextWriter producing resulting html
+            </param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlFromXamlConverter.WriteFormattingProperties(System.Xml.XmlTextReader,System.Xml.XmlTextWriter,System.Text.StringBuilder)">
+            <summary>
+            Reads attributes of the current xaml element and converts them into appropriate html
+            attributes or css styles.
+            </summary>
+            <param name="xamlReader">
+            XmlTextReader which is expected to be at XmlNodeType.Element (opening element tag)
+            position. The reader will remain at the same level after function complete.
+            </param>
+            <param name="htmlWriter">
+            XmlTextWriter for output html, which is expected to be in after WriteStartElement state.
+            </param>
+            <param name="inlineStyle">
+            String builder for collecting css properties for inline STYLE attribute.
+            </param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlFromXamlConverter.WriteElementContent(System.Xml.XmlTextReader,System.Xml.XmlTextWriter,System.Text.StringBuilder)">
+            <summary>
+            Reads a content of current xaml element, converts it
+            </summary>
+            <param name="xamlReader">
+            XmlTextReader which is expected to be at XmlNodeType.Element (opening element tag) position.
+            </param>
+            <param name="htmlWriter">
+            May be null, in which case we are skipping the xaml element; witout producing any output
+            to html.
+            </param>
+            <param name="inlineStyle">
+            StringBuilder used for collecting css properties for inline STYLE attribute.
+            </param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlFromXamlConverter.AddComplexProperty(System.Xml.XmlTextReader,System.Text.StringBuilder)">
+            <summary>
+            Conberts an element notation of complex property into
+            </summary>
+            <param name="xamlReader">
+            On entry this XmlTextReader must be on Element start tag; on exit - on EndElement tag.
+            </param>
+            <param name="inlineStyle">
+            StringBuilder containing a value for STYLE attribute.
+            </param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlFromXamlConverter.WriteElement(System.Xml.XmlTextReader,System.Xml.XmlTextWriter,System.Text.StringBuilder)">
+            <summary>
+            Converts a xaml element into an appropriate html element.
+            </summary>
+            <param name="xamlReader">
+            On entry this XmlTextReader must be on Element start tag; on exit - on EndElement tag.
+            </param>
+            <param name="htmlWriter">
+            May be null, in which case we are skipping xaml content without producing any html output
+            </param>
+            <param name="inlineStyle">
+            StringBuilder used for collecting css properties for inline STYLE attributes on every level.
+            </param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlFromXamlConverter.ReadNextToken(System.Xml.XmlReader)">
+            <summary>
+            Reads several items from xamlReader skipping all non-significant stuff.
+            </summary>
+            <param name="xamlReader">
+            XmlTextReader from tokens are being read.
+            </param>
+            <returns>
+            True if new token is available; false if end of stream reached.
+            </returns>
+        </member>
+        <member name="T:BoostedLib.Text.Html.HtmlLexicalAnalyzer">
+            <summary>
+            lexical analyzer class recognizes tokens as groups of characters separated by arbitrary
+            amounts of whitespace also classifies tokens according to type
+            </summary>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlLexicalAnalyzer.#ctor(System.String)">
+            <summary>
+            initializes the _inputStringReader member with the string to be read also sets initial
+            values for _nextCharacterCode and _nextTokenType
+            </summary>
+            <param name="inputTextString">
+            text string to be parsed for xml content
+            </param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlLexicalAnalyzer.GetNextContentToken">
+            <summary>
+            retrieves next recognizable token from input string and identifies its type if no valid
+            token is found, the output parameters are set to null if end of stream is reached without
+            matching any token, token type paramter is set to EOF
+            </summary>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlLexicalAnalyzer.GetNextTagToken">
+            <summary>
+            Unconditionally returns a token which is one of: TagEnd, EmptyTagEnd, Name, Atom or
+            EndOfStream Does not guarantee token reader advancing.
+            </summary>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlLexicalAnalyzer.GetNextEqualSignToken">
+            <summary>
+            Unconditionally returns equal sign token. Even if there is no real equal sign in the
+            stream, it behaves as if it were there. Does not guarantee token reader advancing.
+            </summary>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlLexicalAnalyzer.GetNextAtomToken">
+            <summary>
+            Unconditionally returns an atomic value for an attribute Even if there is no appropriate
+            token it returns Atom value Does not guarantee token reader advancing.
+            </summary>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlLexicalAnalyzer.GetNextCharacter">
+            <summary>
+            Advances a reading position by one character code and reads the next availbale character
+            from a stream. This character becomes available as NextCharacter property.
+            </summary>
+            <remarks>
+            Throws InvalidOperationException if attempted to be called on EndOfStream condition.
+            </remarks>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlLexicalAnalyzer.SkipWhiteSpace">
+            <summary>
+            skips whitespace in the input string leaves the first non-whitespace character available
+            in the NextCharacter property this may be the end-of-file character, it performs no checking
+            </summary>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlLexicalAnalyzer.IsGoodForNameStart(System.Char)">
+            <summary>
+            checks if a character can be used to start a name if this check is true then the rest of
+            the name can be read
+            </summary>
+            <param name="character">
+            character value to be checked
+            </param>
+            <returns>
+            true if the character can be the first character in a name false otherwise
+            </returns>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlLexicalAnalyzer.IsGoodForName(System.Char)">
+            <summary>
+            checks if a character can be used as a non-starting character in a name uses the
+            IsExtender and IsCombiningCharacter predicates to see if a character is an extender or a
+            combining character
+            </summary>
+            <param name="character">
+            character to be checked for validity in a name
+            </param>
+            <returns>
+            true if the character can be a valid part of a name
+            </returns>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlLexicalAnalyzer.IsCombiningCharacter(System.Char)">
+            <summary>
+            identifies a character as being a combining character, permitted in a name
+            TODO: only a placeholder for now but later to be replaced with comparisons against the
+            list of combining characters in the XML documentation
+            </summary>
+            <param name="character">
+            character to be checked
+            </param>
+            <returns>
+            true if the character is a combining character, false otherwise
+            </returns>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlLexicalAnalyzer.IsExtender(System.Char)">
+            <summary>
+            identifies a character as being an extender, permitted in a name
+            TODO: only a placeholder for now but later to be replaced with comparisons against the
+            list of extenders in the XML documentation
+            </summary>
+            <param name="character">
+            character to be checked
+            </param>
+            <returns>
+            true if the character is an extender, false otherwise
+            </returns>
+        </member>
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:BoostedLib.Text.Html.HtmlLexicalAnalyzer.ReadDynamicContent" ignoriert -->
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:BoostedLib.Text.Html.HtmlLexicalAnalyzer.ReadComment" ignoriert -->
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:BoostedLib.Text.Html.HtmlLexicalAnalyzer.ReadUnknownDirective" ignoriert -->
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:BoostedLib.Text.Html.HtmlLexicalAnalyzer.SkipProcessingDirective" ignoriert -->
+        <member name="T:BoostedLib.Text.Html.HtmlParser">
+            <summary>
+            HtmlParser class accepts a string of possibly badly formed Html, parses it and returns a
+            string of well-formed Html that is as close to the original string in content as possible
+            </summary>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlParser.#ctor(System.String)">
+            <summary>
+            Constructor. Initializes the _htmlLexicalAnalayzer element with the given input string
+            </summary>
+            <param name="inputString">
+            string to parsed into well-formed Html
+            </param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlParser.ParseHtml(System.String)">
+            <summary>
+            Instantiates an HtmlParser element and calls the parsing function on the given input string
+            </summary>
+            <param name="htmlString">
+            Input string of pssibly badly-formed Html to be parsed into well-formed Html
+            </param>
+            <returns>
+            XmlElement rep
+            </returns>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlParser.ExtractHtmlFromClipboardData(System.String)">
+            <summary>
+            Extracts Html string from clipboard data by parsing header information in htmlDataString
+            </summary>
+            <param name="htmlDataString">
+            String representing Html clipboard data. This includes Html header
+            </param>
+            <returns>
+            String containing only the Html data part of htmlDataString, without header
+            </returns>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlParser.AddHtmlClipboardHeader(System.String)">
+            <summary>
+            Adds Xhtml header information to Html data string so that it can be placed on clipboard
+            </summary>
+            <param name="htmlString">
+            Html string to be placed on clipboard with appropriate header
+            </param>
+            <returns>
+            String wrapping htmlString with appropriate Html header
+            </returns>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlParser.ParseHtmlContent">
+            <summary>
+            Parses the stream of html tokens starting from the name of top-level element. Returns
+            XmlElement representing the top-level html element
+            </summary>
+        </member>
+        <member name="T:BoostedLib.Text.Html.HtmlSchema">
+            <summary>
+            HtmlSchema class maintains static information about HTML structure can be used by HtmlParser
+            to check conditions under which an element starts or ends, etc.
+            </summary>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlSchema.#cctor">
+            <summary>
+            static constructor, initializes the ArrayLists that hold the elements in various
+            sub-components of the schema e.g _htmlEmptyElements, etc.
+            </summary>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlSchema.IsEmptyElement(System.String)">
+            <summary>
+            returns true when xmlElementName corresponds to empty element
+            </summary>
+            <param name="xmlElementName">
+            string representing name to test
+            </param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlSchema.IsBlockElement(System.String)">
+            <summary>
+            returns true if xmlElementName represents a block formattinng element. It used in an
+            algorithm of transferring inline elements over block elements in HtmlParser
+            </summary>
+            <param name="xmlElementName">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlSchema.IsInlineElement(System.String)">
+            <summary>
+            returns true if the xmlElementName represents an inline formatting element
+            </summary>
+            <param name="xmlElementName">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlSchema.IsKnownOpenableElement(System.String)">
+            <summary>
+            It is a list of known html elements which we want to allow to produce bt HTML parser, but
+            don'tt want to act as inline, block or no-scope. Presence in this list will allow to open
+            elements during html parsing, and adding the to a tree produced by html parser.
+            </summary>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlSchema.ClosesOnParentElementEnd(System.String)">
+            <summary>
+            returns true when xmlElementName closes when the outer element closes this is true of
+            elements with optional start tags
+            </summary>
+            <param name="xmlElementName">
+            string representing name to test
+            </param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlSchema.ClosesOnNextElementStart(System.String,System.String)">
+            <summary>
+            returns true if the current element closes when the new element, whose name has just been
+            read, starts
+            </summary>
+            <param name="currentElementName">
+            string representing current element name
+            </param>
+            <param name="elementName">
+            </param>
+            string representing name of the next element that will start
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlSchema.IsEntity(System.String)">
+            <summary>
+            returns true if the string passed as argument is an Html entity name
+            </summary>
+            <param name="entityName">
+            string to be tested for Html entity name
+            </param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlSchema.EntityCharacterValue(System.String)">
+            <summary>
+            returns the character represented by the entity name string which is passed as an
+            argument, if the string is an entity name as specified in _htmlCharacterEntities, returns
+            the character value of 0 otherwise
+            </summary>
+            <param name="entityName">
+            string representing entity name whose character value is desired
+            </param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlSchema.InitializeEmptyElements">
+            <summary>
+            initializes _htmlEmptyElements with empty elements in HTML 4 spec at http://www.w3.org/TR/REC-html40/index/elements.html
+            </summary>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlSchema.InitializeElementsClosingOnParentElementEnd">
+            <summary>
+            initializes _htmlElementsClosingOnParentElementEnd with the list of HTML 4 elements for
+            which closing tags are optional we assume that for any element for which closing tags are
+            optional, the element closes when it's outer element (in which it is nested) does
+            </summary>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlSchema.InitializeHtmlCharacterEntities">
+            <summary>
+            initializes _htmlCharacterEntities hashtable with the character corresponding to entity names
+            </summary>
+        </member>
+        <member name="T:BoostedLib.Text.Html.HtmlTokenType">
+            <summary>
+            types of lexical tokens for html-to-xaml converter
+            </summary>
+        </member>
+        <member name="T:BoostedLib.Text.Html.HtmlToXamlConverter">
+            <summary>
+            HtmlToXamlConverter is a static class that takes an HTML string
+            and converts it into XAML
+            </summary>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.ConvertHtmlToXaml(System.String,System.Boolean)">
+            <summary>
+            Converts an html string into xaml string.
+            </summary>
+            <param name="htmlString">
+            Input html which may be badly formated xml.
+            </param>
+            <param name="asFlowDocument">
+            true indicates that we need a FlowDocument as a root element;
+            false means that Section or Span elements will be used
+            dependeing on StartFragment/EndFragment comments locations.
+            </param>
+            <returns>
+            Well-formed xml representing XAML equivalent for the input html string.
+            </returns>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.GetAttribute(System.Xml.XmlElement,System.String)">
+            <summary>
+            Returns a value for an attribute by its name (ignoring casing)
+            </summary>
+            <param name="element">
+            XmlElement in which we are trying to find the specified attribute
+            </param>
+            <param name="attributeName">
+            String representing the attribute name to be searched for
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.UnQuote(System.String)">
+            <summary>
+            Returns string extracted from quotation marks
+            </summary>
+            <param name="value">
+            String representing value enclosed in quotation marks
+            </param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.AddBlock(System.Xml.XmlElement,System.Xml.XmlNode,System.Collections.Hashtable,BoostedLib.Text.Html.CssStylesheet,System.Collections.Generic.List{System.Xml.XmlElement})">
+            <summary>
+            Analyzes the given htmlElement expecting it to be converted
+            into some of xaml Block elements and adds the converted block
+            to the children collection of xamlParentElement.
+            
+            Analyzes the given XmlElement htmlElement, recognizes it as some HTML element
+            and adds it as a child to a xamlParentElement.
+            In some cases several following siblings of the given htmlElement
+            will be consumed too (e.g. LIs encountered without wrapping UL/OL, 
+            which must be collected together and wrapped into one implicit List element).
+            </summary>
+            <param name="xamlParentElement">
+            Parent xaml element, to which new converted element will be added
+            </param>
+            <param name="htmlElement">
+            Source html element subject to convert to xaml.
+            </param>
+            <param name="inheritedProperties">
+            Properties inherited from an outer context.
+            </param>
+            <param name="stylesheet"></param>
+            <param name="sourceContext"></param>
+            <returns>
+            Last processed html node. Normally it should be the same htmlElement
+            as was passed as a paramater, but in some irregular cases
+            it could one of its following siblings.
+            The caller must use this node to get to next sibling from it.
+            </returns>
+        </member>
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:BoostedLib.Text.Html.HtmlToXamlConverter.AddSection(System.Xml.XmlElement,System.Xml.XmlElement,System.Collections.Hashtable,BoostedLib.Text.Html.CssStylesheet,System.Collections.Generic.List{System.Xml.XmlElement})" ignoriert -->
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:BoostedLib.Text.Html.HtmlToXamlConverter.AddParagraph(System.Xml.XmlElement,System.Xml.XmlElement,System.Collections.Hashtable,BoostedLib.Text.Html.CssStylesheet,System.Collections.Generic.List{System.Xml.XmlElement})" ignoriert -->
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:BoostedLib.Text.Html.HtmlToXamlConverter.AddImplicitParagraph(System.Xml.XmlElement,System.Xml.XmlNode,System.Collections.Hashtable,BoostedLib.Text.Html.CssStylesheet,System.Collections.Generic.List{System.Xml.XmlElement})" ignoriert -->
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.AddList(System.Xml.XmlElement,System.Xml.XmlElement,System.Collections.Hashtable,BoostedLib.Text.Html.CssStylesheet,System.Collections.Generic.List{System.Xml.XmlElement})">
+            <summary>
+            Converts Html ul or ol element into Xaml list element. During conversion if the ul/ol element has any children 
+            that are not li elements, they are ignored and not added to the list element
+            </summary>
+            <param name="xamlParentElement">
+            XmlElement representing Xaml parent to which the converted element should be added
+            </param>
+            <param name="htmlListElement">
+            XmlElement representing Html ul/ol element to be converted
+            </param>
+            <param name="inheritedProperties">
+            properties inherited from parent context
+            </param>
+            <param name="stylesheet"></param>
+            <param name="sourceContext"></param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.AddOrphanListItems(System.Xml.XmlElement,System.Xml.XmlElement,System.Collections.Hashtable,BoostedLib.Text.Html.CssStylesheet,System.Collections.Generic.List{System.Xml.XmlElement})">
+            <summary>
+            If li items are found without a parent ul/ol element in Html string, creates xamlListElement as their parent and adds
+            them to it. If the previously added node to the same xamlParentElement was a List, adds the elements to that list.
+            Otherwise, we create a new xamlListElement and add them to it. Elements are added as long as li elements appear sequentially.
+            The first non-li or text node stops the addition.
+            </summary>
+            <param name="xamlParentElement">
+            Parent element for the list
+            </param>
+            <param name="htmlLIElement">
+            Start Html li element without parent list
+            </param>
+            <param name="inheritedProperties">
+            Properties inherited from parent context
+            </param>
+            <returns>
+            XmlNode representing the first non-li node in the input after one or more li's have been processed.
+            </returns>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.AddListItem(System.Xml.XmlElement,System.Xml.XmlElement,System.Collections.Hashtable,BoostedLib.Text.Html.CssStylesheet,System.Collections.Generic.List{System.Xml.XmlElement})">
+            <summary>
+            Converts htmlLIElement into Xaml ListItem element, and appends it to the parent xamlListElement
+            </summary>
+            <param name="xamlListElement">
+            XmlElement representing Xaml List element to which the converted td/th should be added
+            </param>
+            <param name="htmlLIElement">
+            XmlElement representing Html li element to be converted
+            </param>
+            <param name="inheritedProperties">
+            Properties inherited from parent context
+            </param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.AddTable(System.Xml.XmlElement,System.Xml.XmlElement,System.Collections.Hashtable,BoostedLib.Text.Html.CssStylesheet,System.Collections.Generic.List{System.Xml.XmlElement})">
+            <summary>
+            Converts htmlTableElement to a Xaml Table element. Adds tbody elements if they are missing so
+            that a resulting Xaml Table element is properly formed.
+            </summary>
+            <param name="xamlParentElement">
+            Parent xaml element to which a converted table must be added.
+            </param>
+            <param name="htmlTableElement">
+            XmlElement reprsenting the Html table element to be converted
+            </param>
+            <param name="inheritedProperties">
+            Hashtable representing properties inherited from parent context. 
+            </param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.AddColumnInformation(System.Xml.XmlElement,System.Xml.XmlElement,System.Collections.ArrayList,System.Collections.Hashtable,BoostedLib.Text.Html.CssStylesheet,System.Collections.Generic.List{System.Xml.XmlElement})">
+            <summary>
+            Processes the information about table columns - COLGROUP and COL html elements.
+            </summary>
+            <param name="htmlTableElement">
+            XmlElement representing a source html table.
+            </param>
+            <param name="xamlTableElement">
+            XmlElement repesenting a resulting xaml table.
+            </param>
+            <param name="columnStartsAllRows">
+            Array of doubles - column start coordinates.
+            Can be null, which means that column size information is not available
+            and we must use source colgroup/col information.
+            In case wneh it's not null, we will ignore source colgroup/col information.
+            </param>
+            <param name="currentProperties"></param>
+            <param name="stylesheet"></param>
+            <param name="sourceContext"></param>
+        </member>
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:BoostedLib.Text.Html.HtmlToXamlConverter.AddTableColumnGroup(System.Xml.XmlElement,System.Xml.XmlElement,System.Collections.Hashtable,BoostedLib.Text.Html.CssStylesheet,System.Collections.Generic.List{System.Xml.XmlElement})" ignoriert -->
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.AddTableColumn(System.Xml.XmlElement,System.Xml.XmlElement,System.Collections.Hashtable,BoostedLib.Text.Html.CssStylesheet,System.Collections.Generic.List{System.Xml.XmlElement})">
+            <summary>
+            Converts htmlColElement into Xaml TableColumn element, and appends it to the parent
+            xamlTableColumnGroupElement
+            </summary>
+            <param name="xamlTableElement"></param>
+            <param name="htmlColElement">
+            XmlElement representing Html col element to be converted
+            </param>
+            <param name="inheritedProperties">
+            properties inherited from parent context
+            </param>
+            <param name="stylesheet"></param>
+            <param name="sourceContext"></param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.AddTableRowsToTableBody(System.Xml.XmlElement,System.Xml.XmlNode,System.Collections.Hashtable,System.Collections.ArrayList,BoostedLib.Text.Html.CssStylesheet,System.Collections.Generic.List{System.Xml.XmlElement})">
+            <summary>
+            Adds TableRow elements to xamlTableBodyElement. The rows are converted from Html tr elements that
+            may be the children of an Html tbody element or an Html table element with tbody missing
+            </summary>
+            <param name="xamlTableBodyElement">
+            XmlElement representing Xaml TableRowGroup element to which the converted rows should be added
+            </param>
+            <param name="htmlTRStartNode">
+            XmlElement representing the first tr child of the tbody element to be read
+            </param>
+            <param name="currentProperties">
+            Hashtable representing current properties of the tbody element that are generated and applied in the
+            AddTable function; to be used as inheritedProperties when adding tr elements
+            </param>
+            <param name="columnStarts"></param>
+            <param name="stylesheet"></param>
+            <param name="sourceContext"></param>
+            <returns>
+            XmlNode representing the current position of the iterator among tr elements
+            </returns>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.AddTableCellsToTableRow(System.Xml.XmlElement,System.Xml.XmlNode,System.Collections.Hashtable,System.Collections.ArrayList,System.Collections.ArrayList,BoostedLib.Text.Html.CssStylesheet,System.Collections.Generic.List{System.Xml.XmlElement})">
+            <summary>
+            Adds TableCell elements to xamlTableRowElement.
+            </summary>
+            <param name="xamlTableRowElement">
+            XmlElement representing Xaml TableRow element to which the converted cells should be added
+            </param>
+            <param name="htmlTDStartNode">
+            XmlElement representing the child of tr or tbody element from which we should start adding td elements
+            </param>
+            <param name="currentProperties">
+            properties of the current html tr element to which cells are to be added
+            </param>
+            <returns>
+            XmlElement representing the current position of the iterator among the children of the parent Html tbody/tr element
+            </returns>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.AddDataToTableCell(System.Xml.XmlElement,System.Xml.XmlNode,System.Collections.Hashtable,BoostedLib.Text.Html.CssStylesheet,System.Collections.Generic.List{System.Xml.XmlElement})">
+            <summary>
+            adds table cell data to xamlTableCellElement
+            </summary>
+            <param name="xamlTableCellElement">
+            XmlElement representing Xaml TableCell element to which the converted data should be added
+            </param>
+            <param name="htmlDataStartNode">
+            XmlElement representing the start element of data to be added to xamlTableCellElement
+            </param>
+            <param name="currentProperties">
+            Current properties for the html td/th element corresponding to xamlTableCellElement
+            </param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.AnalyzeTableStructure(System.Xml.XmlElement,BoostedLib.Text.Html.CssStylesheet)">
+            <summary>
+            Performs a parsing pass over a table to read information about column width and rowspan attributes. This information
+            is used to determine the starting point of each column. 
+            </summary>
+            <param name="htmlTableElement">
+            XmlElement representing Html table whose structure is to be analyzed
+            </param>
+            <returns>
+            ArrayList of type double which contains the function output. If analysis is successful, this ArrayList contains
+            all the points which are the starting position of any column in the table, ordered from left to right.
+            In case if analisys was impossible we return null.
+            </returns>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.AnalyzeTbodyStructure(System.Xml.XmlElement,System.Collections.ArrayList,System.Collections.ArrayList,System.Double,BoostedLib.Text.Html.CssStylesheet)">
+            <summary>
+            Performs a parsing pass over a tbody to read information about column width and rowspan attributes. Information read about width
+            attributes is stored in the reference ArrayList parameter columnStarts, which contains a list of all starting
+            positions of all columns in the table, ordered from left to right. Row spans are taken into consideration when 
+            computing column starts
+            </summary>
+            <param name="htmlTbodyElement">
+            XmlElement representing Html tbody whose structure is to be analyzed
+            </param>
+            <param name="columnStarts">
+            ArrayList of type double which contains the function output. If analysis fails, this parameter is set to null
+            </param>
+            <param name="tableWidth">
+            Current width of the table. This is used to determine if a new column when added to the end of table should
+            come after the last column in the table or is actually splitting the last column in two. If it is only splitting
+            the last column it should inherit row span for that column
+            </param>
+            <returns>
+            Calculated width of a tbody.
+            In case of non-analizable column width structure return 0;
+            </returns>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.AnalyzeTRStructure(System.Xml.XmlElement,System.Collections.ArrayList,System.Collections.ArrayList,System.Double,BoostedLib.Text.Html.CssStylesheet)">
+            <summary>
+            Performs a parsing pass over a tr element to read information about column width and rowspan attributes.  
+            </summary>
+            <param name="htmlTRElement">
+            XmlElement representing Html tr element whose structure is to be analyzed
+            </param>
+            <param name="columnStarts">
+            ArrayList of type double which contains the function output. If analysis is successful, this ArrayList contains
+            all the points which are the starting position of any column in the tr, ordered from left to right. If analysis fails,
+            the ArrayList is set to null
+            </param>
+            <param name="activeRowSpans">
+            ArrayList representing all columns currently spanned by an earlier row span attribute. These columns should
+            not be used for data in this row. The ArrayList actually contains notation for all columns in the table, if the
+            active row span is set to 0 that column is not presently spanned but if it is > 0 the column is presently spanned
+            </param>
+            <param name="tableWidth">
+            Double value representing the current width of the table.
+            Return 0 if analisys was insuccessful.
+            </param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.GetRowSpan(System.Xml.XmlElement)">
+            <summary>
+            Gets row span attribute from htmlTDElement. Returns an integer representing the value of the rowspan attribute.
+            Default value if attribute is not specified or if it is invalid is 1
+            </summary>
+            <param name="htmlTDElement">
+            Html td element to be searched for rowspan attribute
+            </param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.GetNextColumnIndex(System.Int32,System.Double,System.Collections.ArrayList,System.Collections.ArrayList)">
+            <summary>
+            Gets index at which a column should be inseerted into the columnStarts ArrayList. This is
+            decided by the value columnStart. The columnStarts ArrayList is ordered in ascending order.
+            Returns an integer representing the index at which the column should be inserted
+            </summary>
+            <param name="columnStarts">
+            Array list representing starting coordinates of all columns in the table
+            </param>
+            <param name="columnStart">
+            Starting coordinate of column we wish to insert into columnStart
+            </param>
+            <param name="columnIndex">
+            Int representing the current column index. This acts as a clue while finding the insertion index.
+            If the value of columnStarts at columnIndex is the same as columnStart, then this position alrady exists
+            in the array and we can jsut return columnIndex.
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.ClearActiveRowSpans(System.Collections.ArrayList)">
+            <summary>
+            Used for clearing activeRowSpans array in the beginning/end of each tbody
+            </summary>
+            <param name="activeRowSpans">
+            ArrayList representing currently active row spans
+            </param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.InitializeActiveRowSpans(System.Collections.ArrayList,System.Int32)">
+            <summary>
+            Used for initializing activeRowSpans array in the before adding rows to tbody element
+            </summary>
+            <param name="activeRowSpans">
+            ArrayList representing currently active row spans
+            </param>
+            <param name="count">
+            Size to be give to array list
+            </param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.GetNextColumnStart(System.Xml.XmlElement,System.Double)">
+            <summary>
+            Calculates width of next TD element based on starting position of current element and it's width, which
+            is calculated byt he function
+            </summary>
+            <param name="htmlTDElement">
+            XmlElement representing Html td element whose width is to be read
+            </param>
+            <param name="columnStart">
+            Starting position of current column
+            </param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.CalculateColumnSpan(System.Int32,System.Double,System.Collections.ArrayList)">
+            <summary>
+            Calculates column span based the column width and the widths of all other columns. Returns an integer representing 
+            the column span
+            </summary>
+            <param name="columnIndex">
+            Index of the current column
+            </param>
+            <param name="columnWidth">
+            Width of the current column
+            </param>
+            <param name="columnStarts">
+            ArrayList repsenting starting coordinates of all columns
+            </param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.VerifyColumnStartsAscendingOrder(System.Collections.ArrayList)">
+            <summary>
+            Verifies that values in columnStart, which represent starting coordinates of all columns, are arranged
+            in ascending order
+            </summary>
+            <param name="columnStarts">
+            ArrayList representing starting coordinates of all columns
+            </param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.ApplyLocalProperties(System.Xml.XmlElement,System.Collections.Hashtable,System.Boolean)">
+            <summary>
+            Analyzes local properties of Html element, converts them into Xaml equivalents, and applies them to xamlElement
+            </summary>
+            <param name="xamlElement">
+            XmlElement representing Xaml element to which properties are to be applied
+            </param>
+            <param name="localProperties">
+            Hashtable representing local properties of Html element that is converted into xamlElement
+            </param>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.GetElementProperties(System.Xml.XmlElement,System.Collections.Hashtable,System.Collections.Hashtable@,BoostedLib.Text.Html.CssStylesheet,System.Collections.Generic.List{System.Xml.XmlElement})">
+            <summary>
+            Analyzes the tag of the htmlElement and infers its associated formatted properties.
+            After that parses style attribute and adds all inline css styles.
+            The resulting style attributes are collected in output parameter localProperties.
+            </summary>
+            <param name="htmlElement">
+            </param>
+            <param name="inheritedProperties">
+            set of properties inherited from ancestor elements. Currently not used in the code. Reserved for the future development.
+            </param>
+            <param name="localProperties">
+            returns all formatting properties defined by this element - implied by its tag, its attributes, or its css inline style
+            </param>
+            <param name="stylesheet"></param>
+            <param name="sourceContext"></param>
+            <returns>
+            returns a combination of previous context with local set of properties.
+            This value is not used in the current code - inntended for the future development.
+            </returns>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.GetCssAttribute(System.String,System.String)">
+            <summary>
+            Extracts a value of css attribute from css style definition.
+            </summary>
+            <param name="cssStyle">
+            Source csll style definition
+            </param>
+            <param name="attributeName">
+            A name of css attribute to extract
+            </param>
+            <returns>
+            A string rrepresentation of an attribute value if found;
+            null if there is no such attribute in a given string.
+            </returns>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.TryGetLengthValue(System.String,System.Double@)">
+            <summary>
+            Converts a length value from string representation to a double.
+            </summary>
+            <param name="lengthAsString">
+            Source string value of a length.
+            </param>
+            <param name="length"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BoostedLib.Text.Html.HtmlToXamlConverter.ApplyPropertiesToTableCellElement(System.Xml.XmlElement,System.Xml.XmlElement)">
+            <summary>
+            Applies properties to xamlTableCellElement based on the html td element it is converted from.
+            </summary>
+            <param name="htmlChildNode">
+            Html td/th element to be converted to xaml
+            </param>
+            <param name="xamlTableCellElement">
+            XmlElement representing Xaml element for which properties are to be processed
+            </param>
+            <remarks>
+            TODO: Use the processed properties for htmlChildNode instead of using the node itself 
+            </remarks>
+        </member>
+        <member name="T:BoostedLib.Text.PlainTextFormatter">
+            <summary>
+            Formats the RichTextBox text as plain text
+            </summary>
+        </member>
+        <member name="T:BoostedLib.Text.RtfFormatter">
+            <summary>
+            Formats the RichTextBox text as RTF
+            </summary>
+        </member>
+        <member name="T:BoostedLib.Text.XamlFormatter">
+            <summary>
+            Formats the RichTextBox text as Xaml
+            </summary>
+        </member>
+        <member name="T:BoostedLib.TypeSwitch">
+            <summary>
+            The <see cref="T:BoostedLib.TypeSwitch" /> class mimics and extends the behaviour of regular switch-case
+            statements. The main advantage from this implmentation is that you're allowed to check
+            against object inheritance with which you simply define the possible variations you'll expect
+            from the given class to be compatible with and push the plain object with no specific class
+            informations into the switch evaluation and receive it automatically casted once a suitable
+            switch has been found via your defined predicates.
+            </summary>
+        </member>
+        <member name="M:BoostedLib.TypeSwitch.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:BoostedLib.TypeSwitch" /> class.
+            </summary>
+        </member>
+        <member name="M:BoostedLib.TypeSwitch.Case(System.Predicate{System.Object},System.Action{System.Object})">
+            <summary>
+            Adds a new statement to the switch which is being evaluated once you call <see
+            cref="M:BoostedLib.TypeSwitch.Switch(System.Object)" /> after setting up the individual switch-cases via the method <see
+            cref="M:BoostedLib.TypeSwitch.Case(System.Predicate{System.Object},System.Action{System.Object})" />.
+            </summary>
+            <param name="condition">
+            The condition as regular predicate without explicit cast for the checked object.
+            </param>
+            <param name="callback">
+            The callback which should be invoked if the condition has evaluated 'true'.
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.TypeSwitch.Case``1(System.Predicate{``0},System.Action{``0})">
+            <summary>
+            Adds a new statement to the switch which is being evaluated once you call <see
+            cref="M:BoostedLib.TypeSwitch.Switch(System.Object)" /> after setting up the individual switch-cases via the method <see
+            cref="M:BoostedLib.TypeSwitch.Case``1(System.Predicate{``0},System.Action{``0})" />.
+            </summary>
+            <typeparam name="T">
+            A parent or base class implementation to check the evaluated object against to see if
+            they're compatible.
+            </typeparam>
+            <param name="condition">
+            The condition as regular predicate without explicit cast for the checked object.
+            </param>
+            <param name="callback">
+            The callback which should be invoked if the condition has evaluated 'true'.
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.TypeSwitch.Case``1(System.Action{``0})">
+            <summary>
+            Adds a new statement to the switch which is being evaluated once you call <see
+            cref="M:BoostedLib.TypeSwitch.Switch(System.Object)" /> after setting up the individual switch-cases via the method <see
+            cref="M:BoostedLib.TypeSwitch.Case``1(System.Action{``0})" />.
+            </summary>
+            <typeparam name="T">
+            A parent or base class implementation to check the evaluated object against to see if
+            they're compatible.
+            </typeparam>
+            <param name="callback">
+            The callback which should be invoked if the objects type matches the generic parameter.
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.TypeSwitch.Default(System.Action{System.Object})">
+            <summary>
+            Adds a fallback statement to the switch which is being evaluated if no suitable <see
+            cref="M:BoostedLib.TypeSwitch.Case(System.Predicate{System.Object},System.Action{System.Object})" /> has been found.
+            </summary>
+            <param name="callback">
+            The callback which should be invoked if the objects type matches the generic parameter.
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.TypeSwitch.Default``1(System.Action{``0})">
+            <summary>
+            Adds a fallback statement to the switch which is being evaluated if no suitable <see
+            cref="M:BoostedLib.TypeSwitch.Case``1(System.Predicate{``0},System.Action{``0})" /> has been found.
+            </summary>
+            <typeparam name="T">
+            A parent or base class implementation to check the evaluated object against to see if
+            they're compatible.
+            </typeparam>
+            <param name="callback">
+            The callback which should be invoked if the objects type matches the generic parameter.
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.TypeSwitch.Dispose">
+            <summary>
+            Disposes this class and releases all resources.
+            </summary>
+        </member>
+        <member name="M:BoostedLib.TypeSwitch.Switch(System.Object)">
+            <summary>
+            Attempts to check the given value against the stored switch-cases earlier, if theres no
+            suitable match an no default fallback switch then no exception is going to be invoked. If
+            the matching predicate is throwing up an exception then you'll manually need to catch it,
+            since otherwise it'll ends up unhandled. You may consider the <see
+            cref="M:BoostedLib.TypeSwitch.TrySwitch(System.Object,System.Exception@)" /> if you worry about unhandled exceptions.
+            </summary>
+            <param name="value">
+            The object which type should be checked against the registered switch-case types and / or
+            predicates to see if it fits.
+            </param>
+        </member>
+        <member name="M:BoostedLib.TypeSwitch.TrySwitch(System.Object,System.Exception@)">
+            <summary>
+            Attempts to check the given value against the stored switch-cases earlier, if theres no
+            suitable match an no default fallback switch then no exception is going to be invoked. If
+            the matching predicate is throwing up an exception then you'll receive the resulting
+            exception as out parameter.
+            </summary>
+            <param name="value">
+            The object which type should be checked against the registered switch-case types and / or
+            predicates to see if it fits.
+            </param>
+            <param name="lastError">
+            The exception object which contains data if an exception has been thrown, otherwise this
+            parameter remains NULL.
+            </param>
+            <returns>
+            If this method returns TRUE then everything went without issues, otherwise you should
+            check the exception object afterwards to see what caused the evaluation failure.
+            </returns>
+        </member>
+        <member name="M:BoostedLib.TypeSwitch.Dispose(System.Boolean)">
+            <summary>
+            Disposes this class and releases all resources.
+            </summary>
+            <param name="isDisposing">
+            Indicates if the class is disposing by developers hand or if the CLR shutsdown
+            </param>
+        </member>
+        <member name="M:BoostedLib.TypeSwitch.Finalize">
+            <summary>
+            The deconstructor.
+            </summary>
+        </member>
+        <member name="T:BoostedLib.TypeSwitch`1">
+            <summary>
+            Checks a given object for any matching derivations like a regular switch-case just for types
+            instead of values.
+            </summary>
+            <typeparam name="Output">
+            The return value once a matching code block was executed.
+            </typeparam>
+        </member>
+        <member name="M:BoostedLib.TypeSwitch`1.Switch(System.Object)">
+            <summary>
+            Check if the given object matches any specified case.
+            </summary>
+            <param name="o">
+            </param>
+            <returns>
+            The specified value in the end of the executed code block.
+            </returns>
+        </member>
+        <member name="T:BoostedLib.UnsafeNativeMethods.User32.ShowWindowCommands">
+            <summary>
+            Controls how the window is to be shown. This parameter is ignored the first time an application calls <see cref="M:BoostedLib.UnsafeNativeMethods.User32.ShowWindow(System.IntPtr,BoostedLib.UnsafeNativeMethods.User32.ShowWindowCommands)"/>,
+            if the program that launched the application provides a STARTUPINFO structure. Otherwise, the first time <see cref="M:BoostedLib.UnsafeNativeMethods.User32.ShowWindow(System.IntPtr,BoostedLib.UnsafeNativeMethods.User32.ShowWindowCommands)"/> is called,
+            the value should be the value obtained by the WinMain function in its nCmdShow parameter. In subsequent calls,
+            this parameter can be one of the following values. 
+            </summary>
+        </member>
+        <member name="F:BoostedLib.UnsafeNativeMethods.User32.ShowWindowCommands.SW_HIDE">
+            <summary>
+            Hides the window and activates another window.
+            </summary>
+        </member>
+        <member name="F:BoostedLib.UnsafeNativeMethods.User32.ShowWindowCommands.SW_SHOWNORMAL">
+            <summary>
+            Activates and displays a window. If the window is minimized or maximized, the system restores it to its original size and position.
+            An application should specify this flag when displaying the window for the first time.
+            </summary>
+        </member>
+        <member name="F:BoostedLib.UnsafeNativeMethods.User32.ShowWindowCommands.SW_SHOWMINIMIZED">
+            <summary>
+            Activates the window and displays it as a minimized window.
+            </summary>
+        </member>
+        <member name="F:BoostedLib.UnsafeNativeMethods.User32.ShowWindowCommands.SW_SHOWMAXIMIZED">
+            <summary>
+            Activates the window and displays it as a maximized window.
+            </summary>
+        </member>
+        <member name="F:BoostedLib.UnsafeNativeMethods.User32.ShowWindowCommands.SW_SHOWNOACTIVATE">
+            <summary>
+            Displays a window in its most recent size and position. This value is similar to <see cref="F:BoostedLib.UnsafeNativeMethods.User32.ShowWindowCommands.SW_SHOWNORMAL"/>,
+            except that the window is not activated.
+            </summary>
+        </member>
+        <member name="F:BoostedLib.UnsafeNativeMethods.User32.ShowWindowCommands.SW_SHOW">
+            <summary>
+            Activates the window and displays it in its current size and position. 
+            </summary>
+        </member>
+        <member name="F:BoostedLib.UnsafeNativeMethods.User32.ShowWindowCommands.SW_MINIMIZE">
+            <summary>
+            Minimizes the specified window and activates the next top-level window in the Z order.
+            </summary>
+        </member>
+        <member name="F:BoostedLib.UnsafeNativeMethods.User32.ShowWindowCommands.SW_SHOWMINNOACTIVE">
+            <summary>
+            Displays the window as a minimized window. This value is similar to <see cref="F:BoostedLib.UnsafeNativeMethods.User32.ShowWindowCommands.SW_SHOWMINIMIZED"/>,
+            except the window is not activated.
+            </summary>
+        </member>
+        <member name="F:BoostedLib.UnsafeNativeMethods.User32.ShowWindowCommands.SW_SHOWNA">
+            <summary>
+            Displays the window in its current size and position. This value is similar to <see cref="F:BoostedLib.UnsafeNativeMethods.User32.ShowWindowCommands.SW_SHOW"/>,
+            except that the window is not activated.
+            </summary>
+        </member>
+        <member name="F:BoostedLib.UnsafeNativeMethods.User32.ShowWindowCommands.SW_RESTORE">
+            <summary>
+            Activates and displays the window. If the window is minimized or maximized, the system restores it to its original size and position.
+            An application should specify this flag when restoring a minimized window.
+            </summary>
+        </member>
+        <member name="F:BoostedLib.UnsafeNativeMethods.User32.ShowWindowCommands.SW_SHOWDEFAULT">
+            <summary>
+            Sets the show state based on the SW_ value specified in the STARTUPINFO structure passed to the CreateProcess
+            function by the program that started the application. 
+            </summary>
+        </member>
+        <member name="F:BoostedLib.UnsafeNativeMethods.User32.ShowWindowCommands.SW_FORCEMINIMIZE">
+            <summary>
+            Minimizes a window, even if the thread that owns the window is not responding. This flag should only be
+            used when minimizing windows from a different thread.
+            </summary>
+        </member>
+        <member name="F:BoostedLib.UnsafeNativeMethods.User32.ExtendedWindowStyles.WS_EX_TRANSPARENT">
+            <summary>
+            Transparent window.
+            </summary>
+        </member>
+        <member name="F:BoostedLib.UnsafeNativeMethods.User32.ExtendedWindowStyles.WS_EX_LAYERED">
+            <summary>
+            Layered window. http://msdn.microsoft.com/en-us/library/windows/desktop/ms632599%28v=vs.85%29.aspx#layered
+            </summary>
+        </member>
+        <member name="F:BoostedLib.UnsafeNativeMethods.User32.LayeredWindowAttributes.LWA_COLORKEY">
+            <summary>
+            Use bAlpha to determine the opacity of the layered window.
+            </summary>
+        </member>
+        <member name="F:BoostedLib.UnsafeNativeMethods.User32.LayeredWindowAttributes.LWA_ALPHA">
+            <summary>
+            Use crKey as the transparency color.
+            </summary>
+        </member>
+        <member name="F:BoostedLib.UnsafeNativeMethods.User32.DWWindowLong.GWL_EXSTYLE">
+            <summary>
+            Sets a new extended window style.
+            </summary>
+        </member>
+        <member name="M:BoostedLib.UnsafeNativeMethods.CopyMemory(System.IntPtr,System.IntPtr,System.UInt32)">
+            <summary>
+            Allow copying memory from one IntPtr to another. Required as the <see cref="M:System.Runtime.InteropServices.Marshal.Copy(System.IntPtr,System.IntPtr[],System.Int32,System.Int32)"/> implementation does not provide an appropriate override.
+            </summary>
+            <param name="dest"></param>
+            <param name="src"></param>
+            <param name="count"></param>
+        </member>
+        <member name="F:BoostedLib.UnsafeNativeMethods.ERROR_ALREADY_EXISTS">
+            <summary>
+            Cannot create a file when that file already exists.
+            </summary>
+        </member>
+        <member name="F:BoostedLib.UnsafeNativeMethods.ERROR_TOO_MANY_OPEN_FILES">
+            <summary>
+            The system cannot open the file.
+            </summary>
+        </member>
+        <member name="F:BoostedLib.UnsafeNativeMethods.ERROR_ACCESS_DENIED">
+            <summary>
+            Access is denied.
+            </summary>
+        </member>
+        <member name="F:BoostedLib.UnsafeNativeMethods.ERROR_FILE_NOT_FOUND">
+            <summary>
+            The system cannot find the file specified.
+            </summary>
+        </member>
+        <member name="T:BoostedLib.Utils.FastDelegateConverter">
+            <summary>
+            A helper class which allows to convert unknown delegates with strongly typed generic
+            arguments into weak referenced object[] delegates. The <see cref="T:BoostedLib.Utils.FastDelegateConverter" />
+            performs almost 24 times faster than <see cref="M:System.Delegate.DynamicInvoke(System.Object[])" />, since
+            the references are being resolved only once instead once per call attempt. This class was
+            adapted on the following GitHub source: <see cref="!:https://github.com/J-kit/DelegateConvert" />
+            </summary>
+        </member>
+        <member name="M:BoostedLib.Utils.FastDelegateConverter.Convert``1(System.Delegate)">
+            <summary>
+            Converts the given delegate with any amount of parameters into a weak-resolved delegate.
+            </summary>
+            <typeparam name="TReturnType">
+            </typeparam>
+            <param name="sourceDelegate">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="T:BoostedLib.ByteExtensions">
+            <summary>
+            Internal framework extensions
+            </summary>
+        </member>
+        <member name="M:BoostedLib.ByteExtensions.Copy(System.Byte[],System.Int32,System.Int32,System.Byte[],System.Int32)">
+            <summary>
+            Copies a specific amount of data in bytes from the specified source array into the target
+            array with support for offset definitions and length restrains.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">
+            The source and / or target array is NULL.
+            </exception>
+            <exception cref="T:System.IndexOutOfRangeException">
+            The offset exceeds the array's capacity.
+            </exception>
+            <param name="source">
+            The origin array from which data should be copied.
+            </param>
+            <param name="startOffset">
+            The starting offset within the source array where the copy should begin.
+            </param>
+            <param name="startLength">
+            The amount in bytes which should be copied beginning from the offset.
+            </param>
+            <param name="targetArray">
+            The target array where the copied data should be written into.
+            </param>
+            <param name="targetOffset">
+            The target arrays offset where the copied data shall begin to write to.
+            </param>
+        </member>
+        <member name="M:BoostedLib.ByteExtensions.StringValue(System.Byte[],System.Boolean)">
+            <summary>
+            Converts the byte array into a string value which would look like this 00-00-00-00...
+            </summary>
+            <param name="source">
+            </param>
+            <param name="convertToChars">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.ByteExtensions.StringValue(System.Byte[])">
+            <summary>
+            Converts the byte array into a string value which would look like this 00-00-00-00...
+            </summary>
+            <param name="source">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.ByteExtensions.ToHash``1(System.Byte[])">
+            <summary>
+            Calculates the hashvalue of the given byte array using the <see cref="!:T"/> provider.
+            </summary>
+            <param name="source"></param>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:BoostedLib.ByteExtensions.GetBytes(System.String,System.Text.Encoding)">
+            <summary>
+            Encodes all the characters in the specified string into a sequence of bytes.
+            </summary>
+            <param name="inputString">The string containing the characters to encode.</param>
+            <param name="encoding">The encoding which will be used</param>
+            <returns>A byte array containing the results of encoding the specified set of characters.</returns>
+        </member>
+        <member name="M:BoostedLib.ByteExtensions.GetBytes(System.String,BoostedLib.Text.StringEncoding)">
+            <summary>
+            Encodes all the characters in the specified string into a sequence of bytes.
+            </summary>
+            <param name="inputString">The string containing the characters to encode.</param>
+            <param name="encoding">The encoding which will be used</param>
+            <returns>A byte array containing the results of encoding the specified set of characters.</returns>
+        </member>
+        <member name="M:BoostedLib.CollectionExtensions.RemoveBy``1(System.Collections.Generic.ICollection{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            Attempts to remove the first occurence of the given item in the collection.
+            </summary>
+            <typeparam name="T">
+            </typeparam>
+            <param name="source">
+            </param>
+            <param name="predicate">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.CollectionExtensions.ForEach``1(System.Collections.Generic.ICollection{``0},System.Action{``0})">
+            <summary>
+            Iterates through the collection like a regular for-each loop except that you can use LINQ
+            to invoke each object.
+            </summary>
+            <typeparam name="T">
+            </typeparam>
+            <param name="source">
+            </param>
+            <param name="action">
+            </param>
+        </member>
+        <member name="M:BoostedLib.CollectionExtensions.ForEach``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})">
+            <summary>
+            Iterates through the collection like a regular for-each loop except that you can use LINQ
+            to invoke each object.
+            </summary>
+            <typeparam name="T">
+            </typeparam>
+            <param name="source">
+            </param>
+            <param name="action">
+            </param>
+        </member>
+        <member name="M:BoostedLib.CollectionExtensions.Distinct``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+            </summary>
+            <typeparam name="T">
+            </typeparam>
+            <typeparam name="TKey">
+            </typeparam>
+            <param name="list">
+            </param>
+            <param name="lookup">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.CollectionExtensions.AddRange``1(System.Collections.Generic.ICollection{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            </summary>
+            <typeparam name="T">
+            </typeparam>
+            <param name="target">
+            </param>
+            <param name="source">
+            </param>
+        </member>
+        <member name="M:BoostedLib.CollectionExtensions.TryDequeue``1(System.Collections.Generic.Queue{``0},``0@)">
+            <summary>
+            Tries to remove and return the object at the beginning of the queue.
+            The aim is to make both, <see cref="T:System.Collections.Generic.Queue`1"/> and <see cref="T:System.Collections.Concurrent.ConcurrentQueue`1"/> apis simmilar
+            </summary>
+            <param name="dstQueue"></param>
+            <param name="result"></param>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:BoostedLib.CollectionExtensions.EnqueueRange``1(System.Collections.Generic.Queue{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Enqueues a range of <typeparam name="T">T</typeparam> onto the queue
+            </summary>
+            <param name="dstQueue"></param>
+            <param name="input"></param>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:BoostedLib.DelegateExtensions.ToFastActionDelegate(System.Delegate)">
+            <summary>
+            Converts the given action with strongly typed generic arguments into a weak referenced
+            action with <see cref="T:System.Object" />[] as parameter instead of generics. For additional
+            informations such as performance please review <see cref="T:BoostedLib.Utils.FastDelegateConverter" />
+            </summary>
+            <param name="source">
+            The action delegate whose generic parameters are unknown.
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.DelegateExtensions.ToFastFuncDelegate(System.Delegate)">
+            <summary>
+            Converts the given func with strongly typed generic arguments into a weak referenced func
+            with <see cref="T:System.Object" />[] as parameter instead of generics. For additional
+            informations such as performance please review <see cref="T:BoostedLib.Utils.FastDelegateConverter" />
+            </summary>
+            <param name="source">
+            The func delegate whose generic parameters and return type are unknown.
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.DelegateExtensions.ToFastFuncDelegate``1(System.Delegate)">
+            <summary>
+            Converts the given func with strongly typed generic arguments into a weak referenced func
+            with <see cref="T:System.Object" />[] as parameter instead of generics. For additional
+            informations such as performance please review <see cref="T:BoostedLib.Utils.FastDelegateConverter" />
+            </summary>
+            <param name="source">
+            The func delegate whose generic parameters are unknown.
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.DelegateExtensions.Invoke(System.Action{System.Object[]},System.Object[])">
+            <summary>
+            </summary>
+            <param name="source">
+            </param>
+            <param name="parameters">
+            </param>
+        </member>
+        <member name="M:BoostedLib.DelegateExtensions.Invoke(System.Func{System.Object[],System.Object},System.Object[])">
+            <summary>
+            </summary>
+            <param name="source">
+            </param>
+            <param name="parameters">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.DelegateExtensions.Invoke``1(System.Func{System.Object[],``0},System.Object[])">
+            <summary>
+            </summary>
+            <typeparam name="T">
+            </typeparam>
+            <param name="source">
+            </param>
+            <param name="parameters">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.EncodingExtensions.GetEncoding(BoostedLib.Text.StringEncoding)">
+            <summary>
+            Returns a Encoding based on the <see cref="T:BoostedLib.Text.StringEncoding"/>
+            </summary>
+            <param name="encoding"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:BoostedLib.HashExtensions.CalculateHash``1(System.Byte[])">
+            <summary>
+            Calculates the hashvalue of the given byte array.
+            </summary>
+            <param name="input"></param>
+            <typeparam name="T">Hashalgorithm used to process the data</typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:BoostedLib.HashExtensions.CalculateHash``1(System.IO.Stream)">
+            <summary>
+            Calculates the hashvalue of the given stream.
+            </summary>
+            <param name="input"></param>
+            <typeparam name="T">Hashalgorithm used to process the data</typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:BoostedLib.HashExtensions.CalculateHash``1(System.String,System.Text.Encoding)">
+            <summary>
+            Calculates the hashvalue of the given byte array.
+            </summary>
+            <param name="input"></param>
+            <typeparam name="T">Hashalgorithm used to process the data</typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:BoostedLib.HashExtensions.CalculateHash``1(System.String,BoostedLib.Text.StringEncoding)">
+            <summary>
+            Calculates the hashvalue of the given byte array.
+            </summary>
+            <param name="input"></param>
+            <typeparam name="T">Hashalgorithm used to process the data</typeparam>
+            <returns></returns>
+        </member>
+        <member name="T:BoostedLib.IntegerExtensions">
+            <summary>
+            BoostedLib Integer Extensions
+            </summary>
+        </member>
+        <member name="M:BoostedLib.IntegerExtensions.TryGetNextHigherPow(System.Int32,System.Int32@)">
+            <summary>
+            Attempts to return the next higher possible power of two value for the given signed
+            32-Bit integer.
+            </summary>
+            <param name="n">
+            </param>
+            <param name="result">
+            Contains the next higher power of 2 value if the operation has succeeded.
+            </param>
+            <returns>
+            A value which indicates if the operation has succeeded.
+            </returns>
+        </member>
+        <member name="M:BoostedLib.IntegerExtensions.TryGetNextHigherPow(System.UInt32,System.UInt32@)">
+            <summary>
+            Attempts to return the next higher possible power of two value for the given unsigned
+            32-Bit integer.
+            </summary>
+            <param name="n">
+            </param>
+            <param name="result">
+            Contains the next higher power of 2 value if the operation has succeeded.
+            </param>
+            <returns>
+            A value which indicates if the operation has succeeded.
+            </returns>
+        </member>
+        <member name="M:BoostedLib.IntegerExtensions.GetNextHigherPow(System.Int32)">
+            <summary>
+            Attempts to return the next higher possible power of two value for the given signed
+            32-Bit integer.
+            </summary>
+            <param name="n">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.IntegerExtensions.GetNextHigherPow(System.UInt32)">
+            <summary>
+            Attempts to return the next higher possible power of two value for the given unsigned
+            32-Bit integer.
+            </summary>
+            <param name="n">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.IntegerExtensions.GetNextHigherPow(System.Int64)">
+            <summary>
+            </summary>
+            <param name="n">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.IntegerExtensions.CombineBitwise(System.Int32,System.Int32)">
+            <summary>
+            Bitwise combines two 32-bit integers into one.
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException" />
+                   /// /// /// ///
+            <param name="a">
+            The value shouldn't exceed 65535 or -32768.
+            </param>
+            <param name="b">
+            The value shouldn't exceed 65535 or -32768.
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.IntegerExtensions.ExtractBitwise(System.Int32,System.Int32@,System.Int32@)">
+            <summary>
+            Bitwise extracts two 32-bit integers from one.
+            </summary>
+            <param name="a">
+            </param>
+            <param name="firstValue">
+            </param>
+            <param name="secondValue">
+            </param>
+        </member>
+        <member name="M:BoostedLib.IntegerExtensions.ToHexString(System.Int32)">
+            <summary>
+            Converts the given 32-Bit integer into a hex string which is formatted like this: 0xFFFFFFFF
+            </summary>
+            <param name="input">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.IntegerExtensions.ToHexString(System.UInt32)">
+            <summary>
+            Converts the given unsigned 32-Bit integer into a hex string which is formatted like
+            this: 0xFFFFFFFF
+            </summary>
+            <param name="input">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.IntegerExtensions.CombineBitwise(System.Int64,System.Int64)">
+            <summary>
+            Bitwise combines two 64-bit integers into one.
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException" />
+                   /// /// /// ///
+            <param name="a">
+            The value shouldn't exceed 4,294,967,295 or -2,147,483,648.
+            </param>
+            <param name="b">
+            The value shouldn't exceed 4,294,967,295 or -2,147,483,648.
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.IntegerExtensions.CombineBitwise(System.Int64,System.Int64,System.Int64,System.Int64)">
+            <summary>
+            Bitwise combines four 64-Bit Integers into one.
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException" />
+                   /// /// /// ///
+            <param name="a">
+            The value shouldn't exceed 65,535 or −32,768.
+            </param>
+            <param name="b">
+            The value shouldn't exceed 65,535 or −32,768.
+            </param>
+            <param name="c">
+            The value shouldn't exceed 65,535 or −32,768.
+            </param>
+            <param name="d">
+            The value shouldn't exceed 65,535 or −32,768.
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.IntegerExtensions.CombineBitwise(System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64)">
+            <summary>
+            Bitwise combines eight 8-Bit Integers into one.
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException" />
+                   /// /// /// ///
+            <param name="a">
+            The value shouldn't exceed 255 or −127.
+            </param>
+            <param name="b">
+            The value shouldn't exceed 255 or −127.
+            </param>
+            <param name="c">
+            The value shouldn't exceed 255 or −127.
+            </param>
+            <param name="d">
+            The value shouldn't exceed 255 or −127.
+            </param>
+            <param name="e">
+            The value shouldn't exceed 255 or −127.
+            </param>
+            <param name="f">
+            The value shouldn't exceed 255 or −127.
+            </param>
+            <param name="g">
+            The value shouldn't exceed 255 or −127.
+            </param>
+            <param name="h">
+            The value shouldn't exceed 255 or −127.
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.IntegerExtensions.ExtractBitwise(System.Int64,System.SByte@,System.SByte@,System.SByte@,System.SByte@,System.SByte@,System.SByte@,System.SByte@,System.SByte@)">
+            <summary>
+            Bitwise extracts eight 8-Bit Integers from one 64-Bit Integer.
+            </summary>
+            <param name="input">
+            </param>
+            <param name="a">
+            </param>
+            <param name="b">
+            </param>
+            <param name="c">
+            </param>
+            <param name="d">
+            </param>
+            <param name="e">
+            </param>
+            <param name="f">
+            </param>
+            <param name="g">
+            </param>
+            <param name="h">
+            </param>
+        </member>
+        <member name="M:BoostedLib.IntegerExtensions.ExtractBitwise(System.Int64,System.Byte@,System.Byte@,System.Byte@,System.Byte@,System.Byte@,System.Byte@,System.Byte@,System.Byte@)">
+            <summary>
+            Bitwise extracts eight 8-Bit Integers from one 64-Bit Integer.
+            </summary>
+            <param name="input">
+            </param>
+            <param name="a">
+            </param>
+            <param name="b">
+            </param>
+            <param name="c">
+            </param>
+            <param name="d">
+            </param>
+            <param name="e">
+            </param>
+            <param name="f">
+            </param>
+            <param name="g">
+            </param>
+            <param name="h">
+            </param>
+        </member>
+        <member name="M:BoostedLib.IntegerExtensions.ExtractBitwise(System.Int64,System.Int32@,System.Int32@)">
+            <summary>
+            Bitwise extracts two 32-bit Integers from one 64-Bit Integer.
+            </summary>
+            <param name="a">
+            </param>
+            <param name="firstValue">
+            </param>
+            <param name="secondValue">
+            </param>
+        </member>
+        <member name="M:BoostedLib.IntegerExtensions.ExtractBitwise(System.Int64,System.UInt32@,System.UInt32@)">
+            <summary>
+            Bitwise extracts two 32-bit Integers from one 64-Bit Integer.
+            </summary>
+            <param name="a">
+            </param>
+            <param name="firstValue">
+            </param>
+            <param name="secondValue">
+            </param>
+        </member>
+        <member name="M:BoostedLib.IntegerExtensions.ExtractBitwise(System.Int64,System.Int16@,System.Int16@,System.Int16@,System.Int16@)">
+            <summary>
+            Bitwise extracts four 16-Bit Integers from one 64-Bit Integer.
+            </summary>
+            <param name="a">
+            </param>
+            <param name="firstValue">
+            </param>
+            <param name="secondValue">
+            </param>
+            <param name="thirdValue">
+            </param>
+            <param name="fourthValue">
+            </param>
+        </member>
+        <member name="M:BoostedLib.IntegerExtensions.ExtractBitwise(System.Int64,System.UInt16@,System.UInt16@,System.UInt16@,System.UInt16@)">
+            <summary>
+            Bitwise extracts four 16-Bit Integers from one 64-Bit Integer.
+            </summary>
+            <param name="a">
+            </param>
+            <param name="firstValue">
+            </param>
+            <param name="secondValue">
+            </param>
+            <param name="thirdValue">
+            </param>
+            <param name="fourthValue">
+            </param>
+        </member>
+        <member name="M:BoostedLib.ObjectExtensions.EnqueueIf``1(System.Collections.Generic.Queue{``0},System.Func{``0,System.Boolean},``0,System.Object)">
+            <summary>
+            Enqueue an item if the specified condition is invoked.
+            </summary>
+            <typeparam name="T">
+            </typeparam>
+            <param name="source">
+            </param>
+            <param name="predicate">
+            </param>
+            <param name="item">
+            </param>
+            <param name="_lock">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.ObjectExtensions.EnqueueIfAndReturn``1(System.Collections.Generic.Queue{``0},System.Func{``0,System.Boolean},``0,``0@,System.Object)">
+            <summary>
+            Enqueue an item if the specified condition is invoked and if the expression was true the
+            items value will be returned afterwards.
+            </summary>
+            <typeparam name="T">
+            </typeparam>
+            <param name="source">
+            </param>
+            <param name="predicate">
+            </param>
+            <param name="item">
+            </param>
+            <param name="value">
+            </param>
+            <param name="_lock">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.ObjectExtensions.EnqueueIfAndReturn``1(System.Collections.Generic.Queue{``0},System.Func{``0,System.Boolean},``0,System.Object)">
+            <summary>
+            Enqueue an item if the specified condition is invoked and if the expression was true the
+            items value will be returned afterwards.
+            </summary>
+            <typeparam name="T">
+            </typeparam>
+            <param name="source">
+            </param>
+            <param name="predicate">
+            </param>
+            <param name="item">
+            </param>
+            <param name="_lock">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.ObjectExtensions.GetAttributeValue``2(System.Type,System.Func{``0,``1})">
+            <summary>
+            Attempts to extract user defined attributes within the specified object.
+            </summary>
+            <typeparam name="TAttribute">
+            </typeparam>
+            <typeparam name="TValue">
+            </typeparam>
+            <param name="type">
+            </param>
+            <param name="valueSelector">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.ObjectExtensions.Where``2(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Receive an <see cref="T:System.Collections.Generic.IEnumerable`1" /> where all objects within the collection
+            matches the specified generic argument by inheritance checks. All non matching elements
+            won't be returned and if none could be found the result view will be empty.
+            </summary>
+            <typeparam name="TSource">
+            </typeparam>
+            <typeparam name="Target">
+            </typeparam>
+            <param name="source">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.ObjectExtensions.Restart(System.Timers.Timer)">
+            <summary>
+            Restarts the given <see cref="T:System.Timers.Timer" /> object.
+            </summary>
+            <param name="timer">
+            </param>
+        </member>
+        <member name="M:BoostedLib.ObjectExtensions.GetFullMessage(System.Exception)">
+            <summary>
+            Returns the full exception details as single string.
+            </summary>
+            <param name="ex">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.StringExtensions.GetString(System.Byte[],BoostedLib.Text.StringEncoding)">
+            <summary>
+            Decodes all the bytes in the specified byte array into a string.
+            </summary>
+            <param name="inputBytes"></param>
+            <param name="encoding"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BoostedLib.StringExtensions.GetString(System.Byte[],System.Text.Encoding)">
+            <summary>
+            Decodes all the bytes in the specified byte array into a string.
+            </summary>
+            <param name="inputBytes"></param>
+            <param name="encoding"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BoostedLib.StringExtensions.ToHash(System.String,BoostedLib.IO.Cryptography.HashProvider)">
+            <summary>
+            </summary>
+            <param name="source">
+            </param>
+            <param name="provider">
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:BoostedLib.StringExtensions.ToHash``1(System.String)">
+            <summary>
+            Calculates the hashvalue of the given byte array using the <see cref="!:T"/> provider.
+            </summary>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BoostedLib.StringExtensions.ToMD5Hash(System.String)">
+            <summary>
+            Calculates the hashvalue of the given byte array using the <see cref="T:System.Security.Cryptography.MD5"/> provider.
+            </summary>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BoostedLib.StringExtensions.ToSha1Hash(System.String)">
+            <summary>
+            Calculates the hashvalue of the given byte array using the <see cref="T:System.Security.Cryptography.SHA1Managed"/> provider.
+            </summary>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BoostedLib.StringExtensions.ToSha256Hash(System.String)">
+            <summary>
+            Calculates the hashvalue of the given byte array using the <see cref="T:System.Security.Cryptography.SHA256Managed"/> provider.
+            </summary>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BoostedLib.StringExtensions.ToSha512Hash(System.String)">
+            <summary>
+            Calculates the hashvalue of the given byte array using the <see cref="T:System.Security.Cryptography.SHA512Managed"/> provider.
+            </summary>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

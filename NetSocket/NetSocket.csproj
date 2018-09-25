@@ -23,6 +23,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>7.2</LangVersion>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -52,6 +53,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Repos\the-gemini-project\Libraries\BoostedLib\BoostedLib.IO\BoostedLib.IO.csproj">
+      <Project>{326178fb-3866-40e5-90d3-10bf23f03043}</Project>
+      <Name>BoostedLib.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Repos\the-gemini-project\Libraries\BoostedLib\BoostedLib\BoostedLib.csproj">
+      <Project>{fcd4c060-877b-44e3-9e94-ce4368486dfc}</Project>
+      <Name>BoostedLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fluffy.IO\Fluffy.IO.csproj">
       <Project>{BD4B8F33-E100-422E-866D-779A4B38D2F8}</Project>
       <Name>Fluffy.IO</Name>

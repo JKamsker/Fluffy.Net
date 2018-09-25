@@ -32,10 +32,12 @@ namespace Fluffy.IO.Buffer
             int written = 0;
             while (written < count)
             {
-                written += Body.Write(buffer, offset, count);
+                written += Body.Write(buffer, written, count - written);
                 if (written < count)
                 {
-                    Body = _recyclingFactory.Get();
+                    var nb = _recyclingFactory.Get();
+                    Body.Next = nb;
+                    Body = nb;
                 }
             }
 
@@ -54,7 +56,7 @@ namespace Fluffy.IO.Buffer
             {
                 if (Head.Length == 0)
                 {
-                    if (Head == Body)
+                    if (Head == Body || Head.Next == null)
                     {
                         break;
                     }
@@ -65,8 +67,9 @@ namespace Fluffy.IO.Buffer
                     _recyclingFactory.Recycle(headBuffer);
                 }
 
-                readBytes += Head.Read(buffer, offset, count);
+                readBytes += Head.Read(buffer, readBytes, count - readBytes);
             }
+
             _length -= readBytes;
             return readBytes;
         }
@@ -107,27 +110,12 @@ namespace Fluffy.IO.Buffer
 
     public class LinkableBufferObject<T> : BufferObject<T>
     {
-        public LinkableBufferObject<T> Next { get; private set; }
+        public LinkableBufferObject<T> Next { get; internal set; }
 
         public LinkableBufferObject(int cacheSize)
         {
             Value = new T[cacheSize];
         }
-
-        //public override int Read(T[] destBuffer, int destOffset, int count = -1)
-        //{
-        //    if (count == -1)
-        //    {
-        //        count = destBuffer.Length - destOffset;
-        //    }
-
-        //    var read = base.Read(destBuffer, destOffset, count);
-        //    if (read != count && Next != null)
-        //    {
-        //        return read + Next.Read(destBuffer, read + destOffset, count - read);
-        //    }
-        //    return read;
-        //}
 
         public int GetDepth()
         {

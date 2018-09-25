@@ -9,6 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fluffy.Net", "FluffySock.Ne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fluffy.IO", "Fluffy.IO\Fluffy.IO.csproj", "{BD4B8F33-E100-422E-866D-779A4B38D2F8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ext", "Ext", "{2A717D87-DC23-409B-8658-DBE0A7746859}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoostedLib.IO", "..\..\Repos\the-gemini-project\Libraries\BoostedLib\BoostedLib.IO\BoostedLib.IO.csproj", "{326178FB-3866-40E5-90D3-10BF23F03043}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoostedLib", "..\..\Repos\the-gemini-project\Libraries\BoostedLib\BoostedLib\BoostedLib.csproj", "{FCD4C060-877B-44E3-9E94-CE4368486DFC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,9 +33,21 @@ Global
 		{BD4B8F33-E100-422E-866D-779A4B38D2F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD4B8F33-E100-422E-866D-779A4B38D2F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD4B8F33-E100-422E-866D-779A4B38D2F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{326178FB-3866-40E5-90D3-10BF23F03043}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{326178FB-3866-40E5-90D3-10BF23F03043}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{326178FB-3866-40E5-90D3-10BF23F03043}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{326178FB-3866-40E5-90D3-10BF23F03043}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCD4C060-877B-44E3-9E94-CE4368486DFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCD4C060-877B-44E3-9E94-CE4368486DFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCD4C060-877B-44E3-9E94-CE4368486DFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCD4C060-877B-44E3-9E94-CE4368486DFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{326178FB-3866-40E5-90D3-10BF23F03043} = {2A717D87-DC23-409B-8658-DBE0A7746859}
+		{FCD4C060-877B-44E3-9E94-CE4368486DFC} = {2A717D87-DC23-409B-8658-DBE0A7746859}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C961F9F0-5891-4A42-9867-E41C3C6ED0DA}
