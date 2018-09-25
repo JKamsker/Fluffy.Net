@@ -40,8 +40,8 @@ namespace NetSocket
                         }
                         catch (EndOfStreamException e)
                         {
-                            br.Dispose();
-                            br = new BinaryReader(ls);
+                            //br.Dispose();
+                            //br = new BinaryReader(ls);
                             break;
                         }
                     }
