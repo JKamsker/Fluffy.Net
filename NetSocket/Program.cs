@@ -1,8 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using BoostedLib;
+﻿using System.Diagnostics;
 using Fluffy.IO.Buffer;
 
 namespace NetSocket
@@ -11,69 +7,32 @@ namespace NetSocket
     {
         private static void Main(string[] args)
         {
-            using (var ls = new LinkedStream())
-            using (var br = new BinaryReader(ls))
+            using (var ls = new LinkedStream(8 * 1024))
             {
-                var counter = 1;
-                var showCounter = 0;
-                while (true)
-                {
-                    for (int i = 0; i < 5000; i++)
-                    {
-                        var seq = GetRandomSequence(++counter);
-                        ls.Write(seq, 0, seq.Length);
-                    }
+                var buf = FillBuf(new byte[32 * 1024 * 1024]);
+                var dbuf = new byte[1024];
 
-                    while (true)
-                    {
-                        try
-                        {
-                            if (CheckSequence(br))
-                            {
-                                Console.WriteLine($"Good {++showCounter}");
-                            }
-                            else
-                            {
-                                Debugger.Break();
-                            }
-                        }
-                        catch (EndOfStreamException)
-                        {
-                            break;
-                        }
-                    }
+                ls.Write(buf, 0, buf.Length);
+
+                var str = ls.ReadToLinkedStream(20);
+
+                if (str.Length + ls.Length == buf.Length)
+                {
+                    Debugger.Break();
                 }
-                br.Dispose();
-                Console.WriteLine($"Finished");
-                Console.ReadLine();
+
+                // var tread = ls.Read(dbuf, 0, 20 * 1024);
+                Debugger.Break();
             }
         }
 
-        private static Random _random = new Random();
-
-        private static bool CheckSequence(BinaryReader br)
+        private static byte[] FillBuf(byte[] buf)
         {
-            var len = br.ReadInt32();
-            var data = br.ReadBytes(len);
-            var hash = br.ReadBytes(16);
-
-            var calcHash = data.ToMD5Hash();
-
-            return (hash.SequenceEqual(calcHash));
-        }
-
-        private static byte[] GetRandomSequence(int lenght)
-        {
-            var data = new byte[lenght];
-            _random.NextBytes(data);
-
-            var hash = data.ToMD5Hash();
-            var length = BitConverter.GetBytes(data.Length);
-
-            var seq1 = Enumerable.Concat(length, data);
-            var seq2 = Enumerable.Concat(seq1, hash);
-
-            return seq2.ToArray();
+            for (int i = 0; i < buf.Length; i++)
+            {
+                buf[i] = (byte)(i % 255);
+            }
+            return buf;
         }
     }
 }

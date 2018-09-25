@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Fluffy.IO.Buffer
 {
-    internal class ObjectRecyclingFactory<T>
+    public class ObjectRecyclingFactory<T> : IObjectRecyclingFactory<T>
     {
         private readonly Func<T> _creationFunc;
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using Fluffy.IO.Buffer;
+using Fluffy.IO.Extensions;
 
 namespace Fluffy.Net
 {
@@ -85,11 +87,13 @@ namespace Fluffy.Net
         private byte[] _buffer;
         private IOState _state;
         private volatile bool _started;
+        private LinkedStream _stream;
 
         public IOHandler(Socket socket)
         {
             _socket = socket;
             _buffer = new byte[8 * 1024];
+            _stream = new LinkedStream(8 * 1024);
         }
 
         public IOHandler Start()
@@ -104,7 +108,7 @@ namespace Fluffy.Net
             return this;
         }
 
-        private protected void ReceiveCallback(IAsyncResult ar)
+        private void ReceiveCallback(IAsyncResult ar)
         {
             var connectionInfo = ar.AsyncState as ConnectionInfo;
             if (connectionInfo == null)
@@ -119,6 +123,57 @@ namespace Fluffy.Net
                 Console.WriteLine($"Received 0 bytes, closing Socket!");
                 return;
             }
+
+            _stream.Write(_buffer, 0, bytesRead);
+        }
+
+        private int _nextSegmentLength;
+
+        private void HandleStream()
+        {
+            switch (_state)
+            {
+                case IOState.HeaderLen:
+                    if (_stream.Length >= 4)
+                    {
+                        var nextSegmentLength = _stream.ReadInt32();
+                        if (nextSegmentLength == -1)
+                        {
+                            break;
+                        }
+                        else if (nextSegmentLength <= 0)
+                        {
+                            throw new AggregateException("Stream out of scope!");
+                        }
+                        _nextSegmentLength = nextSegmentLength;
+                        _state = IOState.BodyBytes;
+                    }
+                    break;
+
+                case IOState.BodyBytes:
+                    if (_stream.Length >= _nextSegmentLength)
+                    {
+                        var options = (ParallelismOptions)_stream.ReadByte();
+                        switch (options)
+                        {
+                            case ParallelismOptions.Parallel:
+                                break;
+
+                            case ParallelismOptions.Sync:
+                                break;
+
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+                    }
+
+                    _nextSegmentLength = 4;
+                    _state = IOState.HeaderLen;
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         // ReSharper disable once InconsistentNaming
@@ -126,6 +181,12 @@ namespace Fluffy.Net
         {
             HeaderLen,
             BodyBytes,
+        }
+
+        private enum ParallelismOptions : byte
+        {
+            Parallel,
+            Sync
         }
     }
 }

@@ -9,11 +9,6 @@
             Value = new T[cacheSize];
         }
 
-        public int GetDepth()
-        {
-            return Next?.GetDepth() + 1 ?? 1;
-        }
-
         public override void Reset()
         {
             Next = null;

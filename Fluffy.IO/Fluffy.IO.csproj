@@ -45,9 +45,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Buffer\BufferObject.cs" />
+    <Compile Include="Buffer\ConcurrentObjectRecyclingFactory.cs" />
+    <Compile Include="Buffer\IObjectRecyclingFactory.cs" />
     <Compile Include="Buffer\LinkableBufferObject.cs" />
     <Compile Include="Buffer\LinkedStream.cs" />
     <Compile Include="Buffer\ObjectRecyclingFactory.cs" />
+    <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
