@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{220E4B17-01B5-474E-91FC-64116E928F5B}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>NetSocket</RootNamespace>
-    <AssemblyName>NetSocket</AssemblyName>
+    <ProjectGuid>{BAD50387-0819-4B30-B937-0C003D49312B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Fluffy</RootNamespace>
+    <AssemblyName>Fluffy</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,10 +22,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>7.3</LangVersion>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -46,26 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="DelegateStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StreamPerformanceTest.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Repos\the-gemini-project\Libraries\BoostedLib\BoostedLib.IO\BoostedLib.IO.csproj">
-      <Project>{326178fb-3866-40e5-90d3-10bf23f03043}</Project>
-      <Name>BoostedLib.IO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Repos\the-gemini-project\Libraries\BoostedLib\BoostedLib\BoostedLib.csproj">
-      <Project>{fcd4c060-877b-44e3-9e94-ce4368486dfc}</Project>
-      <Name>BoostedLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fluffy.IO\Fluffy.IO.csproj">
-      <Project>{BD4B8F33-E100-422E-866D-779A4B38D2F8}</Project>
-      <Name>Fluffy.IO</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoostedLib", "..\..\Repos\t
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fluffy.Tests", "Fluffy.Tests\Fluffy.Tests.csproj", "{F6A4B93C-1E03-469D-BB7A-3E898EA03160}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fluffy", "Fluffy\Fluffy.csproj", "{BAD50387-0819-4B30-B937-0C003D49312B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{F6A4B93C-1E03-469D-BB7A-3E898EA03160}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6A4B93C-1E03-469D-BB7A-3E898EA03160}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6A4B93C-1E03-469D-BB7A-3E898EA03160}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAD50387-0819-4B30-B937-0C003D49312B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAD50387-0819-4B30-B937-0C003D49312B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAD50387-0819-4B30-B937-0C003D49312B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAD50387-0819-4B30-B937-0C003D49312B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

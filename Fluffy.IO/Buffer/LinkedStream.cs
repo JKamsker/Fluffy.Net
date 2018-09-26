@@ -5,7 +5,6 @@ namespace Fluffy.IO.Buffer
     public class LinkedStream : Stream
     {
         public int CacheSize => _cacheSize;
-        public IObjectRecyclingFactory<LinkableBufferObject<byte>> ObjectRecyclingFactory => _recyclingFactory;
 
         private LinkableBufferObject<byte> _head;
         private LinkableBufferObject<byte> _body;
@@ -14,14 +13,20 @@ namespace Fluffy.IO.Buffer
         private readonly int _cacheSize;
         private long _length;
 
-        public LinkedStream() : this(8 * 1024)
-        {
-        }
-
         public LinkedStream(int cacheSize)
             : this(new ConcurrentObjectRecyclingFactory<LinkableBufferObject<byte>>(() => new LinkableBufferObject<byte>(cacheSize)))
         {
             _cacheSize = cacheSize;
+        }
+
+        public LinkedStream()
+            : this(Capacity.Medium)
+        {
+        }
+
+        public LinkedStream(Capacity capacity)
+            : this(BufferRecyclingMetaFactory.Get(capacity))
+        {
         }
 
         public LinkedStream(IObjectRecyclingFactory<LinkableBufferObject<byte>> recyclingFactory)
@@ -31,6 +36,22 @@ namespace Fluffy.IO.Buffer
 
             _head = buffer;
             _body = buffer;
+        }
+
+        public void WriteHead(byte[] buffer, int offset, int count)
+        {
+            if (count == 0)
+            {
+                return;
+            }
+            int written = 0;
+            while (written < count)
+            {
+                var targetBuffer = _recyclingFactory.Get();
+                written += targetBuffer.Write(buffer, written, count - written);
+                targetBuffer.Next = _head;
+                _head = targetBuffer;
+            }
         }
 
         public override void Write(byte[] buffer, int offset, int count)
@@ -92,11 +113,12 @@ namespace Fluffy.IO.Buffer
 
         public LinkedStream ReadToLinkedStream(int count)
         {
+            int read = 0;
+            int totalRead = 0;
+
             var tempBuffer = _recyclingFactory.Get();
             var buffer = tempBuffer.Value;
 
-            int read = 0;
-            int totalRead = 0;
             var targetStream = new LinkedStream(_recyclingFactory);
 
             while ((read = Read(buffer, 0, count - totalRead)) != 0)

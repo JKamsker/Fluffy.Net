@@ -1,14 +1,40 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using Fluffy.IO.Buffer;
 
 namespace NetSocket
 {
+    internal enum Foo
+    {
+        x,
+        xa,
+        ass,
+        asf,
+        ww,
+        h
+    }
+
     internal class Program
     {
+        private static List<int> _test;
+
+        private static int GetInt<T>(T tinput)
+            where T : Enum
+        {
+            return tinput.GetHashCode();
+        }
+
         private static void Main(string[] args)
         {
             using (var ls = new LinkedStream(8 * 1024))
             {
+                ls.Write(new byte[] { 4, 5, 6 }, 0, 3);
+                ls.WriteHead(new byte[] { 1, 2, 3 }, 0, 3);
+
+                var nb = new byte[6];
+                ls.Read(nb, 0, 6);
+
                 var buf = FillBuf(new byte[32 * 1024 * 1024]);
                 var dbuf = new byte[1024];
 
@@ -23,6 +49,20 @@ namespace NetSocket
 
                 // var tread = ls.Read(dbuf, 0, 20 * 1024);
                 Debugger.Break();
+            }
+        }
+
+        private static void ThreadWork()
+        {
+            while (true)
+            {
+                for (int i = 0; i < _test.Count; i++)
+                {
+                    if (_test[i] / 21 != i)
+                    {
+                        Debugger.Break();
+                    }
+                }
             }
         }
 
