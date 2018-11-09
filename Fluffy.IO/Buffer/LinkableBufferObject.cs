@@ -4,9 +4,13 @@
     {
         public LinkableBufferObject<T> Next { get; internal set; }
 
-        public LinkableBufferObject(int cacheSize)
+        public LinkableBufferObject(int cacheSize) : base(cacheSize)
         {
-            Value = new T[cacheSize];
+        }
+
+        public LinkableBufferObject() : base()
+        {
+
         }
 
         public override void Reset()

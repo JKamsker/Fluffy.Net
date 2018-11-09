@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using BoostedLib.IO;
+using BoostedLib.IO.__Streams;
 using Fluffy.IO.Buffer;
 
 namespace NetSocket

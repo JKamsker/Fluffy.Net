@@ -45,12 +45,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Buffer\BufferObject.cs" />
-    <Compile Include="Buffer\ConcurrentObjectRecyclingFactory.cs" />
+    <Compile Include="Recycling\BufferRecyclingFactory.cs" />
+    <Compile Include="Recycling\ICapacityInitiatable.cs" />
+    <Compile Include="Recycling\IResettable.cs" />
+    <Compile Include="Recycling\ConcurrentObjectRecyclingFactory.cs" />
     <Compile Include="Buffer\IObjectRecyclingFactory.cs" />
     <Compile Include="Buffer\LinkableBufferObject.cs" />
     <Compile Include="Buffer\LinkedStream.cs" />
     <Compile Include="Buffer\ObjectRecyclingFactory.cs" />
-    <Compile Include="Buffer\ObjectRecyclingFactoryFactory.cs" />
+    <Compile Include="Recycling\ObjectRecyclingFactoryFactory.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

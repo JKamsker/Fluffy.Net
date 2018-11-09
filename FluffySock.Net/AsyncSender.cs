@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Fluffy.IO.Buffer;
+using Fluffy.IO.Recycling;
+
+using System;
 using System.Collections.Concurrent;
 using System.Net.Sockets;
-using Fluffy.IO.Buffer;
 
 namespace Fluffy.Net
 {

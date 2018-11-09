@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Fluffy.IO.Buffer;
 
-namespace Fluffy.IO.Buffer
+using System;
+
+namespace Fluffy.IO.Recycling
 {
     public enum Capacity
     {
@@ -55,7 +57,7 @@ namespace Fluffy.IO.Buffer
                 default:
                     throw new ArgumentOutOfRangeException(nameof(capacity), capacity, null);
             }
-            return new ConcurrentObjectRecyclingFactory<LinkableBufferObject<byte>>(() => new LinkableBufferObject<byte>(size));
+            return new BufferRecyclingFactory<LinkableBufferObject<byte>>(size);
         }
     }
 }

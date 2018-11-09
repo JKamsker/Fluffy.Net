@@ -1,20 +1,33 @@
-﻿using System;
+﻿using Fluffy.IO.Recycling;
+
+using System;
 
 namespace Fluffy.IO.Buffer
 {
-    public class BufferObject<T>
+    public class BufferObject<T> : IResettable, ICapacityInitiatable
     {
+        private  bool _initiated;
+
         public T[] Value { get; private protected set; }
         public int High { get; internal set; }
         public int Low { get; private set; }
         public int Length => High - Low;
         public int RemainingCapacity => Value.Length - High;
 
-        private protected BufferObject(int cacheSize)
+        public BufferObject(int cacheSize)
         {
-            Value = new T[cacheSize];
+            Initiate(cacheSize);
         }
+        public void Initiate(int capacity)
+        {
+            if (_initiated)
+            {
+                throw new AggregateException("Cannot initiate cache twice");
+            }
 
+            Value = new T[capacity];
+            _initiated = true;
+        }
         /// <summary>
         /// Warning: Only use if you know what you are doing
         /// </summary>
@@ -34,6 +47,11 @@ namespace Fluffy.IO.Buffer
             if (count == -1)
             {
                 count = sourceBuffer.Length;
+            }
+
+            if (!_initiated)
+            {
+                throw new AggregateException("Cache not initialized!");
             }
 
             var localHigh = High;
@@ -62,6 +80,11 @@ namespace Fluffy.IO.Buffer
 
         public virtual int Read(T[] destBuffer, int destOffset, int count = -1)
         {
+            if (!_initiated)
+            {
+                throw new AggregateException("Cache not initialized!");
+            }
+
             if (count == -1)
             {
                 count = destBuffer.Length - destOffset;

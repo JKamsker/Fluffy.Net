@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using Fluffy.IO.Recycling;
+
+using System.IO;
 
 namespace Fluffy.IO.Buffer
 {

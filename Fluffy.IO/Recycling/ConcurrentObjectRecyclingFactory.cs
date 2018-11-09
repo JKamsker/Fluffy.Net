@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Fluffy.IO.Buffer;
+
+using System;
 using System.Collections.Concurrent;
 
-namespace Fluffy.IO.Buffer
+namespace Fluffy.IO.Recycling
 {
     public class ConcurrentObjectRecyclingFactory<T> : IObjectRecyclingFactory<T>
     {
