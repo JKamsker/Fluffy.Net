@@ -1,10 +1,12 @@
-﻿using Fluffy.IO.Recycling;
+﻿using System;
+using Fluffy.IO.Recycling;
 
 using System.IO;
+using Fluffy.Collections;
 
 namespace Fluffy.IO.Buffer
 {
-    public class LinkedStream : Stream
+    public class LinkedStream : Stream, IDisposable
     {
         public int CacheSize => _cacheSize;
 
@@ -16,7 +18,7 @@ namespace Fluffy.IO.Buffer
         private long _length;
 
         public LinkedStream(int cacheSize)
-            : this(new ConcurrentObjectRecyclingFactory<LinkableBufferObject<byte>>(() => new LinkableBufferObject<byte>(cacheSize)))
+            : this(new BufferRecyclingFactory<LinkableBufferObject<byte>>(cacheSize).Initialize<FluffyConcurrentStack<LinkableBufferObject<byte>>>())
         {
             _cacheSize = cacheSize;
         }
@@ -132,6 +134,20 @@ namespace Fluffy.IO.Buffer
             _recyclingFactory.Recycle(tempBuffer);
             return targetStream;
         }
+
+        public override void Close()
+        {
+            while (_head != null)
+            {
+                var headBuffer = _head;
+                _head = _head.Next;
+                headBuffer.Reset();
+                _recyclingFactory.Recycle(headBuffer);
+            }
+
+            base.Close();
+        }
+
 
         #region NotImplemented
 

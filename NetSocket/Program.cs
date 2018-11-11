@@ -27,7 +27,7 @@ namespace NetSocket
 
         private static void Main(string[] args)
         {
-            using (var ls = new LinkedStream(8 * 1024))
+            using (var ls = new LinkedStream())
             {
                 ls.Write(new byte[] { 4, 5, 6 }, 0, 3);
                 ls.WriteHead(new byte[] { 1, 2, 3 }, 0, 3);
@@ -47,9 +47,16 @@ namespace NetSocket
                     Debugger.Break();
                 }
 
+                int read = 0;
+                while ((read = ls.Read(buf,0,buf.Length))!= 0)
+                {
+                    
+                }
+
                 // var tread = ls.Read(dbuf, 0, 20 * 1024);
-                Debugger.Break();
             }
+            Debugger.Break();
+
         }
 
         private static void ThreadWork()

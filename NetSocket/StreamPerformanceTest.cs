@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using BoostedLib.IO;
-using BoostedLib.IO.__Streams;
+
 using Fluffy.IO.Buffer;
 
 namespace NetSocket
@@ -21,10 +20,10 @@ namespace NetSocket
 
         public static void TestFifo()
         {
-            using (var ff = new FifoStream(new RingBuffer(10)))
-            {
-                TestStream(ff);
-            }
+            //using (var ff = new FifoStream(new RingBuffer(10)))
+            //{
+            //    TestStream(ff);
+            //}
         }
 
         private static Random _random = new Random();

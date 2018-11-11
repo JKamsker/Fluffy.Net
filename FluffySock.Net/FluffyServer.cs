@@ -28,7 +28,9 @@ namespace Fluffy.Net
         public FluffyServer Start()
         {
             for (int i = 0; i < 15; i++)
+            {
                 Socket.BeginAccept(AcceptCallback, null);
+            }
 
             return this;
         }

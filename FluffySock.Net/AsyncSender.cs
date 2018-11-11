@@ -48,9 +48,9 @@ namespace Fluffy.Net
             _streamQueue.Enqueue(stream);
         }
 
-        internal void DoWork()
+        internal void DoWork(bool ignoreProgressLock = false)
         {
-            if (_sendingInProgress)
+            if (_sendingInProgress && !ignoreProgressLock)
             {
                 return;
             }

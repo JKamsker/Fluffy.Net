@@ -41,6 +41,9 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BoostedLib">
+      <HintPath>..\..\BoostedLib.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.1.3.2\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
     </Reference>
@@ -58,10 +61,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Repos\the-gemini-project\Libraries\BoostedLib\BoostedLib\BoostedLib.csproj">
-      <Project>{FCD4C060-877B-44E3-9E94-CE4368486DFC}</Project>
-      <Name>BoostedLib</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Fluffy.IO\Fluffy.IO.csproj">
       <Project>{BD4B8F33-E100-422E-866D-779A4B38D2F8}</Project>
       <Name>Fluffy.IO</Name>

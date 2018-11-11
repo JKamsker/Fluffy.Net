@@ -2,6 +2,7 @@
 
 using System;
 using System.Linq;
+using Fluffy.Collections;
 
 namespace Fluffy.IO.Recycling
 {
@@ -24,7 +25,7 @@ namespace Fluffy.IO.Recycling
 
             if (_factories[iCapacity] == null)
             {
-                _factories[iCapacity] = new BufferRecyclingFactory<LinkableBufferObject<byte>>(capacity.ToInt());
+                _factories[iCapacity] = new BufferRecyclingFactory<LinkableBufferObject<byte>>(capacity.ToInt()).Initialize<FluffyConcurrentStack<LinkableBufferObject<byte>>>();
             }
 
             return _factories[iCapacity];

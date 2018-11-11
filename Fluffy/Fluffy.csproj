@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\FluffyConcurrentStack.cs" />
+    <Compile Include="Collections\FluffyStack.cs" />
     <Compile Include="DelegateStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
