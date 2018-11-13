@@ -46,6 +46,7 @@ namespace Fluffy.Net
         public void Send(Stream stream)
         {
             _streamQueue.Enqueue(stream);
+            SendTaskRelay.WaitHandle.Set();
         }
 
         internal bool DoWork(bool ignoreProgressLock = false)

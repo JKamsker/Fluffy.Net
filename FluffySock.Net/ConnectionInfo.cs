@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
+using System.Threading;
 using Fluffy.IO.Buffer;
 using Fluffy.IO.Recycling;
 
@@ -70,6 +71,7 @@ namespace Fluffy.Net
     {
         public bool IsDisposed { get; private set; }
         public Func<bool> WorkFunc { get; }
+        public EventWaitHandle WaitHandle { get; set; }
 
         public SendTaskRelay(Func<bool> workFunc)
         {

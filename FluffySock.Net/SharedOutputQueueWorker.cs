@@ -34,6 +34,7 @@ namespace Fluffy.Net
 
         internal void AddTask(SendTaskRelay action)
         {
+            action.WaitHandle = _resetEvent;
             _queue.Enqueue(action);
         }
 
@@ -62,7 +63,7 @@ namespace Fluffy.Net
                 _queue = q2;
                 _pushBackQueue = q1;
 
-                _resetEvent.WaitOne(TimeSpan.FromMilliseconds(10));
+                _resetEvent.WaitOne(TimeSpan.FromMilliseconds(50));
             }
 
             _running = false;
