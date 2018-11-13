@@ -3,6 +3,8 @@ using Fluffy.IO.Recycling;
 
 using System;
 using System.Collections.Concurrent;
+using System.Data;
+using System.IO;
 using System.Net.Sockets;
 
 namespace Fluffy.Net
@@ -11,14 +13,14 @@ namespace Fluffy.Net
     {
         private readonly Socket _socket;
         private static SharedOutputQueueWorker _queueWorker;
-        internal bool IsDisposed { get; set; }
+        internal bool IsDisposed { get; private set; }
 
         private readonly IObjectRecyclingFactory<LinkableBufferObject<byte>> _bufferFactory;
         private LinkableBufferObject<byte> _bufferWrapper;
         private byte[] _buffer;
 
-        private LinkedStream _stream;
-        private ConcurrentQueue<LinkedStream> _streamQueue;
+        private Stream _stream;
+        private ConcurrentQueue<Stream> _streamQueue;
 
         private volatile bool _sendingInProgress;
         private IAsyncResult _currentAsyncResult;
@@ -30,7 +32,7 @@ namespace Fluffy.Net
 
         public AsyncSender(Socket socket)
         {
-            _streamQueue = new ConcurrentQueue<LinkedStream>();
+            _streamQueue = new ConcurrentQueue<Stream>();
             _socket = socket;
 
             _bufferFactory = BufferRecyclingMetaFactory.Get(Capacity.Medium);
@@ -48,37 +50,51 @@ namespace Fluffy.Net
             _streamQueue.Enqueue(stream);
         }
 
-        internal void DoWork(bool ignoreProgressLock = false)
+        public void Send(Stream stream)
+        {
+            _streamQueue.Enqueue(stream);
+        }
+
+        internal bool DoWork(bool ignoreProgressLock = false)
         {
             if (_sendingInProgress && !ignoreProgressLock)
             {
-                return;
+                return false;
             }
 
             if (_stream == null || _stream.Length == 0)
             {
+                _stream?.Dispose();
                 if (_streamQueue.TryDequeue(out _stream))
                 {
-                    DoWork();
-                    return;
+                    return DoWork();
                 }
             }
 
             var read = _stream.Read(_buffer, 0, _buffer.Length);
             if (read <= 0)
             {
-                return;
+                return false;
             }
 
             _sendingInProgress = true;
-            _currentAsyncResult = _socket.BeginSend(_buffer, 0, read, SocketFlags.None, Callback, this);
+            _currentAsyncResult = _socket.BeginSend(_buffer, 0, read, SocketFlags.None, ar => Callback(ar, read), this);
+            return true;
         }
 
-        private void Callback(IAsyncResult ar)
+        private void Callback(IAsyncResult ar, int messageSize)
         {
             _currentAsyncResult = null;
-            _ = _socket.EndSend(ar);
-            _sendingInProgress = false;
+
+            if (_socket.EndSend(ar) != messageSize)
+            {
+                throw new DataException("Message size does not match the amount of bytes sent");
+            }
+
+            if (!DoWork(true))
+            {
+                _sendingInProgress = false;
+            }
         }
 
         public void Dispose()
@@ -93,6 +109,11 @@ namespace Fluffy.Net
             }
             IsDisposed = true;
             _bufferFactory.Recycle(_bufferWrapper);
+
+            while (_streamQueue.TryDequeue(out _stream))
+            {
+                _stream.Dispose();
+            }
         }
     }
 }

@@ -2,6 +2,11 @@
 {
     public interface ICapacityInitiatable
     {
-        void Initiate(int capacity);
+        void Initiate(ICapacity capacity);
+    }
+
+    public interface ICapacity
+    {
+        int Capacity { get; }
     }
 }

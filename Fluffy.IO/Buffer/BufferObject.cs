@@ -4,9 +4,9 @@ using System;
 
 namespace Fluffy.IO.Buffer
 {
-    public class BufferObject<T> : IResettable, ICapacityInitiatable
+    public class BufferObject<T> : IResettable, ICapacityInitiatable, IBufferObject<T>
     {
-        private  bool _initiated;
+        private bool _initiated;
 
         public T[] Value { get; private protected set; }
         public int High { get; internal set; }
@@ -14,20 +14,23 @@ namespace Fluffy.IO.Buffer
         public int Length => High - Low;
         public int RemainingCapacity => Value.Length - High;
 
-        public BufferObject(int cacheSize)
+        public BufferObject(ICapacity cacheSize)
         {
             Initiate(cacheSize);
         }
-        public void Initiate(int capacity)
+
+        public virtual void Initiate(ICapacity capacity)
         {
             if (_initiated)
             {
                 throw new AggregateException("Cannot initiate cache twice");
             }
 
-            Value = new T[capacity];
+            Value = new T[capacity.Capacity];
+
             _initiated = true;
         }
+
         /// <summary>
         /// Warning: Only use if you know what you are doing
         /// </summary>

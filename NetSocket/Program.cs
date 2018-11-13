@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Fluffy.IO.Buffer;
+using Fluffy.IO.Recycling;
 
 namespace NetSocket
 {
@@ -27,6 +28,9 @@ namespace NetSocket
 
         private static void Main(string[] args)
         {
+            var re = BufferRecyclingMetaFactory.Get(Capacity.Medium);
+            var buffer = re.Get();
+
             using (var ls = new LinkedStream())
             {
                 ls.Write(new byte[] { 4, 5, 6 }, 0, 3);
@@ -48,15 +52,13 @@ namespace NetSocket
                 }
 
                 int read = 0;
-                while ((read = ls.Read(buf,0,buf.Length))!= 0)
+                while ((read = ls.Read(buf, 0, buf.Length)) != 0)
                 {
-                    
                 }
 
                 // var tread = ls.Read(dbuf, 0, 20 * 1024);
             }
             Debugger.Break();
-
         }
 
         private static void ThreadWork()

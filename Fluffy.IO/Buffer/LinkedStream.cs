@@ -102,10 +102,10 @@ namespace Fluffy.IO.Buffer
                         break;
                     }
 
-                    var headBuffer = _head;
-                    _head = _head.Next;
-                    headBuffer.Reset();
-                    _recyclingFactory.Recycle(headBuffer);
+                    if (!TryMoveNext())
+                    {
+                        throw new AggregateException("Head is NULL (maybe an threading issue)");
+                    }
                 }
 
                 readBytes += _head.Read(buffer, readBytes, count - readBytes);
@@ -135,19 +135,29 @@ namespace Fluffy.IO.Buffer
             return targetStream;
         }
 
+        private bool TryMoveNext()
+        {
+            if (_head == null)
+            {
+                return false;
+            }
+
+            var headBuffer = _head;
+            _head = _head.Next;
+            headBuffer.Reset();
+            _recyclingFactory.Recycle(headBuffer);
+            return true;
+        }
+
         public override void Close()
         {
-            while (_head != null)
+            //Recycle loop
+            while (TryMoveNext())
             {
-                var headBuffer = _head;
-                _head = _head.Next;
-                headBuffer.Reset();
-                _recyclingFactory.Recycle(headBuffer);
             }
 
             base.Close();
         }
-
 
         #region NotImplemented
 

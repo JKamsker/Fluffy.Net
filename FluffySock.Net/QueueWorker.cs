@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Threading;
 
 namespace Fluffy.Net
@@ -61,7 +62,7 @@ namespace Fluffy.Net
                 _queue = q2;
                 _pushBackQueue = q1;
 
-                Thread.Sleep(10);
+                _resetEvent.WaitOne(TimeSpan.FromMilliseconds(10));
             }
 
             _running = false;

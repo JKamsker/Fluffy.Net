@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections;
 using Fluffy.IO.Buffer;
 
 using System.Collections.Concurrent;
 
 namespace Fluffy.IO.Recycling
 {
-    public class BufferRecyclingFactory<T> : IObjectRecyclingFactory<T>
+    public class BufferRecyclingFactory<T> : IObjectRecyclingFactory<T>, ICapacity, IRecycler<T>
         where T : IResettable, ICapacityInitiatable, new()
     {
         private readonly int _bufferSize;
@@ -17,7 +16,9 @@ namespace Fluffy.IO.Recycling
             _bufferSize = bufferSize;
         }
 
-        public BufferRecyclingFactory<T> Initialize<TCollectionType>() 
+        public int Capacity => _bufferSize;
+
+        public BufferRecyclingFactory<T> Initialize<TCollectionType>()
             where TCollectionType : IProducerConsumerCollection<T>, new()
         {
             _bufferStack = new TCollectionType();
@@ -35,9 +36,9 @@ namespace Fluffy.IO.Recycling
             {
                 return result;
             }
-            
+
             result = new T();
-            result.Initiate(_bufferSize);
+            result.Initiate(this);
             return result;
         }
 
@@ -51,6 +52,10 @@ namespace Fluffy.IO.Recycling
             @object.Reset();
             _bufferStack.TryAdd(@object);
         }
+    }
 
+    public interface IRecycler<T>
+    {
+        void Recycle(T @object);
     }
 }
