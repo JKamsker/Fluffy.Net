@@ -28,14 +28,14 @@ namespace Fluffy.IO.Buffer
         }
 
         public LinkedStream(Capacity capacity)
-            : this(BufferRecyclingMetaFactory<LinkableBuffer>.Get(capacity))
+            : this(BufferRecyclingMetaFactory<LinkableBuffer>.MakeFactory(capacity))
         {
         }
 
         public LinkedStream(IObjectRecyclingFactory<LinkableBuffer> recyclingFactory)
         {
             _recyclingFactory = recyclingFactory;
-            var buffer = _recyclingFactory.Get();
+            var buffer = _recyclingFactory.GetBuffer();
 
             _head = buffer;
             _body = buffer;
@@ -50,7 +50,7 @@ namespace Fluffy.IO.Buffer
             int written = 0;
             while (written < count)
             {
-                var targetBuffer = _recyclingFactory.Get();
+                var targetBuffer = _recyclingFactory.GetBuffer();
                 written += targetBuffer.Write(buffer, written, count - written);
                 targetBuffer.Next = _head;
                 _head = targetBuffer;
@@ -70,7 +70,7 @@ namespace Fluffy.IO.Buffer
                 written += _body.Write(buffer, written, count - written);
                 if (written < count)
                 {
-                    var nb = _recyclingFactory.Get();
+                    var nb = _recyclingFactory.GetBuffer();
                     _body.Next = nb;
                     _body = nb;
                 }
@@ -119,7 +119,7 @@ namespace Fluffy.IO.Buffer
             int read = 0;
             int totalRead = 0;
 
-            var tempBuffer = _recyclingFactory.Get();
+            var tempBuffer = _recyclingFactory.GetBuffer();
             var buffer = tempBuffer.Value;
 
             var targetStream = new LinkedStream(_recyclingFactory);
@@ -129,8 +129,7 @@ namespace Fluffy.IO.Buffer
                 targetStream.Write(buffer, 0, read);
                 totalRead += read;
             }
-
-            _recyclingFactory.Recycle(tempBuffer);
+            tempBuffer.Recycle();
             return targetStream;
         }
 
@@ -143,8 +142,7 @@ namespace Fluffy.IO.Buffer
 
             var headBuffer = _head;
             _head = _head.Next;
-            headBuffer.Reset();
-            _recyclingFactory.Recycle(headBuffer);
+            headBuffer.Recycle();
             return true;
         }
 

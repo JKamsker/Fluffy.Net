@@ -20,26 +20,23 @@ namespace Fluffy.IO.Recycling
             _byteArrayRecycler = byteArrayRecycler;
         }
 
-        public T Get()
+        public T GetBuffer()
         {
             var result = new T();
             result.Initialize(_byteArrayRecycler);
-            result.Initialize(_byteArrayRecycler.Get());
+            result.Initialize(_byteArrayRecycler.GetBuffer());
             return result;
         }
 
         public void Recycle(T @object)
         {
             Recycle(@object);
-            //@object.Reset();
-            //_bufferStack.TryAdd(@object);
         }
 
         public void Recycle(FluffyBuffer @object)
         {
             _byteArrayRecycler.Recycle(@object.Value);
             @object.Dispose();
-            // Recycle((T)@object);
         }
     }
 }

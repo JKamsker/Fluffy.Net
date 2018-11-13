@@ -33,7 +33,7 @@ namespace NetSocket
 
         private static void Main(string[] args)
         {
-            //var capacity = Capacity.Small;
+            var capacity = Capacity.Small;
             //var size = capacity.ToInt();
             //byte[] buffer1;
             //for (int j = 0; j < 10; j++)
@@ -62,31 +62,31 @@ namespace NetSocket
 
             //Console.ReadLine();
 
-            //var re = BufferRecyclingMetaFactory<LinkableBuffer>.Get(capacity);
-            //var ra = BufferRecyclingMetaFactory<FluffyBuffer>.Get(capacity);
+            var re = BufferRecyclingMetaFactory<LinkableBuffer>.MakeFactory(capacity);
+            var ra = BufferRecyclingMetaFactory<FluffyBuffer>.MakeFactory(capacity);
 
-            //for (int j = 0; j < 10; j++)
-            //{
-            //    var sw = Stopwatch.StartNew();
-            //    var list = new List<LinkableBuffer>();
-            //    for (int i = 0; i < 1000000; i++)
-            //    {
-            //        var buffer = re.Get();
-            //        list.Add(buffer);
-            //        if (list.Count >= 300)
-            //        {
-            //            foreach (var buf in list)
-            //            {
-            //                buf.Recycle();
-            //            }
-            //            list.Clear();
-            //        }
-            //    }
-            //    sw.Stop();
-            //    Console.WriteLine($"Took {sw.Elapsed.TotalMilliseconds}");
-            //}
+            for (int j = 0; j < 10; j++)
+            {
+                var sw = Stopwatch.StartNew();
+                var list = new List<LinkableBuffer>();
+                for (int i = 0; i < 1000000; i++)
+                {
+                    var buffer = re.GetBuffer();
+                    list.Add(buffer);
+                    if (list.Count >= 300)
+                    {
+                        foreach (var buf in list)
+                        {
+                            buf.Recycle();
+                        }
+                        list.Clear();
+                    }
+                }
+                sw.Stop();
+                Console.WriteLine($"Took {sw.Elapsed.TotalMilliseconds}");
+            }
 
-            //Console.ReadLine();
+            Console.ReadLine();
             var buf1 = new BufferRecyclingFactory<FluffyBuffer>(50);
 
             if (buf1 is IRecycler<FluffyBuffer>)

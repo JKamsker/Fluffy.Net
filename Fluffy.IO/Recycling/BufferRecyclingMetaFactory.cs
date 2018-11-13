@@ -18,7 +18,7 @@ namespace Fluffy.IO.Recycling
 
         public static IObjectRecyclingFactory<LinkableBuffer> Get(Capacity capacity)
         {
-            return BufferRecyclingMetaFactory<LinkableBuffer>.Get(capacity);
+            return BufferRecyclingMetaFactory<LinkableBuffer>.MakeFactory(capacity);
         }
     }
 
@@ -37,7 +37,7 @@ namespace Fluffy.IO.Recycling
             _recyclers = BufferRecyclingMetaFactory.Recyclers;
         }
 
-        public static IObjectRecyclingFactory<T> Get(Capacity capacity)
+        public static IObjectRecyclingFactory<T> MakeFactory(Capacity capacity)
         {
             int iCapacity = (int)capacity;
 

@@ -12,7 +12,8 @@ namespace Fluffy.IO.Recycling
         public ByteArrayRecycler(int bufferSize)
         {
             Capacity = bufferSize;
-            _bufferStack = new ConcurrentStack<byte[]>();
+            //_bufferStack = new ConcurrentQueue<byte[]>();
+            _bufferStack = new ConcurrentStack<byte[]>();//<byte[]>();
         }
 
         public ByteArrayRecycler Initialize<TCollectionType>()
@@ -22,7 +23,7 @@ namespace Fluffy.IO.Recycling
             return this;
         }
 
-        public byte[] Get()
+        public byte[] GetBuffer()
         {
             if (_bufferStack == null)
             {

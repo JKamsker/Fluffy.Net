@@ -12,8 +12,6 @@ namespace Fluffy.Net
     internal class AsyncSender : IDisposable
     {
         private readonly Socket _socket;
-        private static SharedOutputQueueWorker _queueWorker;
-        internal bool IsDisposed { get; private set; }
 
         private readonly IObjectRecyclingFactory<LinkableBuffer> _bufferFactory;
         private LinkableBuffer _bufferWrapper;
@@ -25,29 +23,22 @@ namespace Fluffy.Net
         private volatile bool _sendingInProgress;
         private IAsyncResult _currentAsyncResult;
 
-        static AsyncSender()
-        {
-            _queueWorker = new SharedOutputQueueWorker();
-        }
+        public SendTaskRelay SendTaskRelay { get; }
 
-        public AsyncSender(Socket socket)
+        public AsyncSender(Socket socket, SharedOutputQueueWorker worker)
         {
             _streamQueue = new ConcurrentQueue<Stream>();
             _socket = socket;
 
-            _bufferFactory = BufferRecyclingMetaFactory<LinkableBuffer>.Get(Capacity.Medium);
-            _bufferWrapper = _bufferFactory.Get();
+            SendTaskRelay = new SendTaskRelay(() => DoWork());
+            _bufferFactory = BufferRecyclingMetaFactory<LinkableBuffer>.MakeFactory(Capacity.Medium);
+            _bufferWrapper = _bufferFactory.GetBuffer();
 
-            if (!_queueWorker.Running)
+            if (!worker.Running)
             {
-                _queueWorker.StartWorker();
+                worker.StartWorker();
             }
-            _queueWorker.Add(this);
-        }
-
-        public void Send(LinkedStream stream)
-        {
-            _streamQueue.Enqueue(stream);
+            worker.AddTask(SendTaskRelay);
         }
 
         public void Send(Stream stream)
@@ -67,14 +58,18 @@ namespace Fluffy.Net
                 _stream?.Dispose();
                 if (_streamQueue.TryDequeue(out _stream))
                 {
-                    return DoWork();
+                    return DoWork(true);
+                }
+                else
+                {
+                    return false;
                 }
             }
 
             var read = _stream.Read(_buffer, 0, _buffer.Length);
             if (read <= 0)
             {
-                return false;
+                return DoWork(true);
             }
 
             _sendingInProgress = true;
@@ -101,19 +96,24 @@ namespace Fluffy.Net
         {
             try
             {
-                _socket?.EndSend(_currentAsyncResult);
+                if (_currentAsyncResult != null)
+                {
+                    _socket?.EndSend(_currentAsyncResult);
+                }
             }
             catch (Exception)
             {
                 //Ignore
             }
-            IsDisposed = true;
+
             _bufferFactory.Recycle(_bufferWrapper);
 
             while (_streamQueue.TryDequeue(out _stream))
             {
                 _stream.Dispose();
             }
+
+            SendTaskRelay.Dispose();
         }
     }
 }

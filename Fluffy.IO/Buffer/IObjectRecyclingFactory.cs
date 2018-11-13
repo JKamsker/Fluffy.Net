@@ -4,6 +4,6 @@ namespace Fluffy.IO.Buffer
 {
     public interface IObjectRecyclingFactory<T> : IRecycler<T>
     {
-        T Get();
+        T GetBuffer();
     }
 }

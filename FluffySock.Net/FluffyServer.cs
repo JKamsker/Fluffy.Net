@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 
@@ -6,13 +7,16 @@ namespace Fluffy.Net
 {
     public class FluffyServer : FluffySocket
     {
+        private List<ConnectionInfo> _connections;
+
         public FluffyServer(int port)
             : this(IPAddress.Any, port)
         {
         }
 
-        public FluffyServer(IPAddress address, int port)
+        public FluffyServer(IPAddress address, int port) : base()
         {
+            _connections = new List<ConnectionInfo>();
             Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
             {
                 Blocking = false,
@@ -20,6 +24,7 @@ namespace Fluffy.Net
                 ReceiveTimeout = int.MaxValue,
                 SendTimeout = int.MaxValue
             };
+
             Socket.Bind(new IPEndPoint(address, port));
             Socket.Listen((int)SocketOptionName.MaxConnections);
             Socket.LingerState = new LingerOption(true, 1);
@@ -40,10 +45,12 @@ namespace Fluffy.Net
             try
             {
                 var socket = Socket.EndAccept(result);
-
                 var connectionInfo = new ConnectionInfo(socket, this);
-
-                //connectionInfo.IOHandler.BeginReceive(4, ReceiveCallback, connectionInfo);
+                connectionInfo.OnDisposing += (_, x) =>
+                {
+                    _connections.Remove(connectionInfo);
+                };
+                _connections.Add(connectionInfo);
             }
             catch (SocketException ex)
             {
@@ -64,6 +71,4 @@ namespace Fluffy.Net
         Test2,
         Test3
     }
-
-    // ReSharper disable once InconsistentNaming
 }

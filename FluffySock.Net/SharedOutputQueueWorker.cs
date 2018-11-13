@@ -6,8 +6,8 @@ namespace Fluffy.Net
 {
     internal class SharedOutputQueueWorker
     {
-        private ConcurrentQueue<AsyncSender> _queue;
-        private ConcurrentQueue<AsyncSender> _pushBackQueue;
+        private ConcurrentQueue<SendTaskRelay> _queue;
+        private ConcurrentQueue<SendTaskRelay> _pushBackQueue;
 
         private Thread _worker;
 
@@ -18,8 +18,8 @@ namespace Fluffy.Net
 
         public SharedOutputQueueWorker()
         {
-            _queue = new ConcurrentQueue<AsyncSender>();
-            _pushBackQueue = new ConcurrentQueue<AsyncSender>();
+            _queue = new ConcurrentQueue<SendTaskRelay>();
+            _pushBackQueue = new ConcurrentQueue<SendTaskRelay>();
             _worker = new Thread(ThreadWorker);
         }
 
@@ -32,7 +32,7 @@ namespace Fluffy.Net
             return this;
         }
 
-        internal void Add(AsyncSender action)
+        internal void AddTask(SendTaskRelay action)
         {
             _queue.Enqueue(action);
         }
@@ -53,7 +53,7 @@ namespace Fluffy.Net
                     {
                         continue;
                     }
-                    sender.DoWork();
+                    sender.WorkFunc();
                     _pushBackQueue.Enqueue(sender);
                 }
 

@@ -5,9 +5,11 @@ namespace Fluffy.Net
     public abstract class FluffySocket
     {
         private protected Socket Socket;
-    }
+        internal SharedOutputQueueWorker QueueWorker { get; private set; }
 
-    public class FluffyClient : FluffySocket
-    {
+        protected FluffySocket()
+        {
+            QueueWorker = new SharedOutputQueueWorker();
+        }
     }
 }

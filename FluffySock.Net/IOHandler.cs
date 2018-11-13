@@ -7,7 +7,7 @@ using System.Net.Sockets;
 
 namespace Fluffy.Net
 {
-    internal class IOHandler : IDisposable
+    internal class Receiver : IDisposable
     {
         private readonly Socket _socket;
         private byte[] _buffer;
@@ -22,15 +22,12 @@ namespace Fluffy.Net
         private IObjectRecyclingFactory<LinkableBuffer> _bufferWrapperFac;
         private LinkableBuffer _bufferWrapper;
 
-        private AsyncSender _asyncSender;
-
-        internal IOHandler(Socket socket)
+        internal Receiver(Socket socket)
         {
             _socket = socket;
 
-            _asyncSender = new AsyncSender(socket);
             _bufferWrapperFac = BufferRecyclingMetaFactory.Get(Capacity.Medium);
-            _bufferWrapper = _bufferWrapperFac.Get();
+            _bufferWrapper = _bufferWrapperFac.GetBuffer();
             _buffer = _bufferWrapper.Value;
 
             _stream = new LinkedStream();
@@ -52,7 +49,7 @@ namespace Fluffy.Net
             });
         }
 
-        public IOHandler Start()
+        public Receiver Start()
         {
             if (_started)
             {
@@ -139,22 +136,6 @@ namespace Fluffy.Net
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-        }
-
-        public void Send(DynamicMethodDummy opcode, ParallelismOptions parallelismOption, LinkedStream stream)
-        {
-            //Length 4 Byte
-            //DynamicMethodDummy 1 Byte
-            //ParallelismOptions 1 Byte
-
-            var lengthBytes = BitConverter.GetBytes(stream.Length + 2);
-            var metadata = new byte[4 + 1 + 1];
-            Array.Copy(lengthBytes, metadata, 4);
-            metadata[4] = (byte)parallelismOption;
-            metadata[5] = (byte)opcode;
-            stream.WriteHead(metadata, 0, metadata.Length);
-            _asyncSender.Send(stream);
-            //TODO:Send
         }
 
         // ReSharper disable once InconsistentNaming
