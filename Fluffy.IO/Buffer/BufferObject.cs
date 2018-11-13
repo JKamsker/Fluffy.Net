@@ -4,9 +4,10 @@ using System;
 
 namespace Fluffy.IO.Buffer
 {
-    public class BufferObject<T> : IResettable, ICapacityInitiatable, IBufferObject<T>
+    public class BufferObject<T>
+        : IResettable, ICapacityInitiatable, IBufferObject<T>, IDisposable
     {
-        private bool _initiated;
+        private protected bool Initiated;
 
         public T[] Value { get; private protected set; }
         public int High { get; internal set; }
@@ -16,19 +17,35 @@ namespace Fluffy.IO.Buffer
 
         public BufferObject(ICapacity cacheSize)
         {
-            Initiate(cacheSize);
+            Initialize(cacheSize);
         }
 
-        public virtual void Initiate(ICapacity capacity)
+        public BufferObject(T[] value)
         {
-            if (_initiated)
+            Initialize(value);
+        }
+
+        public virtual void Initialize(T[] value)
+        {
+            if (Initiated)
             {
-                throw new AggregateException("Cannot initiate cache twice");
+                return;
+            }
+
+            Value = value;
+            Initiated = true;
+        }
+
+        public virtual void Initialize(ICapacity capacity)
+        {
+            if (Initiated)
+            {
+                return;
             }
 
             Value = new T[capacity.Capacity];
 
-            _initiated = true;
+            Initiated = true;
         }
 
         /// <summary>
@@ -52,7 +69,7 @@ namespace Fluffy.IO.Buffer
                 count = sourceBuffer.Length;
             }
 
-            if (!_initiated)
+            if (!Initiated)
             {
                 throw new AggregateException("Cache not initialized!");
             }
@@ -83,7 +100,7 @@ namespace Fluffy.IO.Buffer
 
         public virtual int Read(T[] destBuffer, int destOffset, int count = -1)
         {
-            if (!_initiated)
+            if (!Initiated)
             {
                 throw new AggregateException("Cache not initialized!");
             }
@@ -112,6 +129,11 @@ namespace Fluffy.IO.Buffer
         {
             High = 0;
             Low = 0;
+        }
+
+        public virtual void Dispose()
+        {
+            Value = null;
         }
     }
 }

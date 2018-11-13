@@ -10,7 +10,7 @@ namespace Fluffy.IO.Recycling
         ExtraSmall,
 
         /// <summary>
-        /// 4KB
+        /// 2KB
         /// </summary>
         Small,
 
@@ -22,7 +22,7 @@ namespace Fluffy.IO.Recycling
         /// <summary>
         /// 8 KB
         /// </summary>
-        Big
+        Big,
     }
 
     public static class CapacityExtension

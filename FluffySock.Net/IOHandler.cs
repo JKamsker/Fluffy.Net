@@ -19,8 +19,8 @@ namespace Fluffy.Net
         private volatile bool _disposed;
 
         private ObjectStorage<DynamicMethodDummy, Action<LinkedStream>> _actionStorage;
-        private IObjectRecyclingFactory<LinkableBufferObject<byte>> _bufferWrapperFac;
-        private LinkableBufferObject<byte> _bufferWrapper;
+        private IObjectRecyclingFactory<LinkableBuffer> _bufferWrapperFac;
+        private LinkableBuffer _bufferWrapper;
 
         private AsyncSender _asyncSender;
 

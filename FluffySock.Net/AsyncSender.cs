@@ -15,8 +15,8 @@ namespace Fluffy.Net
         private static SharedOutputQueueWorker _queueWorker;
         internal bool IsDisposed { get; private set; }
 
-        private readonly IObjectRecyclingFactory<LinkableBufferObject<byte>> _bufferFactory;
-        private LinkableBufferObject<byte> _bufferWrapper;
+        private readonly IObjectRecyclingFactory<LinkableBuffer> _bufferFactory;
+        private LinkableBuffer _bufferWrapper;
         private byte[] _buffer;
 
         private Stream _stream;
@@ -35,7 +35,7 @@ namespace Fluffy.Net
             _streamQueue = new ConcurrentQueue<Stream>();
             _socket = socket;
 
-            _bufferFactory = BufferRecyclingMetaFactory.Get(Capacity.Medium);
+            _bufferFactory = BufferRecyclingMetaFactory<LinkableBuffer>.Get(Capacity.Medium);
             _bufferWrapper = _bufferFactory.Get();
 
             if (!_queueWorker.Running)

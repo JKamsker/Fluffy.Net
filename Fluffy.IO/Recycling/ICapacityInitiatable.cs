@@ -2,7 +2,7 @@
 {
     public interface ICapacityInitiatable
     {
-        void Initiate(ICapacity capacity);
+        void Initialize(ICapacity capacity);
     }
 
     public interface ICapacity

@@ -16,6 +16,11 @@ namespace NetSocket
         h
     }
 
+    internal class MCL
+    {
+        public int Lol { get; set; }
+    }
+
     internal class Program
     {
         private static List<int> _test;
@@ -28,8 +33,71 @@ namespace NetSocket
 
         private static void Main(string[] args)
         {
-            var re = BufferRecyclingMetaFactory.Get(Capacity.Medium);
-            var buffer = re.Get();
+            //var capacity = Capacity.Small;
+            //var size = capacity.ToInt();
+            //byte[] buffer1;
+            //for (int j = 0; j < 10; j++)
+            //{
+            //    var sw = Stopwatch.StartNew();
+            //    var list = new List<byte[]>();
+            //    for (int i = 0; i < 1000000; i++)
+            //    {
+            //        buffer1 = new byte[size];
+            //        list.Add(buffer1);
+            //        if (list.Count >= 300)
+            //        {
+            //            list.Clear();
+            //        }
+            //        //buffer1[1] = 123;
+            //        //  GC.Collect();
+            //    }
+            //    list = new List<byte[]>();
+
+            //    GC.Collect();
+
+            //    sw.Stop();
+
+            //    Console.WriteLine($"Took {sw.Elapsed.TotalMilliseconds}");
+            //}
+
+            //Console.ReadLine();
+
+            //var re = BufferRecyclingMetaFactory<LinkableBuffer>.Get(capacity);
+            //var ra = BufferRecyclingMetaFactory<FluffyBuffer>.Get(capacity);
+
+            //for (int j = 0; j < 10; j++)
+            //{
+            //    var sw = Stopwatch.StartNew();
+            //    var list = new List<LinkableBuffer>();
+            //    for (int i = 0; i < 1000000; i++)
+            //    {
+            //        var buffer = re.Get();
+            //        list.Add(buffer);
+            //        if (list.Count >= 300)
+            //        {
+            //            foreach (var buf in list)
+            //            {
+            //                buf.Recycle();
+            //            }
+            //            list.Clear();
+            //        }
+            //    }
+            //    sw.Stop();
+            //    Console.WriteLine($"Took {sw.Elapsed.TotalMilliseconds}");
+            //}
+
+            //Console.ReadLine();
+            var buf1 = new BufferRecyclingFactory<FluffyBuffer>(50);
+
+            if (buf1 is IRecycler<FluffyBuffer>)
+            {
+                Debugger.Break();
+            }
+
+            if (buf1 is IRecycler<LinkableBuffer>)
+            {
+                Debugger.Break();
+            }
 
             using (var ls = new LinkedStream())
             {

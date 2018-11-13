@@ -1,9 +1,9 @@
-﻿namespace Fluffy.IO.Buffer
+﻿using Fluffy.IO.Recycling;
+
+namespace Fluffy.IO.Buffer
 {
-    public interface IObjectRecyclingFactory<T>
+    public interface IObjectRecyclingFactory<T> : IRecycler<T>
     {
         T Get();
-
-        void Recycle(T @object);
     }
 }

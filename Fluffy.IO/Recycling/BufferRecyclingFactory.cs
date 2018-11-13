@@ -1,61 +1,45 @@
-﻿using System;
-using Fluffy.IO.Buffer;
-
-using System.Collections.Concurrent;
+﻿using Fluffy.IO.Buffer;
 
 namespace Fluffy.IO.Recycling
 {
-    public class BufferRecyclingFactory<T> : IObjectRecyclingFactory<T>, ICapacity, IRecycler<T>
-        where T : IResettable, ICapacityInitiatable, new()
+    public class BufferRecyclingFactory<T> : IObjectRecyclingFactory<T>, ICapacity//, IRecycler<FluffyBuffer>
+        where T : FluffyBuffer, IResettable, ICapacityInitiatable, new()
     {
-        private readonly int _bufferSize;
-        private IProducerConsumerCollection<T> _bufferStack;
+        private readonly ByteArrayRecycler _byteArrayRecycler;
+
+        public int Capacity { get; }
 
         public BufferRecyclingFactory(int bufferSize)
+            : this(new ByteArrayRecycler(bufferSize))
         {
-            _bufferSize = bufferSize;
         }
 
-        public int Capacity => _bufferSize;
-
-        public BufferRecyclingFactory<T> Initialize<TCollectionType>()
-            where TCollectionType : IProducerConsumerCollection<T>, new()
+        internal BufferRecyclingFactory(ByteArrayRecycler byteArrayRecycler)
         {
-            _bufferStack = new TCollectionType();
-            return this;
+            Capacity = byteArrayRecycler.Capacity;
+            _byteArrayRecycler = byteArrayRecycler;
         }
 
         public T Get()
         {
-            if (_bufferStack == null)
-            {
-                throw new AggregateException("Factory is not initialized");
-            }
-
-            if (_bufferStack.TryTake(out var result))
-            {
-                return result;
-            }
-
-            result = new T();
-            result.Initiate(this);
+            var result = new T();
+            result.Initialize(_byteArrayRecycler);
+            result.Initialize(_byteArrayRecycler.Get());
             return result;
         }
 
         public void Recycle(T @object)
         {
-            if (_bufferStack == null)
-            {
-                throw new AggregateException("Factory is not initialized");
-            }
-
-            @object.Reset();
-            _bufferStack.TryAdd(@object);
+            Recycle(@object);
+            //@object.Reset();
+            //_bufferStack.TryAdd(@object);
         }
-    }
 
-    public interface IRecycler<T>
-    {
-        void Recycle(T @object);
+        public void Recycle(FluffyBuffer @object)
+        {
+            _byteArrayRecycler.Recycle(@object.Value);
+            @object.Dispose();
+            // Recycle((T)@object);
+        }
     }
 }

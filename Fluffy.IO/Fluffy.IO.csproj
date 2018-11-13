@@ -44,11 +44,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Buffer\RecyclableBuffer.cs" />
     <Compile Include="Buffer\BufferObject.cs" />
+    <Compile Include="Buffer\FluffyBuffer.cs" />
     <Compile Include="Buffer\IBufferObject.cs" />
     <Compile Include="Recycling\BufferRecyclingFactory.cs" />
+    <Compile Include="Recycling\ByteArrayRecycler.cs" />
     <Compile Include="Recycling\Capacity.cs" />
     <Compile Include="Recycling\ICapacityInitiatable.cs" />
+    <Compile Include="Recycling\IRecycler.cs" />
     <Compile Include="Recycling\IResettable.cs" />
     <Compile Include="Buffer\IObjectRecyclingFactory.cs" />
     <Compile Include="Buffer\LinkableBufferObject.cs" />

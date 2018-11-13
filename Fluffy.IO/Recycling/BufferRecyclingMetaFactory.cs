@@ -2,30 +2,53 @@
 
 using System;
 using System.Linq;
-using Fluffy.Collections;
 
 namespace Fluffy.IO.Recycling
 {
-    /// <summary>
-    /// Provides an easy way to access a pool of shared buffer objects
-    /// </summary>
     public static class BufferRecyclingMetaFactory
     {
-        private static BufferRecyclingFactory<LinkableBufferObject<byte>>[] _factories;
+        internal static int MaxCapacity;
+        internal static ByteArrayRecycler[] Recyclers;
 
         static BufferRecyclingMetaFactory()
         {
-            var max = (int)Enum.GetValues(typeof(Capacity)).Cast<Capacity>().Max();
-            _factories = new BufferRecyclingFactory<LinkableBufferObject<byte>>[max];
+            MaxCapacity = (int)Enum.GetValues(typeof(Capacity)).Cast<Capacity>().Max() + 1;
+            Recyclers = new ByteArrayRecycler[MaxCapacity];
         }
 
-        public static IObjectRecyclingFactory<LinkableBufferObject<byte>> Get(Capacity capacity)
+        public static IObjectRecyclingFactory<LinkableBuffer> Get(Capacity capacity)
+        {
+            return BufferRecyclingMetaFactory<LinkableBuffer>.Get(capacity);
+        }
+    }
+
+    /// <summary>
+    /// Provides an easy way to access a pool of shared buffer objects
+    /// </summary>
+    public static class BufferRecyclingMetaFactory<T>
+        where T : FluffyBuffer, IResettable, ICapacityInitiatable, new()
+    {
+        private static BufferRecyclingFactory<T>[] _factories;
+        private static ByteArrayRecycler[] _recyclers;
+
+        static BufferRecyclingMetaFactory()
+        {
+            _factories = new BufferRecyclingFactory<T>[BufferRecyclingMetaFactory.MaxCapacity];
+            _recyclers = BufferRecyclingMetaFactory.Recyclers;
+        }
+
+        public static IObjectRecyclingFactory<T> Get(Capacity capacity)
         {
             int iCapacity = (int)capacity;
 
+            if (_recyclers[iCapacity] == null)
+            {
+                _recyclers[iCapacity] = new ByteArrayRecycler(capacity.ToInt());
+            }
+
             if (_factories[iCapacity] == null)
             {
-                _factories[iCapacity] = new BufferRecyclingFactory<LinkableBufferObject<byte>>(capacity.ToInt()).Initialize<FluffyConcurrentStack<LinkableBufferObject<byte>>>();
+                _factories[iCapacity] = new BufferRecyclingFactory<T>(_recyclers[iCapacity]);
             }
 
             return _factories[iCapacity];
