@@ -10,9 +10,9 @@ namespace Fluffy
 
         public ObjectStorage()
         {
-            var max = Enum.GetValues(typeof(TInput)).Cast<int>().Max();
-
-            _actions = new TOutput[max + 1];
+            var max = ((object)Enum.GetValues(typeof(TInput)).Cast<TInput>().Max());
+            var imax = Convert.ToInt32(max);
+            _actions = new TOutput[imax + 1];
         }
 
         public TOutput GetDelegate(TInput opcode)

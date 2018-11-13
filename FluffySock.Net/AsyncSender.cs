@@ -4,6 +4,7 @@ using Fluffy.IO.Recycling;
 using System;
 using System.Collections.Concurrent;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Sockets;
 
@@ -13,8 +14,8 @@ namespace Fluffy.Net
     {
         private readonly Socket _socket;
 
-        private readonly IObjectRecyclingFactory<LinkableBuffer> _bufferFactory;
-        private LinkableBuffer _bufferWrapper;
+        private readonly IObjectRecyclingFactory<RecyclableBuffer> _bufferFactory;
+        private RecyclableBuffer _bufferWrapper;
         private byte[] _buffer;
 
         private Stream _stream;
@@ -31,8 +32,9 @@ namespace Fluffy.Net
             _socket = socket;
 
             SendTaskRelay = new SendTaskRelay(() => DoWork());
-            _bufferFactory = BufferRecyclingMetaFactory<LinkableBuffer>.MakeFactory(Capacity.Medium);
+            _bufferFactory = BufferRecyclingMetaFactory<RecyclableBuffer>.MakeFactory(Capacity.Medium);
             _bufferWrapper = _bufferFactory.GetBuffer();
+            _buffer = _bufferWrapper.Value;
 
             if (!worker.Running)
             {
@@ -53,7 +55,12 @@ namespace Fluffy.Net
                 return false;
             }
 
-            if (_stream == null || _stream.Length == 0)
+            if (_stream?.Length < 0)
+            {
+                Debugger.Break();
+            }
+
+            if (_stream == null || _stream.Length <= 0)
             {
                 _stream?.Dispose();
                 if (_streamQueue.TryDequeue(out _stream))
@@ -106,7 +113,7 @@ namespace Fluffy.Net
                 //Ignore
             }
 
-            _bufferFactory.Recycle(_bufferWrapper);
+            _bufferWrapper.Recycle();
 
             while (_streamQueue.TryDequeue(out _stream))
             {

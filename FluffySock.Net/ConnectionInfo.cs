@@ -20,7 +20,7 @@ namespace Fluffy.Net
             Socket = socket;
             FluffySocket = fluffySocket;
 
-            Receiver = new Receiver(socket).Start();
+            Receiver = new Receiver(socket);
             Sender = new Sender(this);
         }
 

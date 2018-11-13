@@ -53,8 +53,9 @@
     <Compile Include="FluffyClient.cs" />
     <Compile Include="FluffyServer.cs" />
     <Compile Include="FluffySocket.cs" />
-    <Compile Include="IOHandler.cs" />
+    <Compile Include="ParallelismOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Receiver.cs" />
     <Compile Include="SharedOutputQueueWorker.cs" />
   </ItemGroup>
   <ItemGroup>

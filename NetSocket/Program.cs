@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
 using Fluffy.IO.Buffer;
 using Fluffy.IO.Recycling;
+using Fluffy.Net;
 
 namespace NetSocket
 {
@@ -33,6 +35,17 @@ namespace NetSocket
 
         private static void Main(string[] args)
         {
+            var server = new FluffyServer(8090);
+            var client = new FluffyClient(IPAddress.Loopback, 8090);
+            server.Start();
+            client.Connect();
+            Console.WriteLine("Connected");
+            client.Test();
+            client.Test();
+            client.Test();
+            Console.WriteLine("Test sent");
+            Console.ReadLine();
+
             var capacity = Capacity.Small;
             //var size = capacity.ToInt();
             //byte[] buffer1;

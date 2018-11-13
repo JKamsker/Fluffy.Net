@@ -50,6 +50,7 @@ namespace Fluffy.Net
                 {
                     _connections.Remove(connectionInfo);
                 };
+                connectionInfo.Receiver.Start();
                 _connections.Add(connectionInfo);
             }
             catch (SocketException ex)

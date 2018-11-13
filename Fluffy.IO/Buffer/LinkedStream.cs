@@ -55,6 +55,8 @@ namespace Fluffy.IO.Buffer
                 targetBuffer.Next = _head;
                 _head = targetBuffer;
             }
+
+            _length += written;
         }
 
         public override void Write(byte[] buffer, int offset, int count)

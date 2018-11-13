@@ -1,9 +1,8 @@
-﻿using Fluffy.IO.Buffer;
+﻿using System;
+using System.Net.Sockets;
+using Fluffy.IO.Buffer;
 using Fluffy.IO.Extensions;
 using Fluffy.IO.Recycling;
-
-using System;
-using System.Net.Sockets;
 
 namespace Fluffy.Net
 {
@@ -63,14 +62,7 @@ namespace Fluffy.Net
 
         private void ReceiveCallback(IAsyncResult ar)
         {
-            var connectionInfo = ar.AsyncState as ConnectionInfo;
-            if (connectionInfo == null)
-            {
-                Console.WriteLine($"The given type did not match the expected one " +
-                                  $"(Received: {ar}; Expected: {nameof(ConnectionInfo)})");
-                return;
-            }
-            int bytesRead = connectionInfo.Socket.EndReceive(ar);
+            int bytesRead = _socket.EndReceive(ar);
             if (bytesRead == 0)
             {
                 Console.WriteLine($"Received 0 bytes, closing Socket!");
@@ -82,6 +74,8 @@ namespace Fluffy.Net
             {
                 HandleStream();
             }
+
+            _socket.BeginReceive(_buffer, 0, _nextSegmentLength, SocketFlags.None, ReceiveCallback, null);
         }
 
         private void HandleStream()
@@ -158,11 +152,5 @@ namespace Fluffy.Net
             _stream?.Dispose();
             _bufferWrapperFac.Recycle(_bufferWrapper);
         }
-    }
-
-    internal enum ParallelismOptions : byte
-    {
-        Parallel,
-        Sync
     }
 }
