@@ -4,7 +4,7 @@ using Fluffy.IO.Recycling;
 using Fluffy.Net.Async;
 using Fluffy.Net.Options;
 
-namespace Fluffy.Net
+namespace Fluffy.Net.Packets
 {
     internal class Sender : IDisposable
     {

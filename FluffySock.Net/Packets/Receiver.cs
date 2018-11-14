@@ -1,13 +1,14 @@
-﻿using System;
-using System.Net.Sockets;
-using System.Threading.Tasks;
-using Fluffy.IO.Buffer;
+﻿using Fluffy.IO.Buffer;
 using Fluffy.IO.Extensions;
 using Fluffy.IO.Recycling;
 using Fluffy.Net.Collections;
 using Fluffy.Net.Options;
 
-namespace Fluffy.Net
+using System;
+using System.Net.Sockets;
+using System.Threading.Tasks;
+
+namespace Fluffy.Net.Packets
 {
     internal class Receiver : IDisposable
     {
@@ -52,7 +53,7 @@ namespace Fluffy.Net
                 Console.WriteLine("Hey3");
             });
 
-            OnReceive += OnReceivePacket;
+            // OnReceive += OnReceivePacket;
         }
 
         private void OnReceivePacket(object sender, OnPacketReceiveEventArgs e)

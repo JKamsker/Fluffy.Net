@@ -37,7 +37,7 @@ namespace Fluffy.Net
         {
             var str = new LinkedStream();
             str.Write(new byte[] { 1, 2, 3, 4 }, 0, 3);
-            _connection.Sender.Send(DynamicMethodDummy.Test1, str, ParallelismOptions.Parallel);
+            _connection.Sender.Send(DynamicMethodDummy.Test2, str, ParallelismOptions.Parallel);
         }
     }
 }
