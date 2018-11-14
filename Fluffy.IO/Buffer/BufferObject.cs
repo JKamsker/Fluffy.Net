@@ -11,7 +11,7 @@ namespace Fluffy.IO.Buffer
 
         public T[] Value { get; private protected set; }
         public int High { get; internal set; }
-        public int Low { get; private set; }
+        public int Low { get; internal set; }
         public int Length => High - Low;
         public int RemainingCapacity => Value.Length - High;
 
@@ -58,10 +58,14 @@ namespace Fluffy.IO.Buffer
         /// <summary>
         /// Writes bytes to an <see cref="Value"/> and returns the amount of written bytes
         /// </summary>
-        /// <param name="sourceBuffer"></param>
-        /// <param name="sourceOffset"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
+        /// <param name="sourceBuffer">
+        /// </param>
+        /// <param name="sourceOffset">
+        /// </param>
+        /// <param name="count">
+        /// </param>
+        /// <returns>
+        /// </returns>
         public virtual int Write(T[] sourceBuffer, int sourceOffset, int count = -1)
         {
             if (count == -1)

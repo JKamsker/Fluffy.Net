@@ -1,8 +1,9 @@
-﻿using System;
-using Fluffy.IO.Buffer;
+﻿using Fluffy.IO.Buffer;
 using Fluffy.IO.Recycling;
 using Fluffy.Net.Async;
 using Fluffy.Net.Options;
+
+using System;
 
 namespace Fluffy.Net.Packets
 {
@@ -26,13 +27,15 @@ namespace Fluffy.Net.Packets
             //ParallelismOptions 1 Byte
 
             var lengthBytes = BitConverter.GetBytes(stream.Length + 2);
+
             var metadata = new byte[4 + 1 + 1];
             Array.Copy(lengthBytes, metadata, 4);
             metadata[4] = (byte)parallelismOption;
             metadata[5] = (byte)opcode;
-            stream.WriteHead(metadata, 0, metadata.Length);
+
+            var fake = new FakeLinkableBuffer(metadata);
+            stream.EnqueueHead(fake);
             _asyncSender.Send(stream);
-            //TODO:Send
         }
 
         public void Dispose()

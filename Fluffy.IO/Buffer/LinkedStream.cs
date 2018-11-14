@@ -1,6 +1,6 @@
-﻿using System;
-using Fluffy.IO.Recycling;
+﻿using Fluffy.IO.Recycling;
 
+using System;
 using System.IO;
 
 namespace Fluffy.IO.Buffer
@@ -41,6 +41,27 @@ namespace Fluffy.IO.Buffer
             _body = buffer;
         }
 
+        /// <summary>
+        /// Pushes the buffer onto the top of the stream
+        /// </summary>
+        /// <param name="buffer">
+        /// </param>
+        public void EnqueueHead(LinkableBuffer buffer)
+        {
+            buffer.Next = _head;
+            _head = buffer;
+            _length += buffer.Length;
+        }
+
+        /// <summary>
+        /// Writes onto the top of the stream.
+        /// </summary>
+        /// <param name="buffer">
+        /// </param>
+        /// <param name="offset">
+        /// </param>
+        /// <param name="count">
+        /// </param>
         public void WriteHead(byte[] buffer, int offset, int count)
         {
             if (count == 0)
@@ -158,8 +179,6 @@ namespace Fluffy.IO.Buffer
             base.Close();
         }
 
-        #region NotImplemented
-
         public override void Flush()
         {
             // throw new System.NotImplementedException();
@@ -188,7 +207,5 @@ namespace Fluffy.IO.Buffer
             {
             }
         }
-
-        #endregion NotImplemented
     }
 }
