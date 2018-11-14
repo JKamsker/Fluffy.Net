@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using Fluffy.IO.Buffer;
 using Fluffy.IO.Extensions;
 using Fluffy.IO.Recycling;
+using Fluffy.Net.Collections;
+using Fluffy.Net.Options;
 
 namespace Fluffy.Net
 {
@@ -17,9 +20,11 @@ namespace Fluffy.Net
         private volatile bool _started;
         private volatile bool _disposed;
 
-        private ObjectStorage<DynamicMethodDummy, Action<LinkedStream>> _actionStorage;
+        private DelegateStorage<DynamicMethodDummy, Action<LinkedStream>> _actionStorage;
         private IObjectRecyclingFactory<LinkableBuffer> _bufferWrapperFac;
         private LinkableBuffer _bufferWrapper;
+
+        public EventHandler<OnPacketReceiveEventArgs> OnReceive;
 
         internal Receiver(Socket socket)
         {
@@ -30,7 +35,7 @@ namespace Fluffy.Net
             _buffer = _bufferWrapper.Value;
 
             _stream = new LinkedStream();
-            _actionStorage = new ObjectStorage<DynamicMethodDummy, Action<LinkedStream>>();
+            _actionStorage = new DelegateStorage<DynamicMethodDummy, Action<LinkedStream>>();
 
             _actionStorage.SetAction(DynamicMethodDummy.Test1, stream =>
             {
@@ -46,6 +51,26 @@ namespace Fluffy.Net
             {
                 Console.WriteLine("Hey3");
             });
+
+            OnReceive += OnReceivePacket;
+        }
+
+        private void OnReceivePacket(object sender, OnPacketReceiveEventArgs e)
+        {
+            var handler = _actionStorage.GetDelegate(e.OpCode);
+            switch (e.Options)
+            {
+                case ParallelismOptions.Parallel:
+                    Task.Run(() => handler(e.Body));
+                    break;
+
+                case ParallelismOptions.Sync:
+                    handler(e.Body);
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         public Receiver Start()
@@ -103,24 +128,10 @@ namespace Fluffy.Net
                     if (_stream.Length >= _nextSegmentLength)
                     {
                         var options = (ParallelismOptions)_stream.ReadByte();
-                        var opCode = (DynamicMethodDummy)_stream.ReadByte();
-                        _nextSegmentLength -= -2;
+                        var opCode = (byte)_stream.ReadByte();
+                        var body = _stream.ReadToLinkedStream(_nextSegmentLength - 2);
 
-                        var body = _stream.ReadToLinkedStream(_nextSegmentLength);
-
-                        var handler = _actionStorage.GetDelegate(opCode);
-
-                        switch (options)
-                        {
-                            case ParallelismOptions.Parallel:
-                            //Todo: Parallel Handling
-                            case ParallelismOptions.Sync:
-                                handler(body);
-                                break;
-
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
+                        OnReceive?.Invoke(this, new OnPacketReceiveEventArgs(opCode, options, body));
                     }
 
                     _nextSegmentLength = 4;
@@ -130,13 +141,6 @@ namespace Fluffy.Net
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-        }
-
-        // ReSharper disable once InconsistentNaming
-        private enum IOState
-        {
-            HeaderLen,
-            BodyBytes,
         }
 
         public void Dispose()
@@ -153,4 +157,6 @@ namespace Fluffy.Net
             _bufferWrapperFac.Recycle(_bufferWrapper);
         }
     }
+
+    // ReSharper disable once InconsistentNaming
 }

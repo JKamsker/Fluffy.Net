@@ -46,6 +46,7 @@
     <Compile Include="Collections\FluffyConcurrentStack.cs" />
     <Compile Include="Collections\FluffyStack.cs" />
     <Compile Include="DelegateStorage.cs" />
+    <Compile Include="IObjectStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

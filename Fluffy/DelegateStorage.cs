@@ -3,12 +3,12 @@ using System.Linq;
 
 namespace Fluffy
 {
-    public class ObjectStorage<TInput, TOutput>
+    public class DelegateStorage<TInput, TOutput> : IObjectStorage<TOutput>
         where TInput : Enum
     {
         private TOutput[] _actions;
 
-        public ObjectStorage()
+        public DelegateStorage()
         {
             var max = ((object)Enum.GetValues(typeof(TInput)).Cast<TInput>().Max());
             var imax = Convert.ToInt32(max);
@@ -17,17 +17,22 @@ namespace Fluffy
 
         public TOutput GetDelegate(TInput opcode)
         {
-            var code = opcode.GetHashCode();
-            if (code >= _actions.Length)
+            var code = Convert.ToInt32(opcode);
+            return GetDelegate(code);
+        }
+
+        public TOutput GetDelegate(int opCode)
+        {
+            if (opCode >= _actions.Length)
             {
                 throw new AggregateException("Collection is to small");
             }
-            return _actions[code];
+            return _actions[opCode];
         }
 
-        public void SetAction(TInput opcode, TOutput @object)
+        public void SetAction(TInput opCode, TOutput @object)
         {
-            var code = opcode.GetHashCode();
+            var code = Convert.ToInt32(opCode);
             _actions[code] = @object;
         }
     }

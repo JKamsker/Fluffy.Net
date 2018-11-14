@@ -1,14 +1,13 @@
-﻿using Fluffy.IO.Buffer;
-using Fluffy.IO.Recycling;
-
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Sockets;
+using Fluffy.IO.Buffer;
+using Fluffy.IO.Recycling;
 
-namespace Fluffy.Net
+namespace Fluffy.Net.Async
 {
     internal class AsyncSender : IDisposable
     {

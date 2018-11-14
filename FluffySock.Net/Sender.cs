@@ -1,6 +1,8 @@
 ﻿using System;
 using Fluffy.IO.Buffer;
 using Fluffy.IO.Recycling;
+using Fluffy.Net.Async;
+using Fluffy.Net.Options;
 
 namespace Fluffy.Net
 {
@@ -17,7 +19,7 @@ namespace Fluffy.Net
             _asyncSender = new AsyncSender(_connection.Socket, _connection.FluffySocket.QueueWorker);
         }
 
-        public void Send(DynamicMethodDummy opcode, ParallelismOptions parallelismOption, LinkedStream stream)
+        public void Send(DynamicMethodDummy opcode, LinkedStream stream, ParallelismOptions parallelismOption = ParallelismOptions.Parallel)
         {
             //Length 4 Byte
             //DynamicMethodDummy 1 Byte

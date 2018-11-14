@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Threading;
 
-namespace Fluffy.Net
+namespace Fluffy.Net.Async
 {
     internal class SharedOutputQueueWorker
     {

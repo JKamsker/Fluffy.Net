@@ -1,4 +1,4 @@
-﻿namespace Fluffy.Net
+﻿namespace Fluffy.Net.Options
 {
     internal enum ParallelismOptions : byte
     {
