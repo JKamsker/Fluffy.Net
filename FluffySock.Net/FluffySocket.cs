@@ -4,7 +4,7 @@ namespace Fluffy.Net
 {
     public abstract class FluffySocket
     {
-        private protected Socket Socket;
+        protected internal Socket Socket;
         internal SharedOutputQueueWorker QueueWorker { get; private set; }
 
         protected FluffySocket()

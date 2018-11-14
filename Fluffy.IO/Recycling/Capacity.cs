@@ -5,9 +5,13 @@ namespace Fluffy.IO.Recycling
     public enum Capacity
     {
         /// <summary>
-        /// 1 KB
+        /// 512 B
         /// </summary>
         ExtraSmall,
+        /// <summary>
+        /// 1 KB
+        /// </summary>
+        Smaller,
 
         /// <summary>
         /// 2KB
@@ -23,6 +27,11 @@ namespace Fluffy.IO.Recycling
         /// 8 KB
         /// </summary>
         Big,
+
+        /// <summary>
+        /// 16 KB
+        /// </summary>
+        ExtraBig
     }
 
     public static class CapacityExtension
@@ -34,6 +43,10 @@ namespace Fluffy.IO.Recycling
             switch (capacity)
             {
                 case Capacity.ExtraSmall:
+                    size = 512;
+                    break;
+
+                case Capacity.Smaller:
                     size = 1 * 1024;
                     break;
 
@@ -43,11 +56,14 @@ namespace Fluffy.IO.Recycling
 
                 case Capacity.Medium:
                     size = 4 * 1024;
-
                     break;
 
                 case Capacity.Big:
                     size = 8 * 1024;
+                    break;
+
+                case Capacity.ExtraBig:
+                    size = 16 * 1024;
                     break;
 
                 default:
