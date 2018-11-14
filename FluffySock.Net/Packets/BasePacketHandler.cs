@@ -1,9 +1,16 @@
 ﻿using Fluffy.IO.Buffer;
 
 using System;
+using System.IO;
 
 namespace Fluffy.Net.Packets
 {
+    public enum Packet : byte
+    {
+        DummyPacket = 1,
+        XaXa
+    }
+
     public abstract class BasePacket
     {
         public abstract byte OpCode { get; }
@@ -15,11 +22,15 @@ namespace Fluffy.Net.Packets
 
     public class DummyPacket : BasePacket
     {
-        public override byte OpCode => 1;
+        public override byte OpCode => (int)Packet.DummyPacket;
 
         public override void Handle(LinkedStream stream)
         {
-            Console.WriteLine($"Heya :P");
+            using (var sr = new StreamReader(stream))
+            {
+                Console.WriteLine(sr.ReadToEnd());
+            }
+            //Console.WriteLine($"Heya :P");
         }
     }
 }

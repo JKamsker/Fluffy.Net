@@ -53,11 +53,12 @@ namespace Fluffy.Net.Packets
             switch (packet.Options)
             {
                 case ParallelismOptions.Parallel:
-                    Task.Run(() => handler.Handle(packet.Body));
+                    Task.Run(() => handler.Handle(packet.Body)).ContinueWith(x => packet.Body?.Dispose());
                     break;
 
                 case ParallelismOptions.Sync:
                     handler.Handle(packet.Body);
+                    packet.Body?.Dispose();
                     break;
 
                 default:

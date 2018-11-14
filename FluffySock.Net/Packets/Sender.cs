@@ -1,5 +1,4 @@
 ﻿using Fluffy.IO.Buffer;
-using Fluffy.IO.Recycling;
 using Fluffy.Net.Async;
 using Fluffy.Net.Options;
 
@@ -11,16 +10,23 @@ namespace Fluffy.Net.Packets
     {
         private readonly ConnectionInfo _connection;
         private AsyncSender _asyncSender;
-        private FluffyBuffer _buffer;
 
         public Sender(ConnectionInfo connection)
         {
             _connection = connection;
-            _buffer = BufferRecyclingMetaFactory<FluffyBuffer>.MakeFactory(Capacity.Medium).GetBuffer();
             _asyncSender = new AsyncSender(_connection.Socket, _connection.FluffySocket.QueueWorker);
         }
 
-        public void Send(DynamicMethodDummy opcode, LinkedStream stream, ParallelismOptions parallelismOption = ParallelismOptions.Parallel)
+        public void Send<T>(T opCode, LinkedStream stream,
+            ParallelismOptions parallelismOption = ParallelismOptions.Parallel)
+        where T : Enum
+        {
+            var bOpCode = Convert.ToByte(opCode);
+            Send(bOpCode, stream, parallelismOption);
+        }
+
+        public void Send(byte opCode, LinkedStream stream,
+            ParallelismOptions parallelismOption = ParallelismOptions.Parallel)
         {
             //Length 4 Byte
             //DynamicMethodDummy 1 Byte
@@ -28,12 +34,12 @@ namespace Fluffy.Net.Packets
 
             var lengthBytes = BitConverter.GetBytes(stream.Length + 2);
 
-            var metadata = new byte[4 + 1 + 1];
-            Array.Copy(lengthBytes, metadata, 4);
-            metadata[4] = (byte)parallelismOption;
-            metadata[5] = (byte)opcode;
+            var metaData = new byte[4 + 1 + 1];
+            Array.Copy(lengthBytes, metaData, 4);
+            metaData[4] = (byte)parallelismOption;
+            metaData[5] = (byte)opCode;
 
-            var fake = new FakeLinkableBuffer(metadata);
+            var fake = new FakeLinkableBuffer(metaData);
             stream.EnqueueHead(fake);
             _asyncSender.Send(stream);
         }

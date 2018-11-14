@@ -1,7 +1,9 @@
 ﻿using System.Net;
 using System.Net.Sockets;
+using System.Text;
+using System.Threading.Tasks;
 using Fluffy.IO.Buffer;
-using Fluffy.Net.Options;
+using Fluffy.Net.Packets;
 
 namespace Fluffy.Net
 {
@@ -33,11 +35,17 @@ namespace Fluffy.Net
             _connection.Receiver.Start();
         }
 
+        public Task ConnectAsync()
+        {
+            return Socket.ConnectAsync(_endPoint);
+        }
+
         public void Test()
         {
             var str = new LinkedStream();
-            str.Write(new byte[] { 1, 2, 3, 4 }, 0, 3);
-            _connection.Sender.Send(DynamicMethodDummy.Test2, str, ParallelismOptions.Parallel);
+            var writeBuf = Encoding.UTF8.GetBytes("Hello World");
+            str.Write(writeBuf, 0, writeBuf.Length);
+            _connection.Sender.Send(Packet.DummyPacket, str);
         }
     }
 }

@@ -1,7 +1,5 @@
 ﻿using Fluffy.IO.Recycling;
 
-using System;
-
 namespace Fluffy.IO.Buffer
 {
     public class FakeRecycler : IRecycler<byte[]>
@@ -11,7 +9,7 @@ namespace Fluffy.IO.Buffer
 
         public void Recycle(byte[] @object)
         {
-            Console.WriteLine("Lol. Recycled fake buffer");
+            //Console.WriteLine("Lol. Recycled fake buffer");
         }
     }
 }
