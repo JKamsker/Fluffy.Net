@@ -1,8 +1,8 @@
-﻿using Fluffy.IO.Buffer;
+﻿using Fluffy.Extensions;
+using Fluffy.IO.Buffer;
 
 using System;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Fluffy.Net.Packets
 {
@@ -40,8 +40,8 @@ namespace Fluffy.Net.Packets
 
         public override void Handle(LinkedStream stream)
         {
-            var bf = new BinaryFormatter();
-            var result = bf.Deserialize(stream);
+            var result = stream.Deserialize();
+            Connection.TypedPacketHandler.Handle(result);
         }
     }
 }

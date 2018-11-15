@@ -41,7 +41,7 @@ namespace NetSocket
             server.Start();
             client.Connect();
             Console.WriteLine("Connected");
-            client.Test();
+            client.TypedTest();
             client.Test();
             client.Test();
             Console.WriteLine("Test sent");

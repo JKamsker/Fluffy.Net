@@ -1,6 +1,8 @@
-﻿namespace Fluffy.Net.Packets
+﻿using Fluffy.Fluent;
+
+namespace Fluffy.Net.Packets
 {
-    internal class TypedPacketHandler
+    public class TypedPacketHandler : TypeSwitch
     {
         private readonly ConnectionInfo _connectionInfo;
 

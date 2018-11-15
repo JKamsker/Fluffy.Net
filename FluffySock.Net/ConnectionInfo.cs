@@ -15,6 +15,7 @@ namespace Fluffy.Net
         internal Receiver Receiver { get; private set; }
         internal Sender Sender { get; private set; }
         public PacketHandler PacketHandler { get; private set; }
+        public TypedPacketHandler TypedPacketHandler { get; private set; }
 
         public ConnectionInfo(FluffySocket fluffySocket)
             : this(fluffySocket.Socket, fluffySocket)
@@ -29,10 +30,14 @@ namespace Fluffy.Net
             Receiver = new Receiver(socket);
             Sender = new Sender(this);
             PacketHandler = new PacketHandler(this);
+            TypedPacketHandler = new TypedPacketHandler(this);
 
             Receiver.OnReceive += PacketHandler.Handle;
 
             PacketHandler.RegisterPacket<DummyPacket>();
+            PacketHandler.RegisterPacket<FormattedPacket>();
+
+            TypedPacketHandler.On<MyAwesomeClass>().Do(x => Console.Write($"{x.AwesomeString}\nYou are awesome :3"));
         }
 
         public void Dispose()
@@ -42,5 +47,11 @@ namespace Fluffy.Net
             Receiver.OnReceive -= PacketHandler.Handle;
             OnDisposing?.Invoke(this, this);
         }
+    }
+
+    [Serializable]
+    public class MyAwesomeClass
+    {
+        public string AwesomeString { get; set; }
     }
 }
