@@ -2,13 +2,14 @@
 
 using System;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Fluffy.Net.Packets
 {
     public enum Packet : byte
     {
-        DummyPacket = 1,
-        XaXa
+        TestPacket = 1,
+        FormattedPacket
     }
 
     public abstract class BasePacket
@@ -22,7 +23,7 @@ namespace Fluffy.Net.Packets
 
     public class DummyPacket : BasePacket
     {
-        public override byte OpCode => (int)Packet.DummyPacket;
+        public override byte OpCode => (int)Packet.TestPacket;
 
         public override void Handle(LinkedStream stream)
         {
@@ -30,7 +31,17 @@ namespace Fluffy.Net.Packets
             {
                 Console.WriteLine(sr.ReadToEnd());
             }
-            //Console.WriteLine($"Heya :P");
+        }
+    }
+
+    public class FormattedPacket : BasePacket
+    {
+        public override byte OpCode => (int)Packet.FormattedPacket;
+
+        public override void Handle(LinkedStream stream)
+        {
+            var bf = new BinaryFormatter();
+            var result = bf.Deserialize(stream);
         }
     }
 }

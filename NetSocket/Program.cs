@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Fluffy.IO.Buffer;
+using Fluffy.IO.Recycling;
+using Fluffy.Net;
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
-using Fluffy.IO.Buffer;
-using Fluffy.IO.Recycling;
-using Fluffy.Net;
 
 namespace NetSocket
 {
@@ -46,35 +47,42 @@ namespace NetSocket
             Console.WriteLine("Test sent");
             Console.ReadLine();
 
+            Debugger.Break();
+        }
+
+        private static void TestLinkedStream()
+        {
             var capacity = Capacity.Small;
-            //var size = capacity.ToInt();
-            //byte[] buffer1;
-            //for (int j = 0; j < 10; j++)
-            //{
-            //    var sw = Stopwatch.StartNew();
-            //    var list = new List<byte[]>();
-            //    for (int i = 0; i < 1000000; i++)
-            //    {
-            //        buffer1 = new byte[size];
-            //        list.Add(buffer1);
-            //        if (list.Count >= 300)
-            //        {
-            //            list.Clear();
-            //        }
-            //        //buffer1[1] = 123;
-            //        //  GC.Collect();
-            //    }
-            //    list = new List<byte[]>();
+            Console.WriteLine("Testing without recycling");
+            var size = capacity.ToInt();
+            byte[] buffer1;
+            for (int j = 0; j < 10; j++)
+            {
+                var sw = Stopwatch.StartNew();
+                var list = new List<byte[]>();
+                for (int i = 0; i < 1000000; i++)
+                {
+                    buffer1 = new byte[size];
+                    list.Add(buffer1);
+                    if (list.Count >= 300)
+                    {
+                        list.Clear();
+                    }
+                    //buffer1[1] = 123;
+                    //  GC.Collect();
+                }
+                list = new List<byte[]>();
 
-            //    GC.Collect();
+                GC.Collect();
 
-            //    sw.Stop();
+                sw.Stop();
 
-            //    Console.WriteLine($"Took {sw.Elapsed.TotalMilliseconds}");
-            //}
+                Console.WriteLine($"Took {sw.Elapsed.TotalMilliseconds}");
+            }
 
+            Console.WriteLine();
+            Console.WriteLine("Testing with recycling");
             //Console.ReadLine();
-
             var re = BufferRecyclingMetaFactory<LinkableBuffer>.MakeFactory(capacity);
             var ra = BufferRecyclingMetaFactory<FluffyBuffer>.MakeFactory(capacity);
 
@@ -139,7 +147,6 @@ namespace NetSocket
 
                 // var tread = ls.Read(dbuf, 0, 20 * 1024);
             }
-            Debugger.Break();
         }
 
         private static void ThreadWork()

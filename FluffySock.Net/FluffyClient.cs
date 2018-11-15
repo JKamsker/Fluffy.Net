@@ -45,7 +45,7 @@ namespace Fluffy.Net
             var str = new LinkedStream();
             var writeBuf = Encoding.UTF8.GetBytes("Hello World");
             str.Write(writeBuf, 0, writeBuf.Length);
-            _connection.Sender.Send(Packet.DummyPacket, str);
+            _connection.Sender.Send(Packet.TestPacket, str);
         }
     }
 }
