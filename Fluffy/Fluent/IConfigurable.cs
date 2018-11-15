@@ -2,10 +2,12 @@
 
 namespace Fluffy.Fluent
 {
-    public interface IConfigurable
+    public interface IDecisionConfigurator
     {
-        void Default(Action action);
-        ICanDo<T> On<T>();
-        ICanDo<T> On<T>(Predicate<T> condition);
+        IDecisionConfigurator Default(Action action);
+
+        IDecisionNode<T> On<T>();
+
+        IDecisionNode<T> On<T>(Predicate<T> condition);
     }
 }

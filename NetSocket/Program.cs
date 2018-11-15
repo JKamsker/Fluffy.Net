@@ -1,11 +1,10 @@
 ﻿using Fluffy.IO.Buffer;
 using Fluffy.IO.Recycling;
-using Fluffy.Net;
 
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Net;
+using System.Threading.Tasks;
 
 namespace NetSocket
 {
@@ -36,18 +35,80 @@ namespace NetSocket
 
         private static void Main(string[] args)
         {
-            var server = new FluffyServer(8090);
-            var client = new FluffyClient(IPAddress.Loopback, 8090);
-            server.Start();
-            client.Connect();
-            Console.WriteLine("Connected");
-            client.TypedTest();
-            client.Test();
-            client.Test();
-            Console.WriteLine("Test sent");
-            Console.ReadLine();
+            var res1 = TaskWithoutResult();
+            var type = res1.GetType().GetProperty("Result");
+            if (type != null)
+            {
+                var untypedResult = type.GetGetMethod().Invoke(res1, null);
 
-            Debugger.Break();
+                Debugger.Break();
+            }
+
+            var result = TaskWithResult().Result;
+
+            Console.WriteLine(result);
+            Console.ReadLine();
+            //TestDifFunc();
+            //return;
+            //var server = new FluffyServer(8090);
+            //var client = new FluffyClient(IPAddress.Loopback, 8090);
+            //server.Start();
+            //client.Connect();
+            //Console.WriteLine("Connected");
+            //client.TypedTest();
+            //client.Test();
+            //client.Test();
+            //Console.WriteLine("Test sent");
+            //Console.ReadLine();
+
+            //Debugger.Break();
+        }
+
+        private static async Task TaskWithoutResult()
+        {
+            await Task.Delay(100000);
+            // return TaskWithResult();
+        }
+
+        private static Task<int> TaskWithResult()
+        {
+            return Task.FromResult(123);
+        }
+
+        private static void TestDifFunc()
+        {
+            for (int j = 0; j < 50; j++)
+            {
+                var sw = Stopwatch.StartNew();
+                var totalsum = 0;
+                for (int i = 0; i < 1000000; i++)
+                {
+                    bool res1 = Func1(out int lel);
+                    totalsum += lel;
+                }
+                sw.Stop();
+                Console.WriteLine($"1 Took {sw.Elapsed.TotalMilliseconds}");
+                sw.Restart();
+                for (int i = 0; i < 1000000; i++)
+                {
+                    var (res1, lel) = Func2();
+                    totalsum += lel;
+                }
+                sw.Stop();
+                Console.WriteLine($"2 Took {sw.Elapsed.TotalMilliseconds}");
+                Console.WriteLine($"  Sum: {totalsum}");
+            }
+        }
+
+        private static bool Func1(out int i)
+        {
+            i = 1 + 1;
+            return true;
+        }
+
+        private static (bool, int) Func2()
+        {
+            return (true, 1 + 1);
         }
 
         private static void TestLinkedStream()

@@ -47,8 +47,8 @@
     <Compile Include="Collections\FluffyStack.cs" />
     <Compile Include="DelegateStorage.cs" />
     <Compile Include="Extensions\SerialisationExtensions.cs" />
-    <Compile Include="Fluent\CanDo.cs" />
-    <Compile Include="Fluent\ICanDo.cs" />
+    <Compile Include="Fluent\DecisionNode.cs" />
+    <Compile Include="Fluent\IDecisionNode.cs" />
     <Compile Include="Fluent\ICheckable.cs" />
     <Compile Include="Fluent\IConfigurable.cs" />
     <Compile Include="Fluent\IInvokable.cs" />

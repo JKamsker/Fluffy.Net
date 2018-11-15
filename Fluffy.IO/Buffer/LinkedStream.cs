@@ -179,6 +179,8 @@ namespace Fluffy.IO.Buffer
             base.Close();
         }
 
+        #region NotImplemented
+
         public override void Flush()
         {
             // throw new System.NotImplementedException();
@@ -207,5 +209,7 @@ namespace Fluffy.IO.Buffer
             {
             }
         }
+
+        #endregion NotImplemented
     }
 }
