@@ -4,9 +4,10 @@ using System.Linq;
 
 namespace Fluffy.Fluent
 {
-    public class TypeSwitch
+    public class TypeSwitch : IConfigurable
     {
         private readonly List<ICheckable> _ceckables;
+        private Action _defaultAction;
 
         public TypeSwitch()
         {
@@ -22,6 +23,7 @@ namespace Fluffy.Fluent
                     return;
                 }
             }
+            _defaultAction?.Invoke();
         }
 
         public void Handle(object @object)
@@ -33,6 +35,13 @@ namespace Fluffy.Fluent
                     return;
                 }
             }
+
+            _defaultAction?.Invoke();
+        }
+
+        public void Default(Action action)
+        {
+            _defaultAction = action;
         }
 
         public ICanDo<T> On<T>()
@@ -42,7 +51,7 @@ namespace Fluffy.Fluent
 
         public ICanDo<T> On<T>(Predicate<T> condition)
         {
-            var doSomething = new CanDo<T>(condition);
+            var doSomething = new CanDo<T>(this, condition);
             _ceckables.Add(doSomething);
             return doSomething;
         }

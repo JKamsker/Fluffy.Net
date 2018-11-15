@@ -1,5 +1,4 @@
-﻿using Fluffy.Extensions;
-using Fluffy.IO.Buffer;
+﻿using Fluffy.IO.Buffer;
 using Fluffy.Net.Packets;
 
 using System.Net;
@@ -52,15 +51,12 @@ namespace Fluffy.Net
 
         public void TypedTest()
         {
-            var str = new LinkedStream();
-            var obj = new MyAwesomeClass()
+            var obj = new MyAwesomeClass
             {
                 AwesomeString = "AWESOME!!"
             };
 
-            var writeBuf = obj.Serialize();
-            str.Write(writeBuf, 0, writeBuf.Length);
-            _connection.Sender.Send(Packet.FormattedPacket, str);
+            _connection.Sender.Send(obj);
         }
     }
 }

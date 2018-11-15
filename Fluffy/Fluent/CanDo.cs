@@ -4,21 +4,24 @@ namespace Fluffy.Fluent
 {
     public class CanDo<T> : ICanDo<T>, IInvokable<T>, IInvokable, ICheckable
     {
+        private readonly IConfigurable _configurable;
         private readonly Predicate<T> _condition;
         private Action<T> _action;
 
-        internal CanDo() : this(x => true)
+        internal CanDo(IConfigurable configurable) : this(configurable, x => true)
         {
         }
 
-        internal CanDo(Predicate<T> condition)
+        internal CanDo(IConfigurable typeSwitch, Predicate<T> condition)
         {
+            _configurable = typeSwitch;
             _condition = condition;
         }
 
-        public void Do(Action<T> action)
+        public IConfigurable Do(Action<T> action)
         {
             _action = action;
+            return _configurable;
         }
 
         public bool Invoke(T value)

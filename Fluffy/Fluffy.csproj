@@ -50,6 +50,7 @@
     <Compile Include="Fluent\CanDo.cs" />
     <Compile Include="Fluent\ICanDo.cs" />
     <Compile Include="Fluent\ICheckable.cs" />
+    <Compile Include="Fluent\IConfigurable.cs" />
     <Compile Include="Fluent\IInvokable.cs" />
     <Compile Include="Fluent\TypeSwitch.cs" />
     <Compile Include="IObjectStorage.cs" />

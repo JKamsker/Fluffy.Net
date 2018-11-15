@@ -1,4 +1,5 @@
-﻿using Fluffy.IO.Buffer;
+﻿using Fluffy.Extensions;
+using Fluffy.IO.Buffer;
 using Fluffy.Net.Async;
 using Fluffy.Net.Options;
 
@@ -15,6 +16,13 @@ namespace Fluffy.Net.Packets
         {
             _connection = connection;
             _asyncSender = new AsyncSender(_connection.Socket, _connection.FluffySocket.QueueWorker);
+        }
+
+        public void Send<T>(T value)
+        {
+            var stream = new LinkedStream();
+            value.Serialize(stream);
+            Send(Packet.FormattedPacket, stream);
         }
 
         public void Send<T>(T opCode, LinkedStream stream,

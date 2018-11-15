@@ -37,7 +37,10 @@ namespace Fluffy.Net
             PacketHandler.RegisterPacket<DummyPacket>();
             PacketHandler.RegisterPacket<FormattedPacket>();
 
-            TypedPacketHandler.On<MyAwesomeClass>().Do(x => Console.Write($"{x.AwesomeString}\nYou are awesome :3"));
+            TypedPacketHandler
+                .On<MyAwesomeClass>().Do(x => Console.Write($"{x.AwesomeString}\nYou are awesome :3"))
+                .On<ConnectionInfo>().Do(x => Console.Write($"You are awesome :3"))
+                .Default(() => Console.Write($"Lol, Default"));
         }
 
         public void Dispose()
