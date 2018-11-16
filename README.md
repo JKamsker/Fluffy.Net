@@ -9,4 +9,4 @@ Fluffy.Net.Async.SharedOutputQueueWorker: Making the ThreadWorker check the queu
 Fluffy.Fluent.TypeSwitch: Working with Dictionaries in order to boost performance 
 
 
-### Created with <3 and stackedit.io
+### Documentation created with <3 and stackedit.io
