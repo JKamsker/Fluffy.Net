@@ -25,6 +25,8 @@ namespace Fluffy.Net
             };
 
             _connection = new ConnectionInfo(Socket, this);
+
+            // _connection.TypedPacketHandler.
         }
 
         public void Connect()

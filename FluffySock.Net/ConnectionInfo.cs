@@ -2,6 +2,7 @@
 
 using System;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace Fluffy.Net
 {
@@ -38,9 +39,18 @@ namespace Fluffy.Net
             PacketHandler.RegisterPacket<FormattedPacket>();
 
             TypedPacketHandler
-                .On<MyAwesomeClass>().Do(x => Console.Write($"{x.AwesomeString}\nYou are awesome :3"))
+                .On<MyAwesomeClass>().Do(Awesome)
                 .On<ConnectionInfo>().Do(x => Console.Write($"You are awesome :3"))
                 .Default(() => Console.Write($"Lol, Default"));
+        }
+
+        private async Task<MyAwesomeClass> Awesome(MyAwesomeClass awesome)
+        {
+            Console.WriteLine($"{awesome.Stuff}: {awesome.AwesomeString}\nYou are awesome :3");
+
+            await Task.Delay(TimeSpan.FromSeconds(0.1));
+            awesome.Stuff++;
+            return awesome;
         }
 
         public void Dispose()
@@ -55,6 +65,7 @@ namespace Fluffy.Net
     [Serializable]
     public class MyAwesomeClass
     {
+        public int Stuff { get; set; }
         public string AwesomeString { get; set; }
     }
 }

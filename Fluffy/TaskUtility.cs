@@ -8,18 +8,42 @@ namespace Fluffy
 {
     public class TaskUtility
     {
-        private static Dictionary<Type, bool> _hasResultCache = new Dictionary<Type, bool>();
+        private static Dictionary<Type, FieldInfo> _fiCache;
+        private static Dictionary<Type, bool> _hasResultCache;
+        private static Dictionary<Type, Func<object, object>> _getterCache;
+
+        static TaskUtility()
+        {
+            _fiCache = new Dictionary<Type, FieldInfo>();
+            _hasResultCache = new Dictionary<Type, bool>();
+            _getterCache = new Dictionary<Type, Func<object, object>>();
+        }
 
         public static bool HasResult(Task task)
         {
             if (!_hasResultCache.TryGetValue(task.GetType(), out var result))
             {
                 var type = task.GetType().GetProperty("Result");
-                result = (type != null && type.PropertyType.FullName != "System.Threading.Tasks.VoidTaskResult");
+                result = type != null && type.PropertyType.FullName != "System.Threading.Tasks.VoidTaskResult";
                 _hasResultCache[task.GetType()] = result;
             }
 
             return result;
+        }
+
+        public static bool IsTask(object obj)
+        {
+            var baseType = typeof(Task);
+            var referenceType = obj.GetType();
+
+            return referenceType == baseType || referenceType.BaseType == baseType;
+        }
+
+        public static bool IsGenericTask(Task obj)
+        {
+            var referenceType = obj.GetType();
+            var referenceBaseType = referenceType.BaseType;
+            return referenceBaseType != null && referenceBaseType == typeof(Task);
         }
 
         public static object GetResultDynamic(Task task)
@@ -32,18 +56,6 @@ namespace Fluffy
             return default;
         }
 
-        private static Dictionary<Type, FieldInfo> _fiCache = new Dictionary<Type, FieldInfo>();
-
-        public static object GetResult(Task task)
-        {
-            return task.GetType().GetField("m_result", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(task);
-        }
-
-        public static object GetResultCached(Task task)
-        {
-            return GetResultFieldInfo(task).GetValue(task);
-        }
-
         private static FieldInfo GetResultFieldInfo(Task task)
         {
             if (!_fiCache.TryGetValue(task.GetType(), out var fiValue))
@@ -54,8 +66,6 @@ namespace Fluffy
 
             return fiValue;
         }
-
-        private static Dictionary<Type, Func<object, object>> _getterCache = new Dictionary<Type, Func<object, object>>();
 
         public static object GetResultIl(Task task)
         {
@@ -71,9 +81,9 @@ namespace Fluffy
 
         private static Func<object, object> CreateGetter(FieldInfo field)
         {
-            string methodName = field.ReflectedType.FullName + ".get_" + field.Name;
-            DynamicMethod setterMethod = new DynamicMethod(methodName, typeof(object), new Type[1] { typeof(object) }, true);
-            ILGenerator gen = setterMethod.GetILGenerator();
+            var methodName = field.ReflectedType.FullName + ".get_" + field.Name;
+            var setterMethod = new DynamicMethod(methodName, typeof(object), new Type[1] { typeof(object) }, true);
+            var gen = setterMethod.GetILGenerator();
             if (field.IsStatic)
             {
                 gen.Emit(OpCodes.Ldsfld, field);

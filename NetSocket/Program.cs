@@ -1,11 +1,12 @@
-﻿using Fluffy;
-using Fluffy.IO.Buffer;
+﻿using Fluffy.IO.Buffer;
 using Fluffy.IO.Recycling;
 
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
 using System.Threading.Tasks;
+using Fluffy.Net;
 
 namespace NetSocket
 {
@@ -61,129 +62,16 @@ namespace NetSocket
 
         private static void Main(string[] args)
         {
-            Task res1 = TaskWithoutResult();
-            Task res2 = TaskWithResult();
-
-            // var res = TaskUtility.GetResultCached(res2);
-
-            var sw = Stopwatch.StartNew();
-
-            //var instance = new Stuff();
-            //var field = typeof(Stuff).GetField("Result");// BindingFlags.NonPublic | BindingFlags.Instance
-            //var getter = TaskUtility.CreateGetter<Stuff>(field);
-            //var res = getter(instance);
-
-            //var field = res2.GetType().GetField("m_result", BindingFlags.NonPublic | BindingFlags.Instance);//
-            //var getter = TaskUtility.CreateGetter<Task>(field);
-            //var res = getter(res2);
-
-            for (int j = 0; j < 10; j++)
-            {
-                for (int i = 0; i < 1000000; i++)
-                {
-                    TaskUtility.GetResultIl(res2);
-                }
-                sw.Stop();
-                Console.WriteLine(sw.Elapsed.TotalMilliseconds);
-                sw.Restart();
-            }
-
-            Console.WriteLine();
-            for (int j = 0; j < 10; j++)
-            {
-                for (int i = 0; i < 1000000; i++)
-                {
-                    TaskUtility.GetResultDynamic(res2);
-                }
-                sw.Stop();
-                Console.WriteLine(sw.Elapsed.TotalMilliseconds);
-                sw.Restart();
-            }
+            var server = new FluffyServer(8090);
+            var client = new FluffyClient(IPAddress.Loopback, 8090);
+            server.Start();
+            client.Connect();
+            Console.WriteLine("Connected");
+            client.TypedTest();
+            client.Test();
+            client.Test();
+            Console.WriteLine("Test sent");
             Console.ReadLine();
-
-            //for (int j = 0; j < 10; j++)
-            //{
-            //    for (int i = 0; i < 1000000; i++)
-            //    {
-            //        TaskUtility.GetResult(res2);
-            //    }
-            //    sw.Stop();
-            //    Console.WriteLine(sw.Elapsed.TotalMilliseconds);
-            //    sw.Restart();
-            //}
-
-            //Console.WriteLine();
-            //sw.Restart();
-            //for (int j = 0; j < 10; j++)
-            //{
-            //    for (int i = 0; i < 1000000; i++)
-            //    {
-            //        TaskUtility.GetResultCached(res2);
-            //    }
-            //    sw.Stop();
-            //    Console.WriteLine(sw.Elapsed.TotalMilliseconds);
-            //    sw.Restart();
-            //}
-
-            //Console.WriteLine();
-            //sw.Restart();
-            for (int j = 0; j < 10; j++)
-            {
-                for (int i = 0; i < 1000000; i++)
-                {
-                    TaskUtility.GetResultDynamic(res2);
-                }
-                sw.Stop();
-                Console.WriteLine(sw.Elapsed.TotalMilliseconds);
-                sw.Restart();
-            }
-
-            Console.ReadLine();
-
-            var stuff = new Stuff();
-            var result = Load(stuff);
-            Console.WriteLine(result);
-
-            //var resultx = res2.Result;
-
-            //var allresType = typeof(Task<object>).GetProperty("Result");
-
-            //var nres = allresType.GetGetMethod().Invoke(res2, null);
-
-            //var type = res1.GetType().GetProperty("Result");
-            //if (type != null)
-            //{
-            //    if (type.PropertyType.Name == "VoidTaskResult")
-            //    {
-            //        // Real Non-Generic Task
-            //        Debugger.Break();
-            //    }
-            //    else
-            //    {
-            //    }
-            //    var untypedResult = type.GetGetMethod().Invoke(res1, null);
-
-            //    Debugger.Break();
-            //}
-
-            //var result = TaskWithResult().Result;
-
-            //Console.WriteLine(result);
-            Console.ReadLine();
-            //TestDifFunc();
-            //return;
-            //var server = new FluffyServer(8090);
-            //var client = new FluffyClient(IPAddress.Loopback, 8090);
-            //server.Start();
-            //client.Connect();
-            //Console.WriteLine("Connected");
-            //client.TypedTest();
-            //client.Test();
-            //client.Test();
-            //Console.WriteLine("Test sent");
-            //Console.ReadLine();
-
-            //Debugger.Break();
         }
 
         private static void TestDifFunc()

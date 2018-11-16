@@ -2,7 +2,9 @@
 using Fluffy.IO.Buffer;
 
 using System;
+using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Fluffy.Net.Packets
 {
@@ -40,8 +42,47 @@ namespace Fluffy.Net.Packets
 
         public override void Handle(LinkedStream stream)
         {
-            var result = stream.Deserialize();
-            Connection.TypedPacketHandler.Handle(result);
+            var handleObject = stream.Deserialize();
+            var result = Connection.TypedPacketHandler.Handle(handleObject);
+            if (result != null)
+            {
+                if (result is Task task)
+                {
+                    if (TaskUtility.IsGenericTask(task))
+                    {
+                        if (task.IsCompleted)
+                        {
+                            FinishTask(task);
+                        }
+                        else
+                        {
+                            task.ContinueWith(FinishTask);
+                        }
+                    }
+                }
+                else
+                {
+                    SendResult(result);
+                }
+            }
+        }
+
+        private void FinishTask(Task task)
+        {
+            if (task.Status == TaskStatus.RanToCompletion)
+            {
+                SendResult(TaskUtility.GetResultIl(task));
+            }
+            else
+            {
+                //TODO: Excepion Handling
+                Debug.WriteLine($"Exception while handling packet:{task.Exception}");
+            }
+        }
+
+        private void SendResult<T>(T value)
+        {
+            Connection.Sender.Send(value);
         }
     }
 }
