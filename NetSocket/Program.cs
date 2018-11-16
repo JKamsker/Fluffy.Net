@@ -5,7 +5,6 @@ using Fluffy.IO.Recycling;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace NetSocket
@@ -74,11 +73,33 @@ namespace NetSocket
             //var getter = TaskUtility.CreateGetter<Stuff>(field);
             //var res = getter(instance);
 
-            var field = res2.GetType().GetField("m_result", BindingFlags.NonPublic | BindingFlags.Instance);//
-            var getter = TaskUtility.CreateGetter<Task>(field);
-            var res = getter(res2);
+            //var field = res2.GetType().GetField("m_result", BindingFlags.NonPublic | BindingFlags.Instance);//
+            //var getter = TaskUtility.CreateGetter<Task>(field);
+            //var res = getter(res2);
 
-            Debugger.Break();
+            for (int j = 0; j < 10; j++)
+            {
+                for (int i = 0; i < 1000000; i++)
+                {
+                    TaskUtility.GetResultIl(res2);
+                }
+                sw.Stop();
+                Console.WriteLine(sw.Elapsed.TotalMilliseconds);
+                sw.Restart();
+            }
+
+            Console.WriteLine();
+            for (int j = 0; j < 10; j++)
+            {
+                for (int i = 0; i < 1000000; i++)
+                {
+                    TaskUtility.GetResultDynamic(res2);
+                }
+                sw.Stop();
+                Console.WriteLine(sw.Elapsed.TotalMilliseconds);
+                sw.Restart();
+            }
+            Console.ReadLine();
 
             //for (int j = 0; j < 10; j++)
             //{

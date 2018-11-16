@@ -8,7 +8,7 @@ namespace Fluffy
 {
     public class TaskUtility
     {
-        private static Dictionary<Type, bool> _hasResultCache;
+        private static Dictionary<Type, bool> _hasResultCache = new Dictionary<Type, bool>();
 
         public static bool HasResult(Task task)
         {
@@ -41,16 +41,35 @@ namespace Fluffy
 
         public static object GetResultCached(Task task)
         {
+            return GetResultFieldInfo(task).GetValue(task);
+        }
+
+        private static FieldInfo GetResultFieldInfo(Task task)
+        {
             if (!_fiCache.TryGetValue(task.GetType(), out var fiValue))
             {
                 _fiCache[task.GetType()] = fiValue =
                     task.GetType().GetField("m_result", BindingFlags.NonPublic | BindingFlags.Instance);
             }
 
-            return fiValue.GetValue(task);
+            return fiValue;
         }
 
-        public static Func<object, object> CreateGetter<S>(FieldInfo field)
+        private static Dictionary<Type, Func<object, object>> _getterCache = new Dictionary<Type, Func<object, object>>();
+
+        public static object GetResultIl(Task task)
+        {
+            if (!_getterCache.TryGetValue(task.GetType(), out var getter))
+            {
+                var field = GetResultFieldInfo(task);
+                getter = CreateGetter(field);
+                _getterCache[task.GetType()] = getter;
+            }
+
+            return getter(task);
+        }
+
+        private static Func<object, object> CreateGetter(FieldInfo field)
         {
             string methodName = field.ReflectedType.FullName + ".get_" + field.Name;
             DynamicMethod setterMethod = new DynamicMethod(methodName, typeof(object), new Type[1] { typeof(object) }, true);
