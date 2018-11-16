@@ -6,9 +6,10 @@ namespace Fluffy.Fluent
     {
         private readonly IDecisionConfigurator _configurable;
         private readonly Predicate<T> _condition;
-        private Action<T> _action;
+        private Func<T, object> _func;
 
-        internal DecisionNode(IDecisionConfigurator configurable) : this(configurable, x => true)
+        internal DecisionNode(IDecisionConfigurator configurable)
+            : this(configurable, x => true)
         {
         }
 
@@ -20,7 +21,16 @@ namespace Fluffy.Fluent
 
         public IDecisionConfigurator Do(Action<T> action)
         {
-            _action = action;
+            return Do(x =>
+            {
+                action(x);
+                return null;
+            });
+        }
+
+        public IDecisionConfigurator Do(Func<T, object> func)
+        {
+            _func = func;
             return _configurable;
         }
 
@@ -29,30 +39,37 @@ namespace Fluffy.Fluent
             return value is T typedValue && _condition(typedValue);
         }
 
-        public bool Invoke(T value)
+        public bool Invoke(T value, out object result)
         {
-            if (_action == null)
+            if (_func == null)
             {
+                result = null;
                 return false;
             }
-            _action.Invoke(value);
+            result = _func.Invoke(value);
             return true;
+        }
+
+        public bool Invoke(object value, out object result)
+        {
+            if (_func != null && value is T invokeValue)
+            {
+                result = _func.Invoke(invokeValue);
+                return true;
+            }
+
+            result = null;
+            return false;
+        }
+
+        public bool Invoke(T value)
+        {
+            return Invoke(value, out var result);
         }
 
         public bool Invoke(object value)
         {
-            if (_action == null)
-            {
-                return false;
-            }
-
-            if (value is T invokeValue)
-            {
-                _action.Invoke(invokeValue);
-                return true;
-            }
-
-            return false;
+            return Invoke(value, out var result);
         }
     }
 }

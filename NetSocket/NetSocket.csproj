@@ -62,6 +62,10 @@
       <Project>{E945D22D-E811-4AE0-B021-6D3A7F9FA55C}</Project>
       <Name>Fluffy.Net</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Fluffy\Fluffy.csproj">
+      <Project>{BAD50387-0819-4B30-B937-0C003D49312B}</Project>
+      <Name>Fluffy</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

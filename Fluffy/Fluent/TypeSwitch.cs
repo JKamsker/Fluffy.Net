@@ -14,29 +14,31 @@ namespace Fluffy.Fluent
             _ceckables = new List<ICheckable>();
         }
 
-        public void Handle<T>(T @object)
+        public object Handle<T>(T @object)
         {
             foreach (var checkable in _ceckables.Where(x => x.Check(@object)).Cast<IInvokable<T>>())
             {
-                if (checkable.Invoke(@object))
+                if (checkable.Invoke(@object, out var result))
                 {
-                    return;
+                    return result;
                 }
             }
             _defaultAction?.Invoke();
+            return default;
         }
 
-        public void Handle(object @object)
+        public object Handle(object @object)
         {
             foreach (var checkable in _ceckables.Where(x => x.Check(@object)).Cast<IInvokable>())
             {
-                if (checkable.Invoke(@object))
+                if (checkable.Invoke(@object, out var result))
                 {
-                    return;
+                    return result;
                 }
             }
 
             _defaultAction?.Invoke();
+            return default;
         }
 
         public IDecisionNode<T> On<T>()

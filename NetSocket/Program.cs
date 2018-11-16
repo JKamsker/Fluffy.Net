@@ -1,9 +1,11 @@
-﻿using Fluffy.IO.Buffer;
+﻿using Fluffy;
+using Fluffy.IO.Buffer;
 using Fluffy.IO.Recycling;
 
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace NetSocket
@@ -16,6 +18,11 @@ namespace NetSocket
         asf,
         ww,
         h
+    }
+
+    internal class Stuff
+    {
+        public int Result = 555;
     }
 
     internal class MCL
@@ -33,20 +40,114 @@ namespace NetSocket
             return tinput.GetHashCode();
         }
 
+        private static object Load(Stuff stuff)
+        {
+            return stuff.Result;
+        }
+
+        private static async Task TaskWithoutResult()
+        {
+            var tsk = TaskWithResult();
+            await tsk;
+            await tsk;
+            //await Task.Delay(100000);
+            // return await TaskWithResult();
+        }
+
+        private static async Task<int> TaskWithResult()
+        {
+            // await Task.Delay(10000);
+            return 50;
+        }
+
         private static void Main(string[] args)
         {
-            var res1 = TaskWithoutResult();
-            var type = res1.GetType().GetProperty("Result");
-            if (type != null)
-            {
-                var untypedResult = type.GetGetMethod().Invoke(res1, null);
+            Task res1 = TaskWithoutResult();
+            Task res2 = TaskWithResult();
 
-                Debugger.Break();
+            // var res = TaskUtility.GetResultCached(res2);
+
+            var sw = Stopwatch.StartNew();
+
+            //var instance = new Stuff();
+            //var field = typeof(Stuff).GetField("Result");// BindingFlags.NonPublic | BindingFlags.Instance
+            //var getter = TaskUtility.CreateGetter<Stuff>(field);
+            //var res = getter(instance);
+
+            var field = res2.GetType().GetField("m_result", BindingFlags.NonPublic | BindingFlags.Instance);//
+            var getter = TaskUtility.CreateGetter<Task>(field);
+            var res = getter(res2);
+
+            Debugger.Break();
+
+            //for (int j = 0; j < 10; j++)
+            //{
+            //    for (int i = 0; i < 1000000; i++)
+            //    {
+            //        TaskUtility.GetResult(res2);
+            //    }
+            //    sw.Stop();
+            //    Console.WriteLine(sw.Elapsed.TotalMilliseconds);
+            //    sw.Restart();
+            //}
+
+            //Console.WriteLine();
+            //sw.Restart();
+            //for (int j = 0; j < 10; j++)
+            //{
+            //    for (int i = 0; i < 1000000; i++)
+            //    {
+            //        TaskUtility.GetResultCached(res2);
+            //    }
+            //    sw.Stop();
+            //    Console.WriteLine(sw.Elapsed.TotalMilliseconds);
+            //    sw.Restart();
+            //}
+
+            //Console.WriteLine();
+            //sw.Restart();
+            for (int j = 0; j < 10; j++)
+            {
+                for (int i = 0; i < 1000000; i++)
+                {
+                    TaskUtility.GetResultDynamic(res2);
+                }
+                sw.Stop();
+                Console.WriteLine(sw.Elapsed.TotalMilliseconds);
+                sw.Restart();
             }
 
-            var result = TaskWithResult().Result;
+            Console.ReadLine();
 
+            var stuff = new Stuff();
+            var result = Load(stuff);
             Console.WriteLine(result);
+
+            //var resultx = res2.Result;
+
+            //var allresType = typeof(Task<object>).GetProperty("Result");
+
+            //var nres = allresType.GetGetMethod().Invoke(res2, null);
+
+            //var type = res1.GetType().GetProperty("Result");
+            //if (type != null)
+            //{
+            //    if (type.PropertyType.Name == "VoidTaskResult")
+            //    {
+            //        // Real Non-Generic Task
+            //        Debugger.Break();
+            //    }
+            //    else
+            //    {
+            //    }
+            //    var untypedResult = type.GetGetMethod().Invoke(res1, null);
+
+            //    Debugger.Break();
+            //}
+
+            //var result = TaskWithResult().Result;
+
+            //Console.WriteLine(result);
             Console.ReadLine();
             //TestDifFunc();
             //return;
@@ -62,17 +163,6 @@ namespace NetSocket
             //Console.ReadLine();
 
             //Debugger.Break();
-        }
-
-        private static async Task TaskWithoutResult()
-        {
-            await Task.Delay(100000);
-            // return TaskWithResult();
-        }
-
-        private static Task<int> TaskWithResult()
-        {
-            return Task.FromResult(123);
         }
 
         private static void TestDifFunc()
