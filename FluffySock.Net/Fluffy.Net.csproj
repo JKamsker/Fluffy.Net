@@ -54,10 +54,14 @@
     <Compile Include="FluffyClient.cs" />
     <Compile Include="FluffyServer.cs" />
     <Compile Include="FluffySocket.cs" />
+    <Compile Include="Packets\Modules\Formatted\MyAwesomeClass.cs" />
     <Compile Include="Options\IOState.cs" />
     <Compile Include="Options\ParallelismOptions.cs" />
-    <Compile Include="Packets\BasePacketHandler.cs" />
-    <Compile Include="Packets\PacketHandler.cs" />
+    <Compile Include="Packets\Modules\Raw\BasePacket.cs" />
+    <Compile Include="Packets\RawPacketHandler.cs" />
+    <Compile Include="Packets\Modules\Raw\DummyPacket.cs" />
+    <Compile Include="Packets\Modules\Raw\FormattedPacket.cs" />
+    <Compile Include="Packets\Modules\Raw\PacketTypes.cs" />
     <Compile Include="Packets\TypedPacketHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Packets\Receiver.cs" />
@@ -75,5 +79,6 @@
       <Name>Fluffy</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

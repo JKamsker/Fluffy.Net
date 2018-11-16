@@ -3,6 +3,8 @@
 using System;
 using System.Diagnostics;
 using System.Net.Sockets;
+using Fluffy.Net.Packets.Modules.Formatted;
+using Fluffy.Net.Packets.Raw;
 
 namespace Fluffy.Net
 {
@@ -15,7 +17,7 @@ namespace Fluffy.Net
 
         internal Receiver Receiver { get; private set; }
         internal Sender Sender { get; private set; }
-        public PacketHandler PacketHandler { get; private set; }
+        public RawPacketHandler PacketHandler { get; private set; }
         public TypedPacketHandler TypedPacketHandler { get; private set; }
 
         public ConnectionInfo(FluffySocket fluffySocket)
@@ -30,12 +32,14 @@ namespace Fluffy.Net
 
             Receiver = new Receiver(socket);
             Sender = new Sender(this);
-            PacketHandler = new PacketHandler(this);
+            PacketHandler = new RawPacketHandler(this);
             TypedPacketHandler = new TypedPacketHandler(this);
 
             Receiver.OnReceive += PacketHandler.Handle;
+#if DEBUG
 
             PacketHandler.RegisterPacket<DummyPacket>();
+#endif
             PacketHandler.RegisterPacket<FormattedPacket>();
 
             TypedPacketHandler
@@ -70,12 +74,5 @@ namespace Fluffy.Net
             Receiver.OnReceive -= PacketHandler.Handle;
             OnDisposing?.Invoke(this, this);
         }
-    }
-
-    [Serializable]
-    public class MyAwesomeClass
-    {
-        public int Packets { get; set; }
-        public string AwesomeString { get; set; }
     }
 }

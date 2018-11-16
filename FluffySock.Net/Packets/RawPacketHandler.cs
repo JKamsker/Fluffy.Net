@@ -4,10 +4,11 @@ using Fluffy.Net.Options;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Fluffy.Net.Packets.Raw;
 
 namespace Fluffy.Net.Packets
 {
-    public class PacketHandler
+    public class RawPacketHandler
     {
         private object _registerLock = new object();
 
@@ -15,7 +16,7 @@ namespace Fluffy.Net.Packets
 
         private Dictionary<int, BasePacket> _packetList;
 
-        internal PacketHandler(ConnectionInfo connectionInfo)
+        internal RawPacketHandler(ConnectionInfo connectionInfo)
         {
             _connection = connectionInfo;
             _packetList = new Dictionary<int, BasePacket>();

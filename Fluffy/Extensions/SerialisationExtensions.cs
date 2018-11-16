@@ -36,7 +36,7 @@ namespace Fluffy.Extensions
             }
         }
 
-        public static void Serialize<T>(this T graph, Stream serializationStream)
+        public static void Serialize(this object graph, Stream serializationStream)
         {
             var bf = new BinaryFormatter();
             bf.Serialize(serializationStream, graph);

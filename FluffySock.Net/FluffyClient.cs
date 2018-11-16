@@ -1,10 +1,11 @@
 ﻿using Fluffy.IO.Buffer;
-using Fluffy.Net.Packets;
 
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Fluffy.Net.Packets.Modules.Formatted;
+using Fluffy.Net.Packets.Raw;
 
 namespace Fluffy.Net
 {
@@ -48,7 +49,7 @@ namespace Fluffy.Net
             var str = new LinkedStream();
             var writeBuf = Encoding.UTF8.GetBytes("Hello World");
             str.Write(writeBuf, 0, writeBuf.Length);
-            _connection.Sender.Send(Packet.TestPacket, str);
+            _connection.Sender.Send(PacketTypes.TestPacket, str);
         }
 
         public void TypedTest()

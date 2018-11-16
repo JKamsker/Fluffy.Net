@@ -4,6 +4,7 @@ using Fluffy.Net.Async;
 using Fluffy.Net.Options;
 
 using System;
+using Fluffy.Net.Packets.Raw;
 
 namespace Fluffy.Net.Packets
 {
@@ -18,11 +19,23 @@ namespace Fluffy.Net.Packets
             _asyncSender = new AsyncSender(_connection.Socket, _connection.FluffySocket.QueueWorker);
         }
 
-        public void Send<T>(T value)
+        public void Send(object value)
         {
             var stream = new LinkedStream();
             value.Serialize(stream);
-            Send(Packet.FormattedPacket, stream);
+            Send(PacketTypes.FormattedPacket, stream);
+        }
+
+        /// <summary>
+        /// TODO: Return result?
+        /// Maybe return intermediate object which can return the result (may cause locking of thread) or a task<TResult>
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public TResult Send<TResult>(object value)
+        {
+            return default;
         }
 
         public void Send<T>(T opCode, LinkedStream stream,
