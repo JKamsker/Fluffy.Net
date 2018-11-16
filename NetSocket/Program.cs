@@ -10,28 +10,22 @@ using Fluffy.Net;
 
 namespace NetSocket
 {
-    internal enum Foo
-    {
-        x,
-        xa,
-        ass,
-        asf,
-        ww,
-        h
-    }
-
-    internal class Stuff
-    {
-        public int Result = 555;
-    }
-
-    internal class MCL
-    {
-        public int Lol { get; set; }
-    }
-
     internal class Program
     {
+        private static void Main(string[] args)
+        {
+            var server = new FluffyServer(8090);
+            var client = new FluffyClient(IPAddress.Loopback, 8090);
+            server.Start();
+            client.Connect();
+            Console.WriteLine("Connected");
+            client.TypedTest();
+            client.Test();
+            client.Test();
+            Console.WriteLine("Test sent");
+            Console.ReadLine();
+        }
+
         private static List<int> _test;
 
         private static int GetInt<T>(T tinput)
@@ -58,20 +52,6 @@ namespace NetSocket
         {
             // await Task.Delay(10000);
             return 50;
-        }
-
-        private static void Main(string[] args)
-        {
-            var server = new FluffyServer(8090);
-            var client = new FluffyClient(IPAddress.Loopback, 8090);
-            server.Start();
-            client.Connect();
-            Console.WriteLine("Connected");
-            client.TypedTest();
-            client.Test();
-            client.Test();
-            Console.WriteLine("Test sent");
-            Console.ReadLine();
         }
 
         private static void TestDifFunc()
@@ -231,5 +211,25 @@ namespace NetSocket
             }
             return buf;
         }
+    }
+
+    internal enum Foo
+    {
+        x,
+        xa,
+        ass,
+        asf,
+        ww,
+        h
+    }
+
+    internal class Stuff
+    {
+        public int Result = 555;
+    }
+
+    internal class MCL
+    {
+        public int Lol { get; set; }
     }
 }

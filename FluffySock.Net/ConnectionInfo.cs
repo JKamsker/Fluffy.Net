@@ -1,8 +1,8 @@
 ﻿using Fluffy.Net.Packets;
 
 using System;
+using System.Diagnostics;
 using System.Net.Sockets;
-using System.Threading.Tasks;
 
 namespace Fluffy.Net
 {
@@ -44,12 +44,22 @@ namespace Fluffy.Net
                 .Default(() => Console.Write($"Lol, Default"));
         }
 
-        private async Task<MyAwesomeClass> Awesome(MyAwesomeClass awesome)
-        {
-            Console.WriteLine($"{awesome.Stuff}: {awesome.AwesomeString}\nYou are awesome :3");
+        private Stopwatch _sw;
 
-            await Task.Delay(TimeSpan.FromSeconds(0.1));
-            awesome.Stuff++;
+        private MyAwesomeClass Awesome(MyAwesomeClass awesome)
+        {
+            if (_sw == null)
+            {
+                _sw = Stopwatch.StartNew();
+            }
+
+            if (awesome.Packets % 300 == 0)
+            {
+                Console.WriteLine($"{awesome.Packets}:  ({awesome.Packets / _sw.Elapsed.TotalMilliseconds})");
+                //  await Task.Delay(TimeSpan.FromSeconds(0.1));
+            }
+
+            awesome.Packets++;
             return awesome;
         }
 
@@ -65,7 +75,7 @@ namespace Fluffy.Net
     [Serializable]
     public class MyAwesomeClass
     {
-        public int Stuff { get; set; }
+        public int Packets { get; set; }
         public string AwesomeString { get; set; }
     }
 }
