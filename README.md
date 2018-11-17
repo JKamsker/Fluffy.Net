@@ -5,6 +5,7 @@ Fluffy .NET is an easy-to-use Network library wich contains many useful features
 # Todo
 - Raw-Stream sending API
 - Sending and awaiting Response (+async/await support)
+- RMI Interface
 
 # Points for Improvements
 This point doesnt mean much. Its just a little notice for the core developer
