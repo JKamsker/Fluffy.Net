@@ -54,6 +54,7 @@
     <Compile Include="FluffyClient.cs" />
     <Compile Include="FluffyServer.cs" />
     <Compile Include="FluffySocket.cs" />
+    <Compile Include="Packets\IPacketResult.cs" />
     <Compile Include="Packets\Modules\Formatted\MyAwesomeClass.cs" />
     <Compile Include="Options\IOState.cs" />
     <Compile Include="Options\ParallelismOptions.cs" />
