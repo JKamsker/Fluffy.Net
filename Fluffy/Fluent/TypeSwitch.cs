@@ -6,21 +6,27 @@ namespace Fluffy.Fluent
 {
     public class TypeSwitch : IDecisionConfigurator
     {
-        private protected readonly List<ICheckable> _ceckables;
+        private protected readonly Dictionary<Type, List<ICheckable>> _checkableDictionary;
+
+        //    private protected readonly List<ICheckable> _ceckables;
         private protected Func<object, object> _defaultFunc;
 
         public TypeSwitch()
         {
-            _ceckables = new List<ICheckable>();
+            _checkableDictionary = new Dictionary<Type, List<ICheckable>>();
+            //  _ceckables = new List<ICheckable>();
         }
 
         public virtual object Handle<T>(T @object)
         {
-            foreach (var checkable in _ceckables.Where(x => x.Check(@object)).Cast<IInvokable<T>>())
+            if (_checkableDictionary.TryGetValue(typeof(T), out var checkables))
             {
-                if (checkable.Invoke(@object, out var result))
+                foreach (var checkable in checkables.Where(x => x.Check(@object)).Cast<IInvokable<T>>())
                 {
-                    return result;
+                    if (checkable.Invoke(@object, out var result))
+                    {
+                        return result;
+                    }
                 }
             }
 
@@ -29,11 +35,14 @@ namespace Fluffy.Fluent
 
         public virtual object Handle(object @object)
         {
-            foreach (var checkable in _ceckables.Where(x => x.Check(@object)).Cast<IInvokable>())
+            if (_checkableDictionary.TryGetValue(@object.GetType(), out var checkables))
             {
-                if (checkable.Invoke(@object, out var result))
+                foreach (var checkable in checkables.Where(x => x.Check(@object)).Cast<IInvokable>())
                 {
-                    return result;
+                    if (checkable.Invoke(@object, out var result))
+                    {
+                        return result;
+                    }
                 }
             }
 
@@ -47,8 +56,14 @@ namespace Fluffy.Fluent
 
         public virtual IDecisionNode<T> On<T>(Predicate<T> condition)
         {
+            if (!_checkableDictionary.TryGetValue(typeof(T), out var checkables))
+            {
+                checkables = new List<ICheckable>();
+                _checkableDictionary[typeof(T)] = checkables;
+            }
+
             var doSomething = new DecisionNode<T>(this, condition);
-            _ceckables.Add(doSomething);
+            checkables.Add(doSomething);
             return doSomething;
         }
 

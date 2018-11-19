@@ -57,6 +57,8 @@ namespace Fluffy.Net.Packets
         {
             if (_packetList.TryGetValue(packet.OpCode, out var handler))
             {
+                //TODO: Remove
+                packet.Options = ParallelismOptions.Sync;
                 switch (packet.Options)
                 {
                     case ParallelismOptions.Parallel:
