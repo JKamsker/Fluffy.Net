@@ -54,12 +54,20 @@ namespace Fluffy.Fluent
             return On<T>(x => true);
         }
 
+        private static object _lockObject = new object();
+
         public virtual IDecisionNode<T> On<T>(Predicate<T> condition)
         {
             if (!_checkableDictionary.TryGetValue(typeof(T), out var checkables))
             {
-                checkables = new List<ICheckable>();
-                _checkableDictionary[typeof(T)] = checkables;
+                lock (_lockObject)
+                {
+                    if (!_checkableDictionary.TryGetValue(typeof(T), out checkables))
+                    {
+                        checkables = new List<ICheckable>();
+                        _checkableDictionary[typeof(T)] = checkables;
+                    }
+                }
             }
 
             var doSomething = new DecisionNode<T>(this, condition);
