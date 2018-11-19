@@ -4,4 +4,9 @@
     {
         bool Check(object value);
     }
+
+    public interface IContextAwareCheckable<TContext>
+    {
+        bool Check(TContext context, object value);
+    }
 }

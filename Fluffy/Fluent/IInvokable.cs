@@ -13,4 +13,18 @@
 
         bool Invoke(T value, out object result);
     }
+
+    public interface IContextAwareInvokable<in TContext>
+    {
+        bool Invoke(object value, TContext context);
+
+        bool Invoke(object value, TContext context, out object result);
+    }
+
+    public interface IContextAwareInvokable<in TValue, in TContext>
+    {
+        bool Invoke(TValue value, TContext context);
+
+        bool Invoke(TValue value, TContext context, out object result);
+    }
 }

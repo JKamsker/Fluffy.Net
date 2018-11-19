@@ -9,9 +9,10 @@ namespace Fluffy.Net
 {
     public class FluffyServer : FluffySocket
     {
+        public IReadOnlyCollection<ConnectionInfo> Connections => _connections;
         private List<ConnectionInfo> _connections;
 
-        public TypeSwitch PacketHandler { get; private set; }
+        public ContextAwareTypeSwitch<ConnectionInfo> PacketHandler { get; private set; }
 
         public FluffyServer(int port)
             : this(IPAddress.Any, port)
@@ -20,7 +21,7 @@ namespace Fluffy.Net
 
         public FluffyServer(IPAddress address, int port) : base()
         {
-            PacketHandler = new TypeSwitch();
+            PacketHandler = new ContextAwareTypeSwitch<ConnectionInfo>(null);
             _connections = new List<ConnectionInfo>();
             Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
             {
@@ -56,7 +57,7 @@ namespace Fluffy.Net
                     _connections.Remove(connectionInfo);
                 };
                 connectionInfo.Receiver.Start();
-                connectionInfo.PacketHandler.Default(x => PacketHandler.Handle(x));
+                connectionInfo.PacketHandler.Default(x => PacketHandler.Handle(x, connectionInfo));
                 _connections.Add(connectionInfo);
             }
             catch (SocketException ex)

@@ -2,37 +2,6 @@
 
 namespace Fluffy.Fluent
 {
-    public class DecisionNode<TValue, TContext> : DecisionNode<TValue>, IDecisionNode<TValue>
-    {
-        private TContext _context;
-
-        internal DecisionNode(IDecisionConfigurator configurable, TContext context)
-            : this(configurable, x => true, context)
-        {
-        }
-
-        internal DecisionNode(IDecisionConfigurator typeSwitch, Predicate<TValue> condition, TContext context)
-            : base(typeSwitch, condition)
-        {
-            _context = context;
-        }
-
-        public IDecisionConfigurator Do(Action<TValue, TContext> action)
-        {
-            return Do((value, context) =>
-            {
-                action(value, context);
-                return null;
-            });
-        }
-
-        public IDecisionConfigurator Do(Func<TValue, TContext, object> func)
-        {
-            _func = value => func(value, _context);
-            return _configurable;
-        }
-    }
-
     public class DecisionNode<TValue> : IDecisionNode<TValue>, IInvokable<TValue>, IInvokable, ICheckable
     {
         private protected readonly IDecisionConfigurator _configurable;

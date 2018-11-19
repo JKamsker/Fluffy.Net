@@ -34,6 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Activities" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -48,6 +49,8 @@
     <Compile Include="DelegateStorage.cs" />
     <Compile Include="Extensions\FluentExtensions.cs" />
     <Compile Include="Extensions\SerialisationExtensions.cs" />
+    <Compile Include="Fluent\ContextAwareDecisionNode.cs" />
+    <Compile Include="Fluent\ContextAwareTypeSwitch.cs" />
     <Compile Include="Fluent\DecisionNode.cs" />
     <Compile Include="Fluent\IDecisionNode.cs" />
     <Compile Include="Fluent\ICheckable.cs" />

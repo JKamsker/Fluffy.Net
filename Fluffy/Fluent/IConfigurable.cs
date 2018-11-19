@@ -10,4 +10,13 @@ namespace Fluffy.Fluent
 
         IDecisionNode<T> On<T>(Predicate<T> condition);
     }
+
+    public interface IDecisionConfigurator<out TContext>
+    {
+        IDecisionConfigurator<TContext> Default(Action<object> action);
+
+        IDecisionNode<T, TContext> On<T>();
+
+        IDecisionNode<T, TContext> On<T>(Predicate<T> condition);
+    }
 }
