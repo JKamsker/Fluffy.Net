@@ -1,12 +1,9 @@
-﻿using Fluffy.IO.Buffer;
-using Fluffy.IO.Recycling;
+﻿using Fluffy.Net;
+using Fluffy.Net.Packets.Modules.Formatted;
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
-using System.Threading.Tasks;
-using Fluffy.Net;
 
 namespace NetSocket
 {
@@ -16,220 +13,47 @@ namespace NetSocket
         {
             var server = new FluffyServer(8090);
             var client = new FluffyClient(IPAddress.Loopback, 8090);
+
+            client.Connection.PacketHandler.On<MyAwesomeClass>().Do(Awesome);
+            server.PacketHandler.On<MyAwesomeClass>().Do(Awesome);
+
             server.Start();
             client.Connect();
             Console.WriteLine("Connected");
-            client.TypedTest();
+            TypedTest(client.Connection);
             client.Test();
             client.Test();
             Console.WriteLine("Test sent");
             Console.ReadLine();
         }
 
-        private static List<int> _test;
+        private static Stopwatch _sw;
 
-        private static int GetInt<T>(T tinput)
-            where T : Enum
+        private static void TypedTest(ConnectionInfo connection)
         {
-            return tinput.GetHashCode();
-        }
-
-        private static object Load(Stuff stuff)
-        {
-            return stuff.Result;
-        }
-
-        private static async Task TaskWithoutResult()
-        {
-            var tsk = TaskWithResult();
-            await tsk;
-            await tsk;
-            //await Task.Delay(100000);
-            // return await TaskWithResult();
-        }
-
-        private static async Task<int> TaskWithResult()
-        {
-            // await Task.Delay(10000);
-            return 50;
-        }
-
-        private static void TestDifFunc()
-        {
-            for (int j = 0; j < 50; j++)
+            var obj = new MyAwesomeClass
             {
-                var sw = Stopwatch.StartNew();
-                var totalsum = 0;
-                for (int i = 0; i < 1000000; i++)
-                {
-                    bool res1 = Func1(out int lel);
-                    totalsum += lel;
-                }
-                sw.Stop();
-                Console.WriteLine($"1 Took {sw.Elapsed.TotalMilliseconds}");
-                sw.Restart();
-                for (int i = 0; i < 1000000; i++)
-                {
-                    var (res1, lel) = Func2();
-                    totalsum += lel;
-                }
-                sw.Stop();
-                Console.WriteLine($"2 Took {sw.Elapsed.TotalMilliseconds}");
-                Console.WriteLine($"  Sum: {totalsum}");
-            }
+                AwesomeString = "AWESOME!!"
+            };
+
+            var res = connection.Sender.Send<MyAwesomeClass>(obj).Value;
+            Debugger.Break();
         }
 
-        private static bool Func1(out int i)
+        private static MyAwesomeClass Awesome(MyAwesomeClass awesome)
         {
-            i = 1 + 1;
-            return true;
-        }
-
-        private static (bool, int) Func2()
-        {
-            return (true, 1 + 1);
-        }
-
-        private static void TestLinkedStream()
-        {
-            var capacity = Capacity.Small;
-            Console.WriteLine("Testing without recycling");
-            var size = capacity.ToInt();
-            byte[] buffer1;
-            for (int j = 0; j < 10; j++)
+            if (_sw == null)
             {
-                var sw = Stopwatch.StartNew();
-                var list = new List<byte[]>();
-                for (int i = 0; i < 1000000; i++)
-                {
-                    buffer1 = new byte[size];
-                    list.Add(buffer1);
-                    if (list.Count >= 300)
-                    {
-                        list.Clear();
-                    }
-                    //buffer1[1] = 123;
-                    //  GC.Collect();
-                }
-                list = new List<byte[]>();
-
-                GC.Collect();
-
-                sw.Stop();
-
-                Console.WriteLine($"Took {sw.Elapsed.TotalMilliseconds}");
+                _sw = Stopwatch.StartNew();
             }
 
-            Console.WriteLine();
-            Console.WriteLine("Testing with recycling");
-            //Console.ReadLine();
-            var re = BufferRecyclingMetaFactory<LinkableBuffer>.MakeFactory(capacity);
-            var ra = BufferRecyclingMetaFactory<FluffyBuffer>.MakeFactory(capacity);
-
-            for (int j = 0; j < 10; j++)
+            if (awesome.Packets % 300 == 0)
             {
-                var sw = Stopwatch.StartNew();
-                var list = new List<LinkableBuffer>();
-                for (int i = 0; i < 1000000; i++)
-                {
-                    var buffer = re.GetBuffer();
-                    list.Add(buffer);
-                    if (list.Count >= 300)
-                    {
-                        foreach (var buf in list)
-                        {
-                            buf.Recycle();
-                        }
-                        list.Clear();
-                    }
-                }
-                sw.Stop();
-                Console.WriteLine($"Took {sw.Elapsed.TotalMilliseconds}");
+                Console.WriteLine($"{awesome.Packets}:  ({awesome.Packets / _sw.Elapsed.TotalMilliseconds})");
             }
 
-            Console.ReadLine();
-            var buf1 = new BufferRecyclingFactory<FluffyBuffer>(50);
-
-            if (buf1 is IRecycler<FluffyBuffer>)
-            {
-                Debugger.Break();
-            }
-
-            if (buf1 is IRecycler<LinkableBuffer>)
-            {
-                Debugger.Break();
-            }
-
-            using (var ls = new LinkedStream())
-            {
-                ls.Write(new byte[] { 4, 5, 6 }, 0, 3);
-                ls.WriteHead(new byte[] { 1, 2, 3 }, 0, 3);
-
-                var nb = new byte[6];
-                ls.Read(nb, 0, 6);
-
-                var buf = FillBuf(new byte[32 * 1024 * 1024]);
-                var dbuf = new byte[1024];
-
-                ls.Write(buf, 0, buf.Length);
-
-                var str = ls.ReadToLinkedStream(20);
-
-                if (str.Length + ls.Length == buf.Length)
-                {
-                    Debugger.Break();
-                }
-
-                int read = 0;
-                while ((read = ls.Read(buf, 0, buf.Length)) != 0)
-                {
-                }
-
-                // var tread = ls.Read(dbuf, 0, 20 * 1024);
-            }
+            awesome.Packets++;
+            return awesome;
         }
-
-        private static void ThreadWork()
-        {
-            while (true)
-            {
-                for (int i = 0; i < _test.Count; i++)
-                {
-                    if (_test[i] / 21 != i)
-                    {
-                        Debugger.Break();
-                    }
-                }
-            }
-        }
-
-        private static byte[] FillBuf(byte[] buf)
-        {
-            for (int i = 0; i < buf.Length; i++)
-            {
-                buf[i] = (byte)(i % 255);
-            }
-            return buf;
-        }
-    }
-
-    internal enum Foo
-    {
-        x,
-        xa,
-        ass,
-        asf,
-        ww,
-        h
-    }
-
-    internal class Stuff
-    {
-        public int Result = 555;
-    }
-
-    internal class MCL
-    {
-        public int Lol { get; set; }
     }
 }

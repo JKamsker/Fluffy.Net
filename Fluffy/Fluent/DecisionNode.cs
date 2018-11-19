@@ -2,24 +2,55 @@
 
 namespace Fluffy.Fluent
 {
-    public class DecisionNode<T> : IDecisionNode<T>, IInvokable<T>, IInvokable, ICheckable
+    public class DecisionNode<TValue, TContext> : DecisionNode<TValue>, IDecisionNode<TValue>
     {
-        private readonly IDecisionConfigurator _configurable;
-        private readonly Predicate<T> _condition;
-        private Func<T, object> _func;
+        private TContext _context;
+
+        internal DecisionNode(IDecisionConfigurator configurable, TContext context)
+            : this(configurable, x => true, context)
+        {
+        }
+
+        internal DecisionNode(IDecisionConfigurator typeSwitch, Predicate<TValue> condition, TContext context)
+            : base(typeSwitch, condition)
+        {
+            _context = context;
+        }
+
+        public IDecisionConfigurator Do(Action<TValue, TContext> action)
+        {
+            return Do((value, context) =>
+            {
+                action(value, context);
+                return null;
+            });
+        }
+
+        public IDecisionConfigurator Do(Func<TValue, TContext, object> func)
+        {
+            _func = value => func(value, _context);
+            return _configurable;
+        }
+    }
+
+    public class DecisionNode<TValue> : IDecisionNode<TValue>, IInvokable<TValue>, IInvokable, ICheckable
+    {
+        private protected readonly IDecisionConfigurator _configurable;
+        private protected readonly Predicate<TValue> _condition;
+        private protected Func<TValue, object> _func;
 
         internal DecisionNode(IDecisionConfigurator configurable)
             : this(configurable, x => true)
         {
         }
 
-        internal DecisionNode(IDecisionConfigurator typeSwitch, Predicate<T> condition)
+        internal DecisionNode(IDecisionConfigurator typeSwitch, Predicate<TValue> condition)
         {
             _configurable = typeSwitch;
             _condition = condition;
         }
 
-        public IDecisionConfigurator Do(Action<T> action)
+        public IDecisionConfigurator Do(Action<TValue> action)
         {
             return Do(x =>
             {
@@ -28,7 +59,7 @@ namespace Fluffy.Fluent
             });
         }
 
-        public IDecisionConfigurator Do(Func<T, object> func)
+        public IDecisionConfigurator Do(Func<TValue, object> func)
         {
             _func = func;
             return _configurable;
@@ -36,10 +67,10 @@ namespace Fluffy.Fluent
 
         public bool Check(object value)
         {
-            return value is T typedValue && _condition(typedValue);
+            return value is TValue typedValue && _condition(typedValue);
         }
 
-        public bool Invoke(T value, out object result)
+        public bool Invoke(TValue value, out object result)
         {
             if (_func == null)
             {
@@ -52,7 +83,7 @@ namespace Fluffy.Fluent
 
         public bool Invoke(object value, out object result)
         {
-            if (_func != null && value is T invokeValue)
+            if (_func != null && value is TValue invokeValue)
             {
                 result = _func.Invoke(invokeValue);
                 return true;
@@ -62,7 +93,7 @@ namespace Fluffy.Fluent
             return false;
         }
 
-        public bool Invoke(T value)
+        public bool Invoke(TValue value)
         {
             return Invoke(value, out var result);
         }

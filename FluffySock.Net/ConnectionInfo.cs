@@ -1,10 +1,8 @@
 ﻿using Fluffy.Net.Packets;
+using Fluffy.Net.Packets.Raw;
 
 using System;
-using System.Diagnostics;
 using System.Net.Sockets;
-using Fluffy.Net.Packets.Modules.Formatted;
-using Fluffy.Net.Packets.Raw;
 
 namespace Fluffy.Net
 {
@@ -16,9 +14,9 @@ namespace Fluffy.Net
         public FluffySocket FluffySocket { get; set; }
 
         internal Receiver Receiver { get; private set; }
-        internal Sender Sender { get; private set; }
-        public RawPacketHandler PacketHandler { get; private set; }
-        public TypedPacketHandler TypedPacketHandler { get; private set; }
+        public Sender Sender { get; private set; }
+
+        public PacketHandler PacketHandler { get; private set; }
 
         public ConnectionInfo(FluffySocket fluffySocket)
             : this(fluffySocket.Socket, fluffySocket)
@@ -30,48 +28,28 @@ namespace Fluffy.Net
             Socket = socket;
             FluffySocket = fluffySocket;
 
-            Receiver = new Receiver(socket);
-            Sender = new Sender(this);
-            PacketHandler = new RawPacketHandler(this);
-            TypedPacketHandler = new TypedPacketHandler(this);
+            PacketHandler = new PacketHandler(this);
 
-            Receiver.OnReceive += PacketHandler.Handle;
+            Sender = new Sender(this);
+            Receiver = new Receiver(socket);
+
+            Receiver.OnReceive += PacketHandler.HandleRaw;
 #if DEBUG
 
             PacketHandler.RegisterPacket<DummyPacket>();
 #endif
             PacketHandler.RegisterPacket<FormattedPacket>();
 
-            TypedPacketHandler
-                .On<MyAwesomeClass>().Do(Awesome)
+            PacketHandler
                 .On<ConnectionInfo>().Do(x => Console.Write($"You are awesome :3"))
-                .Default(() => Console.Write($"Lol, Default"));
-        }
-
-        private Stopwatch _sw;
-
-        private MyAwesomeClass Awesome(MyAwesomeClass awesome)
-        {
-            if (_sw == null)
-            {
-                _sw = Stopwatch.StartNew();
-            }
-
-            if (awesome.Packets % 300 == 0)
-            {
-                Console.WriteLine($"{awesome.Packets}:  ({awesome.Packets / _sw.Elapsed.TotalMilliseconds})");
-                //  await Task.Delay(TimeSpan.FromSeconds(0.1));
-            }
-
-            awesome.Packets++;
-            return awesome;
+                .Default(x => Console.Write($"Lol, Default"));
         }
 
         public void Dispose()
         {
             Socket?.Dispose();
             // ReSharper disable once DelegateSubtraction
-            Receiver.OnReceive -= PacketHandler.Handle;
+            Receiver.OnReceive -= PacketHandler.HandleRaw;
             OnDisposing?.Invoke(this, this);
         }
     }

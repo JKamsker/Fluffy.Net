@@ -12,7 +12,7 @@ namespace Fluffy.Net.Packets.Raw
         public override void Handle(LinkedStream stream)
         {
             var handleObject = stream.Deserialize();
-            var result = Connection.TypedPacketHandler.Handle(handleObject);
+            var result = Connection.PacketHandler.Handle(handleObject);
             if (result != null)
             {
                 if (result is Task task)

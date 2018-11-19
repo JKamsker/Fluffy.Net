@@ -1,17 +1,16 @@
 ﻿using Fluffy.IO.Buffer;
-
+using Fluffy.Net.Packets.Raw;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using Fluffy.Net.Packets.Modules.Formatted;
-using Fluffy.Net.Packets.Raw;
 
 namespace Fluffy.Net
 {
     public class FluffyClient : FluffySocket
     {
-        private ConnectionInfo _connection;
+        public ConnectionInfo Connection { get; }
+
         private IPEndPoint _endPoint;
 
         public FluffyClient(IPAddress address, int port)
@@ -25,7 +24,7 @@ namespace Fluffy.Net
                 SendTimeout = int.MaxValue,
             };
 
-            _connection = new ConnectionInfo(Socket, this);
+            Connection = new ConnectionInfo(Socket, this);
 
             // _connection.TypedPacketHandler.
         }
@@ -36,7 +35,7 @@ namespace Fluffy.Net
             Socket.Connect(_endPoint);
             Socket.Blocking = false;
 
-            _connection.Receiver.Start();
+            Connection.Receiver.Start();
         }
 
         public Task ConnectAsync()
@@ -49,17 +48,7 @@ namespace Fluffy.Net
             var str = new LinkedStream();
             var writeBuf = Encoding.UTF8.GetBytes("Hello World");
             str.Write(writeBuf, 0, writeBuf.Length);
-            _connection.Sender.Send(PacketTypes.TestPacket, str);
-        }
-
-        public void TypedTest()
-        {
-            var obj = new MyAwesomeClass
-            {
-                AwesomeString = "AWESOME!!"
-            };
-
-            _connection.Sender.Send(obj);
+            Connection.Sender.Send(PacketTypes.TestPacket, str);
         }
     }
 }

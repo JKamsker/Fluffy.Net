@@ -4,7 +4,7 @@ namespace Fluffy.Fluent
 {
     public interface IDecisionConfigurator
     {
-        IDecisionConfigurator Default(Action action);
+        IDecisionConfigurator Default(Action<object> action);
 
         IDecisionNode<T> On<T>();
 

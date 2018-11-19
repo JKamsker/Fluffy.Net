@@ -2,21 +2,24 @@
 using Fluffy.IO.Buffer;
 using Fluffy.Net.Async;
 using Fluffy.Net.Options;
+using Fluffy.Net.Packets.Modules.Formatted;
+using Fluffy.Net.Packets.Raw;
 
 using System;
-using Fluffy.Net.Packets.Raw;
 
 namespace Fluffy.Net.Packets
 {
-    internal class Sender : IDisposable
+    public class Sender : IDisposable
     {
         private readonly ConnectionInfo _connection;
         private AsyncSender _asyncSender;
+        private DuplexSender _duplexSender;
 
         public Sender(ConnectionInfo connection)
         {
             _connection = connection;
             _asyncSender = new AsyncSender(_connection.Socket, _connection.FluffySocket.QueueWorker);
+            _duplexSender = new DuplexSender(_connection);
         }
 
         public void Send(object value)
@@ -27,18 +30,15 @@ namespace Fluffy.Net.Packets
         }
 
         /// <summary>
-        /// TODO: Return result?
-        /// Maybe return intermediate object which can return the result (may cause locking of thread) or a task<TResult>
-        /// </summary>
-        /// <typeparam name="TResult"></typeparam>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public TResult Send<TResult>(object value)
+        /// TODO: Return result? Maybe return intermediate object which can return the result (may
+        /// cause locking of thread) or a task<TResult> </summary> <typeparam
+        /// name="TResult"></typeparam> <param name="value"></param> <returns></returns>
+        public IPacketResult<TResult> Send<TResult>(object value)
         {
-            return default;
+            return _duplexSender.Send<TResult>(value);
         }
 
-        public void Send<T>(T opCode, LinkedStream stream,
+        internal void Send<T>(T opCode, LinkedStream stream,
             ParallelismOptions parallelismOption = ParallelismOptions.Parallel)
         where T : Enum
         {
@@ -46,7 +46,7 @@ namespace Fluffy.Net.Packets
             Send(bOpCode, stream, parallelismOption);
         }
 
-        public void Send(byte opCode, LinkedStream stream,
+        internal void Send(byte opCode, LinkedStream stream,
             ParallelismOptions parallelismOption = ParallelismOptions.Parallel)
         {
             //Length 4 Byte

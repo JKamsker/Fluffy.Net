@@ -1,14 +1,15 @@
-﻿using Fluffy.Net.Collections;
+﻿using Fluffy.Fluent;
+using Fluffy.Net.Collections;
 using Fluffy.Net.Options;
+using Fluffy.Net.Packets.Raw;
 
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Fluffy.Net.Packets.Raw;
 
 namespace Fluffy.Net.Packets
 {
-    public class RawPacketHandler
+    public class PacketHandler : TypeSwitch
     {
         private object _registerLock = new object();
 
@@ -16,12 +17,17 @@ namespace Fluffy.Net.Packets
 
         private Dictionary<int, BasePacket> _packetList;
 
-        internal RawPacketHandler(ConnectionInfo connectionInfo)
+        internal PacketHandler(ConnectionInfo connectionInfo)
         {
             _connection = connectionInfo;
             _packetList = new Dictionary<int, BasePacket>();
         }
 
+        /// <summary>
+        /// Registers a low-level packet
+        /// </summary>
+        /// <typeparam name="T">
+        /// </typeparam>
         public void RegisterPacket<T>() where T : BasePacket, new()
         {
             var instance = new T()
@@ -47,7 +53,7 @@ namespace Fluffy.Net.Packets
             }
         }
 
-        internal void Handle(object sender, OnPacketReceiveEventArgs packet)
+        internal void HandleRaw(object sender, OnPacketReceiveEventArgs packet)
         {
             // ReSharper disable once InconsistentlySynchronizedField
             var handler = _packetList[packet.OpCode];

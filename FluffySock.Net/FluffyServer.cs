@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Fluffy.Fluent;
+
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
@@ -9,6 +11,8 @@ namespace Fluffy.Net
     {
         private List<ConnectionInfo> _connections;
 
+        public TypeSwitch PacketHandler { get; private set; }
+
         public FluffyServer(int port)
             : this(IPAddress.Any, port)
         {
@@ -16,6 +20,7 @@ namespace Fluffy.Net
 
         public FluffyServer(IPAddress address, int port) : base()
         {
+            PacketHandler = new TypeSwitch();
             _connections = new List<ConnectionInfo>();
             Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
             {
@@ -51,6 +56,7 @@ namespace Fluffy.Net
                     _connections.Remove(connectionInfo);
                 };
                 connectionInfo.Receiver.Start();
+                connectionInfo.PacketHandler.Default(x => PacketHandler.Handle(x));
                 _connections.Add(connectionInfo);
             }
             catch (SocketException ex)
