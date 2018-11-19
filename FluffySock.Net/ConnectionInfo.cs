@@ -15,7 +15,7 @@ namespace Fluffy.Net
         internal Receiver Receiver { get; private set; }
         public Sender Sender { get; private set; }
 
-        public PacketHandler PacketHandler { get; private set; }
+        public PacketRouter PacketHandler { get; private set; }
 
         public ConnectionInfo(FluffySocket fluffySocket)
             : this(fluffySocket.Socket, fluffySocket)
@@ -27,7 +27,7 @@ namespace Fluffy.Net
             Socket = socket;
             FluffySocket = fluffySocket;
 
-            PacketHandler = new PacketHandler(this);
+            PacketHandler = new PacketRouter(this);
 
             Sender = new Sender(this);
             Receiver = new Receiver(socket);

@@ -8,7 +8,7 @@ using Fluffy.Net.Packets.Modules.Raw;
 
 namespace Fluffy.Net.Packets
 {
-    public class PacketHandler : TypeSwitch
+    public class PacketRouter : TypeSwitch
     {
         private object _registerLock = new object();
 
@@ -16,7 +16,7 @@ namespace Fluffy.Net.Packets
 
         private Dictionary<int, BasePacket> _packetList;
 
-        internal PacketHandler(ConnectionInfo connectionInfo)
+        internal PacketRouter(ConnectionInfo connectionInfo)
         {
             _connection = connectionInfo;
             _packetList = new Dictionary<int, BasePacket>();
@@ -29,7 +29,7 @@ namespace Fluffy.Net.Packets
         /// </typeparam>
         public void RegisterPacket<T>() where T : BasePacket, new()
         {
-            var instance = new T()
+            var instance = new T
             {
                 Connection = _connection
             };
@@ -54,7 +54,6 @@ namespace Fluffy.Net.Packets
 
         internal void HandleRaw(object sender, OnPacketReceiveEventArgs packet)
         {
-            // ReSharper disable once InconsistentlySynchronizedField
             var handler = _packetList[packet.OpCode];
             switch (packet.Options)
             {

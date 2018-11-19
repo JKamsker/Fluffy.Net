@@ -59,7 +59,7 @@
     <Compile Include="Options\IOState.cs" />
     <Compile Include="Options\ParallelismOptions.cs" />
     <Compile Include="Packets\Modules\Raw\BasePacket.cs" />
-    <Compile Include="Packets\PacketHandler.cs" />
+    <Compile Include="Packets\PacketRouter.cs" />
     <Compile Include="Packets\Modules\Raw\DummyPacket.cs" />
     <Compile Include="Packets\Modules\Raw\FormattedPacket.cs" />
     <Compile Include="Packets\Modules\Raw\PacketTypes.cs" />
