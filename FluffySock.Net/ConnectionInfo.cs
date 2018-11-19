@@ -32,7 +32,7 @@ namespace Fluffy.Net
             Sender = new Sender(this);
             Receiver = new Receiver(socket);
 
-            Receiver.OnReceive += PacketHandler.HandleRaw;
+            Receiver.OnReceive += PacketHandler.Handle;
 #if DEBUG
 
             PacketHandler.RegisterPacket<DummyPacket>();
@@ -48,7 +48,7 @@ namespace Fluffy.Net
         {
             Socket?.Dispose();
             // ReSharper disable once DelegateSubtraction
-            Receiver.OnReceive -= PacketHandler.HandleRaw;
+            Receiver.OnReceive -= PacketHandler.Handle;
             OnDisposing?.Invoke(this, this);
         }
     }

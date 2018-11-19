@@ -45,20 +45,17 @@ namespace NetSocket
 
             var srvEp = _server.Connections.First();
 
-            var count = 0;
-
             _sw = Stopwatch.StartNew();
             while (true)
             {
                 // awesome = srvEp.PacketHandler.Handle(awesome) as MyAwesomeClass;
                 awesome = connection.Sender.Send<MyAwesomeClass>(awesome).Value;
 
-                count++;
-
                 if (awesome.Packets % 300 == 0)
                 {
                     _sw.Stop();
-                    Console.WriteLine($"AVG Delay: {(_sw.Elapsed.TotalMilliseconds / count)} ms {awesome.Packets}:  ({awesome.Packets * 2 / _sw.Elapsed.TotalMilliseconds})");
+                    Console.WriteLine($"AVG Delay: {(_sw.Elapsed.TotalMilliseconds / awesome.Packets)} ms " +
+                                      $"{awesome.Packets}:  ({awesome.Packets * 2 / _sw.Elapsed.TotalMilliseconds})");
                     _sw.Start();
                 }
             }
@@ -66,16 +63,6 @@ namespace NetSocket
 
         private static MyAwesomeClass Awesome(MyAwesomeClass awesome)
         {
-            //if (_sw == null)
-            //{
-            //    _sw = Stopwatch.StartNew();
-            //}
-
-            //if (awesome.Packets % 300 == 0)
-            //{
-            //    Console.WriteLine($"{awesome.Packets}:  ({awesome.Packets / _sw.Elapsed.TotalMilliseconds})");
-            //}
-
             awesome.Packets++;
             return awesome;
         }

@@ -3,6 +3,7 @@ using Fluffy.Net.Collections;
 using Fluffy.Net.Options;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Fluffy.Net.Packets.Modules.Raw;
 
@@ -52,23 +53,31 @@ namespace Fluffy.Net.Packets
             }
         }
 
-        internal void HandleRaw(object sender, OnPacketReceiveEventArgs packet)
+        internal void Handle(object sender, OnPacketReceiveEventArgs packet)
         {
-            var handler = _packetList[packet.OpCode];
-            switch (packet.Options)
+            if (_packetList.TryGetValue(packet.OpCode, out var handler))
             {
-                case ParallelismOptions.Parallel:
-                    Task.Run(() => handler.Handle(packet.Body)).ContinueWith(x => packet.Body?.Dispose());
-                    break;
+                switch (packet.Options)
+                {
+                    case ParallelismOptions.Parallel:
+                        Task.Run(() => HandleInternal(handler, packet));
+                        break;
 
-                case ParallelismOptions.Sync:
-                    handler.Handle(packet.Body);
-                    packet.Body?.Dispose();
-                    break;
+                    case ParallelismOptions.Sync:
+                        HandleInternal(handler, packet);
+                        break;
 
-                default:
-                    throw new ArgumentOutOfRangeException();
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void HandleInternal(BasePacket handler, OnPacketReceiveEventArgs packet)
+        {
+            handler.Handle(packet.Body);
+            packet.Body?.Dispose();
         }
     }
 }
