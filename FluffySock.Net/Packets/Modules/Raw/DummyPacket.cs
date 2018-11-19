@@ -2,7 +2,7 @@
 using System.IO;
 using Fluffy.IO.Buffer;
 
-namespace Fluffy.Net.Packets.Raw
+namespace Fluffy.Net.Packets.Modules.Raw
 {
     public class DummyPacket : BasePacket
     {

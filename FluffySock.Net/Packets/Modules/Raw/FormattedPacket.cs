@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Fluffy.Extensions;
 using Fluffy.IO.Buffer;
-using Fluffy.Net.Packets.Raw;
 
 namespace Fluffy.Net.Packets.Modules.Raw
 {

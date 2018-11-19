@@ -1,4 +1,4 @@
-﻿namespace Fluffy.Net.Packets.Raw
+﻿namespace Fluffy.Net.Packets.Modules.Raw
 {
     public enum PacketTypes : byte
     {

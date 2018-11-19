@@ -1,11 +1,10 @@
 ﻿using Fluffy.Fluent;
 using Fluffy.Net.Collections;
 using Fluffy.Net.Options;
-using Fluffy.Net.Packets.Raw;
-
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Fluffy.Net.Packets.Modules.Raw;
 
 namespace Fluffy.Net.Packets
 {

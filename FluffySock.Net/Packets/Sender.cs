@@ -3,9 +3,8 @@ using Fluffy.IO.Buffer;
 using Fluffy.Net.Async;
 using Fluffy.Net.Options;
 using Fluffy.Net.Packets.Modules.Formatted;
-using Fluffy.Net.Packets.Raw;
-
 using System;
+using Fluffy.Net.Packets.Modules.Raw;
 
 namespace Fluffy.Net.Packets
 {

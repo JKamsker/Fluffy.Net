@@ -1,9 +1,9 @@
 ﻿using Fluffy.IO.Buffer;
-using Fluffy.Net.Packets.Raw;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Fluffy.Net.Packets.Modules.Raw;
 
 namespace Fluffy.Net
 {
