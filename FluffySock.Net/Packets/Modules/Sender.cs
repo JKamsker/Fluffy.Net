@@ -49,7 +49,10 @@ namespace Fluffy.Net.Packets.Modules
         internal void Send(byte opCode, LinkedStream stream,
             ParallelismOptions parallelismOption = ParallelismOptions.Parallel)
         {
-            _asyncSender.Send(new StreamOutputPacket(opCode, parallelismOption, stream));
+            _asyncSender.Send(new StreamOutputPacket(opCode, parallelismOption, stream)
+            {
+                IsPrioritized = true
+            });
         }
 
         public void Dispose()

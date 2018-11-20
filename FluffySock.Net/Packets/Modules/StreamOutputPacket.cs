@@ -17,7 +17,9 @@ namespace Fluffy.Net.Packets.Modules
         /// <summary>
         /// Is True when send progress has finished
         /// </summary>
-        public bool IsFinished { get; private set; }
+        public bool HasFinished { get; private set; }
+
+        public bool IsPrioritized { get; set; }
 
         /// <summary>
         /// Defines wether the handler can switch to more important Packets safely
@@ -52,7 +54,7 @@ namespace Fluffy.Net.Packets.Modules
 
             if (_stream == null || _stream.Length == 0)
             {
-                IsFinished = true;
+                HasFinished = true;
                 CanBreak = true;
                 Dispose();
                 return 0;
@@ -77,7 +79,7 @@ namespace Fluffy.Net.Packets.Modules
             read += _stream.Read(buffer, offset, count);
             if (_stream == null || _stream.Length == 0)
             {
-                IsFinished = true;
+                HasFinished = true;
                 CanBreak = true;
                 Dispose();
             }

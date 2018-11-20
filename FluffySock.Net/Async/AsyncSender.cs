@@ -19,10 +19,12 @@ namespace Fluffy.Net.Async
         private byte[] _buffer;
 
         private Stream _stream;
-        private ConcurrentQueue<Stream> _streamQueue;
 
         private IOutputPacket _packet;
+        private IOutputPacket _unprioritizedPacket;
+
         private ConcurrentQueue<IOutputPacket> _packetQueue;
+        private ConcurrentQueue<IOutputPacket> _priorityPacketQueue;
 
         private volatile bool _sendingInProgress;
         private IAsyncResult _currentAsyncResult;
@@ -31,8 +33,9 @@ namespace Fluffy.Net.Async
 
         public AsyncSender(Socket socket, SharedOutputQueueWorker worker)
         {
-            _streamQueue = new ConcurrentQueue<Stream>();
             _packetQueue = new ConcurrentQueue<IOutputPacket>();
+            _priorityPacketQueue = new ConcurrentQueue<IOutputPacket>();
+
             _socket = socket;
 
             SendTaskRelay = new SendTaskRelay(() => DoWork());
@@ -49,7 +52,14 @@ namespace Fluffy.Net.Async
 
         public void Send(IOutputPacket packet)
         {
-            _packetQueue.Enqueue(packet);
+            if (packet.IsPrioritized)
+            {
+                _priorityPacketQueue.Enqueue(packet);
+            }
+            else
+            {
+                _packetQueue.Enqueue(packet);
+            }
             SendTaskRelay.WaitHandle.Set();
         }
 
@@ -59,19 +69,45 @@ namespace Fluffy.Net.Async
             {
                 return false;
             }
+
             _sendingInProgress = true;
 
-            if (_packet == null || _packet.IsFinished)
+            if (!_priorityPacketQueue.IsEmpty && (_packet == null || (!_packet.IsPrioritized && _packet.CanBreak)))
             {
-                _packet?.Dispose();
-                if (_packetQueue.TryDequeue(out _packet))
+                if (_packet != null)
                 {
-                    return DoWork(true);
+                    if (_unprioritizedPacket != null)
+                    {
+                        throw new AggregateException("Invalid state: temporary variable not null");
+                    }
+
+                    _unprioritizedPacket = _packet;
+                    _packet = null;
+                }
+                if (!_priorityPacketQueue.TryDequeue(out _packet))
+                {
+                    throw new AggregateException("Invalid state: priority queue is empty");
+                }
+            }
+            else if (_priorityPacketQueue.IsEmpty && (_packet == null || _packet.HasFinished))
+            {
+                if (_unprioritizedPacket != null)
+                {
+                    _packet = _unprioritizedPacket;
+                    _unprioritizedPacket = null;
                 }
                 else
                 {
-                    _sendingInProgress = false;
-                    return false;
+                    _packet?.Dispose();
+                    if (_packetQueue.TryDequeue(out _packet))
+                    {
+                        return DoWork(true);
+                    }
+                    else
+                    {
+                        _sendingInProgress = false;
+                        return false;
+                    }
                 }
             }
 
