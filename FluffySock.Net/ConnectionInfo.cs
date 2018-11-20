@@ -1,7 +1,9 @@
 ﻿using Fluffy.Net.Packets;
+using Fluffy.Net.Packets.Modules;
+using Fluffy.Net.Packets.Modules.Raw;
+
 using System;
 using System.Net.Sockets;
-using Fluffy.Net.Packets.Modules.Raw;
 
 namespace Fluffy.Net
 {

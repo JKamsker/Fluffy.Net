@@ -1,11 +1,12 @@
 ﻿using Fluffy.Fluent;
 using Fluffy.Net.Collections;
 using Fluffy.Net.Options;
+using Fluffy.Net.Packets.Modules.Raw;
+
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Fluffy.Net.Packets.Modules.Raw;
 
 namespace Fluffy.Net.Packets
 {
@@ -57,8 +58,7 @@ namespace Fluffy.Net.Packets
         {
             if (_packetList.TryGetValue(packet.OpCode, out var handler))
             {
-                //TODO: Remove
-                // packet.Options = ParallelismOptions.Sync;
+                // TODO: Test! packet.Options = ParallelismOptions.Sync;
                 switch (packet.Options)
                 {
                     case ParallelismOptions.Parallel:

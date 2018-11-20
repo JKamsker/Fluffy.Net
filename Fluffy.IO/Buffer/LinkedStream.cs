@@ -90,7 +90,7 @@ namespace Fluffy.IO.Buffer
             int written = 0;
             while (written < count)
             {
-                written += _body.Write(buffer, written, count - written);
+                written += _body.Write(buffer, offset + written, count - written);
                 if (written < count)
                 {
                     var nb = _recyclingFactory.GetBuffer();
@@ -130,7 +130,7 @@ namespace Fluffy.IO.Buffer
                     }
                 }
 
-                readBytes += _head.Read(buffer, readBytes, count - readBytes);
+                readBytes += _head.Read(buffer, offset + readBytes, count - readBytes);
             }
 
             _length -= readBytes;
@@ -179,8 +179,6 @@ namespace Fluffy.IO.Buffer
             base.Close();
         }
 
-        #region NotImplemented
-
         public override void Flush()
         {
             // throw new System.NotImplementedException();
@@ -209,7 +207,5 @@ namespace Fluffy.IO.Buffer
             {
             }
         }
-
-        #endregion NotImplemented
     }
 }

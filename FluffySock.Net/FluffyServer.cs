@@ -14,12 +14,14 @@ namespace Fluffy.Net
 
         public ContextAwareTypeSwitch<ConnectionInfo> PacketHandler { get; private set; }
 
+        public EventHandler<ConnectionInfo> OnNewConnection;
+
         public FluffyServer(int port)
             : this(IPAddress.Any, port)
         {
         }
 
-        public FluffyServer(IPAddress address, int port) : base()
+        public FluffyServer(IPAddress address, int port) : base(nameof(FluffyServer))
         {
             PacketHandler = new ContextAwareTypeSwitch<ConnectionInfo>(null);
             _connections = new List<ConnectionInfo>();
@@ -59,6 +61,7 @@ namespace Fluffy.Net
                 connectionInfo.Receiver.Start();
                 connectionInfo.PacketHandler.Default(x => PacketHandler.Handle(x, connectionInfo));
                 _connections.Add(connectionInfo);
+                OnNewConnection?.Invoke(this, connectionInfo);
             }
             catch (SocketException ex)
             {

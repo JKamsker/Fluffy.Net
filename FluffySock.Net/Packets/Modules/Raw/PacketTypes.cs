@@ -3,6 +3,7 @@
     public enum PacketTypes : byte
     {
         TestPacket = 1,
-        FormattedPacket
+        FormattedPacket,
+        StreamPacket,
     }
 }

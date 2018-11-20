@@ -16,11 +16,20 @@ namespace Fluffy.Net.Async
         private volatile bool _running;
         public bool Running => _running;
 
-        public SharedOutputQueueWorker()
+        public SharedOutputQueueWorker(string threadName = nameof(SharedOutputQueueWorker))
         {
+            if (threadName != nameof(SharedOutputQueueWorker))
+            {
+                threadName += $" {threadName}";
+            }
+
             _queue = new ConcurrentQueue<SendTaskRelay>();
             _pushBackQueue = new ConcurrentQueue<SendTaskRelay>();
-            _worker = new Thread(ThreadWorker);
+            _worker = new Thread(ThreadWorker)
+            {
+                Name = threadName,
+                IsBackground = true
+            };
         }
 
         public SharedOutputQueueWorker StartWorker()
@@ -63,7 +72,7 @@ namespace Fluffy.Net.Async
                 _queue = q2;
                 _pushBackQueue = q1;
 
-                _resetEvent.WaitOne(TimeSpan.FromMilliseconds(50));
+                _resetEvent.WaitOne(TimeSpan.FromMilliseconds(50 * 10000));
             }
 
             _running = false;

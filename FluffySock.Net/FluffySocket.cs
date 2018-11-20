@@ -1,5 +1,6 @@
-﻿using System.Net.Sockets;
-using Fluffy.Net.Async;
+﻿using Fluffy.Net.Async;
+
+using System.Net.Sockets;
 
 namespace Fluffy.Net
 {
@@ -8,9 +9,9 @@ namespace Fluffy.Net
         protected internal Socket Socket;
         internal SharedOutputQueueWorker QueueWorker { get; private set; }
 
-        protected FluffySocket()
+        protected FluffySocket(string socketName = "")
         {
-            QueueWorker = new SharedOutputQueueWorker();
+            QueueWorker = new SharedOutputQueueWorker(socketName);
         }
     }
 }

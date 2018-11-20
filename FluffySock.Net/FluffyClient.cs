@@ -1,9 +1,10 @@
 ﻿using Fluffy.IO.Buffer;
+using Fluffy.Net.Packets.Modules.Raw;
+
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using Fluffy.Net.Packets.Modules.Raw;
 
 namespace Fluffy.Net
 {
@@ -13,7 +14,7 @@ namespace Fluffy.Net
 
         private IPEndPoint _endPoint;
 
-        public FluffyClient(IPAddress address, int port)
+        public FluffyClient(IPAddress address, int port) : base(nameof(FluffyClient))
         {
             _endPoint = new IPEndPoint(address, port);
             Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)

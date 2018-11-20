@@ -3,9 +3,7 @@ using Fluffy.Net.Packets.Modules.Formatted;
 
 using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
-using System.Threading;
 
 namespace NetSocket
 {
@@ -21,29 +19,24 @@ namespace NetSocket
 
             _client.Connection.PacketHandler.On<MyAwesomeClass>().Do(Awesome);
             _server.PacketHandler.On<MyAwesomeClass>().Do(Awesome);
-
             _server.Start();
+            _server.OnNewConnection += OnNewConnection;
+
             _client.Connect();
             Console.WriteLine("Connected");
             TypedTest(_client.Connection);
-            _client.Test();
-            _client.Test();
+            //_client.Test();
+            //_client.Test();
             Console.WriteLine("Test sent");
             Console.ReadLine();
         }
 
-        private static Stopwatch _sw;
-
-        private static void TypedTest(ConnectionInfo connection)
+        private static void OnNewConnection(object sender, ConnectionInfo connection)
         {
             var awesome = new MyAwesomeClass
             {
                 AwesomeString = "AWESOME!!"
             };
-
-            Thread.Sleep(1000);
-
-            var srvEp = _server.Connections.First();
 
             _sw = Stopwatch.StartNew();
             while (true)
@@ -59,6 +52,12 @@ namespace NetSocket
                     _sw.Start();
                 }
             }
+        }
+
+        private static Stopwatch _sw;
+
+        private static void TypedTest(ConnectionInfo connection)
+        {
         }
 
         private static MyAwesomeClass Awesome(MyAwesomeClass awesome)

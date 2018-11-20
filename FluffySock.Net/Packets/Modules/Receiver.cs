@@ -6,9 +6,8 @@ using Fluffy.Net.Options;
 
 using System;
 using System.Net.Sockets;
-using System.Threading.Tasks;
 
-namespace Fluffy.Net.Packets
+namespace Fluffy.Net.Packets.Modules
 {
     internal class Receiver : IDisposable
     {
@@ -21,7 +20,6 @@ namespace Fluffy.Net.Packets
         private volatile bool _started;
         private volatile bool _disposed;
 
-        private DelegateStorage<DynamicMethodDummy, Action<LinkedStream>> _actionStorage;
         private IObjectRecyclingFactory<LinkableBuffer> _bufferWrapperFac;
         private LinkableBuffer _bufferWrapper;
 
@@ -36,42 +34,6 @@ namespace Fluffy.Net.Packets
             _buffer = _bufferWrapper.Value;
 
             _stream = new LinkedStream();
-            _actionStorage = new DelegateStorage<DynamicMethodDummy, Action<LinkedStream>>();
-
-            _actionStorage.SetAction(DynamicMethodDummy.Test1, stream =>
-            {
-                Console.WriteLine("Hey1");
-            });
-
-            _actionStorage.SetAction(DynamicMethodDummy.Test2, stream =>
-            {
-                Console.WriteLine("Hey2");
-            });
-
-            _actionStorage.SetAction(DynamicMethodDummy.Test3, stream =>
-            {
-                Console.WriteLine("Hey3");
-            });
-
-            // OnReceive += OnReceivePacket;
-        }
-
-        private void OnReceivePacket(object sender, OnPacketReceiveEventArgs e)
-        {
-            var handler = _actionStorage.GetDelegate(e.OpCode);
-            switch (e.Options)
-            {
-                case ParallelismOptions.Parallel:
-                    Task.Run(() => handler(e.Body));
-                    break;
-
-                case ParallelismOptions.Sync:
-                    handler(e.Body);
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
         }
 
         public Receiver Start()

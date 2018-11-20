@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Fluffy.IO.Buffer;
+using Fluffy.IO.Recycling;
+using Fluffy.Net.Packets.Modules;
+
+using System;
 using System.Collections.Concurrent;
 using System.Data;
-using System.Diagnostics;
 using System.IO;
 using System.Net.Sockets;
-using Fluffy.IO.Buffer;
-using Fluffy.IO.Recycling;
 
 namespace Fluffy.Net.Async
 {
@@ -20,6 +21,9 @@ namespace Fluffy.Net.Async
         private Stream _stream;
         private ConcurrentQueue<Stream> _streamQueue;
 
+        private IOutputPacket _packet;
+        private ConcurrentQueue<IOutputPacket> _packetQueue;
+
         private volatile bool _sendingInProgress;
         private IAsyncResult _currentAsyncResult;
 
@@ -28,6 +32,7 @@ namespace Fluffy.Net.Async
         public AsyncSender(Socket socket, SharedOutputQueueWorker worker)
         {
             _streamQueue = new ConcurrentQueue<Stream>();
+            _packetQueue = new ConcurrentQueue<IOutputPacket>();
             _socket = socket;
 
             SendTaskRelay = new SendTaskRelay(() => DoWork());
@@ -42,9 +47,9 @@ namespace Fluffy.Net.Async
             worker.AddTask(SendTaskRelay);
         }
 
-        public void Send(Stream stream)
+        public void Send(IOutputPacket packet)
         {
-            _streamQueue.Enqueue(stream);
+            _packetQueue.Enqueue(packet);
             SendTaskRelay.WaitHandle.Set();
         }
 
@@ -54,32 +59,28 @@ namespace Fluffy.Net.Async
             {
                 return false;
             }
+            _sendingInProgress = true;
 
-            if (_stream?.Length < 0)
+            if (_packet == null || _packet.IsFinished)
             {
-                Debugger.Break();
-            }
-
-            if (_stream == null || _stream.Length <= 0)
-            {
-                _stream?.Dispose();
-                if (_streamQueue.TryDequeue(out _stream))
+                _packet?.Dispose();
+                if (_packetQueue.TryDequeue(out _packet))
                 {
                     return DoWork(true);
                 }
                 else
                 {
+                    _sendingInProgress = false;
                     return false;
                 }
             }
 
-            var read = _stream.Read(_buffer, 0, _buffer.Length);
+            var read = _packet.Read(_buffer, 0, _buffer.Length);
             if (read <= 0)
             {
                 return DoWork(true);
             }
 
-            _sendingInProgress = true;
             _currentAsyncResult = _socket.BeginSend(_buffer, 0, read, SocketFlags.None, ar => Callback(ar, read), this);
             return true;
         }
