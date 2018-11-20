@@ -2,7 +2,7 @@
 
 namespace Fluffy.Net.Packets.Modules.Raw
 {
-    public abstract class BasePacket
+    public abstract class BasePacketHandler
     {
         public abstract byte OpCode { get; }
 

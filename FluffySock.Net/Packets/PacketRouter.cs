@@ -5,6 +5,7 @@ using Fluffy.Net.Packets.Modules.Raw;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
@@ -16,12 +17,12 @@ namespace Fluffy.Net.Packets
 
         private readonly ConnectionInfo _connection;
 
-        private Dictionary<int, BasePacket> _packetList;
+        private Dictionary<int, BasePacketHandler> _packetList;
 
         internal PacketRouter(ConnectionInfo connectionInfo)
         {
             _connection = connectionInfo;
-            _packetList = new Dictionary<int, BasePacket>();
+            _packetList = new Dictionary<int, BasePacketHandler>();
         }
 
         /// <summary>
@@ -29,7 +30,7 @@ namespace Fluffy.Net.Packets
         /// </summary>
         /// <typeparam name="T">
         /// </typeparam>
-        public void RegisterPacket<T>() where T : BasePacket, new()
+        public void RegisterPacket<T>() where T : BasePacketHandler, new()
         {
             var instance = new T
             {
@@ -75,8 +76,23 @@ namespace Fluffy.Net.Packets
             }
         }
 
+        public T GetInstance<T>() where T : BasePacketHandler, new()
+        {
+            return _packetList.Values.FirstOrDefault(x => x is T) as T;
+        }
+
+        public BasePacketHandler GetInstance<T>(T opCode) where T : Enum
+        {
+            return GetInstance(Convert.ToInt32(opCode));
+        }
+
+        public BasePacketHandler GetInstance(int opCode)
+        {
+            return _packetList[opCode];
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void HandleInternal(BasePacket handler, OnPacketReceiveEventArgs packet)
+        private void HandleInternal(BasePacketHandler handler, OnPacketReceiveEventArgs packet)
         {
             handler.Handle(packet.Body);
             packet.Body?.Dispose();

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Fluffy.IO.Buffer;
+
+using System;
 using System.IO;
-using Fluffy.IO.Buffer;
 
 namespace Fluffy.Net.Packets.Modules.Raw
 {
-    public class DummyPacket : BasePacket
+    public class DummyPacketHandler : BasePacketHandler
     {
         public override byte OpCode => (int)PacketTypes.TestPacket;
 

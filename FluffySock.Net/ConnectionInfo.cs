@@ -39,7 +39,8 @@ namespace Fluffy.Net
 
             PacketHandler.RegisterPacket<DummyPacket>();
 #endif
-            PacketHandler.RegisterPacket<FormattedPacket>();
+            PacketHandler.RegisterPacket<FormattedPacketHandler>();
+            PacketHandler.RegisterPacket<StreamPacketHandler>();
 
             PacketHandler
                 .On<ConnectionInfo>().Do(x => Console.Write($"You are awesome :3"))

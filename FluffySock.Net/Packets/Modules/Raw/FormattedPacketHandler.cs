@@ -1,11 +1,12 @@
-﻿using System.Diagnostics;
-using System.Threading.Tasks;
-using Fluffy.Extensions;
+﻿using Fluffy.Extensions;
 using Fluffy.IO.Buffer;
+
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Fluffy.Net.Packets.Modules.Raw
 {
-    public class FormattedPacket : BasePacket
+    public class FormattedPacketHandler : BasePacketHandler
     {
         public override byte OpCode => (int)PacketTypes.FormattedPacket;
 
