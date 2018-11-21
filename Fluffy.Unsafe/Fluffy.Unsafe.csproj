@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FluffyBitConverter.cs" />
+    <Compile Include="FluffyCompare.cs" />
     <Compile Include="_Extensions\UsafeSerialisationExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

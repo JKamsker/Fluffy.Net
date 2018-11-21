@@ -70,8 +70,6 @@ namespace Fluffy.Net.Packets.Modules
 
                 FluffyBitConverter.GetBytes(_stream.Length + 2, buffer, offset);
 
-                //var lengthBytes = BitConverter.GetBytes(_stream.Length + 2);
-                //Array.Copy(lengthBytes, 0, buffer, offset, 4);
                 offset += 4;
                 buffer[offset++] = (byte)ParallelismOptions;
                 buffer[offset++] = OpCode;

@@ -2,14 +2,19 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 
 namespace PlayGround
 {
     internal class Program
     {
+        private const int loops = 1000000;
+
         private static unsafe void Main(string[] args)
         {
+            var sw = Stopwatch.StartNew();
+
             long value = 16;
             var bx = new byte[]
             {
@@ -23,6 +28,22 @@ namespace PlayGround
                 0xff,
             };
 
+            var arr1 = Enumerable.Range(0, 5000).Select(x => (byte)(x % 255)).ToArray();
+            var arr2 = Enumerable.Range(0, 5000).Select(x => (byte)(x % 255)).ToArray();
+            Console.WriteLine(arr1.Length);
+            for (int j = 0; j < 20; j++)
+            {
+                sw.Restart();
+                for (int i = 0; i < loops; i++)
+                {
+                    // var equal = FluffyCompare.ByteArrayCompare(arr1, arr2); var eq = arr1.SequenceEqual(arr2);
+                    var equal = FluffyCompare.ByteArrayCompare(arr1, arr2);
+                }
+                sw.Stop();
+                Console.WriteLine($"MemCmp: {sw.Elapsed.TotalMilliseconds}");
+            }
+
+            Console.ReadLine();
             //fixed (byte* b = bx)
             //{
             //    *((int*)(b + 1)) = value;
@@ -45,9 +66,8 @@ namespace PlayGround
             var gu = Guid.NewGuid();
             var fg = new FakeGuid(gu.ToByteArray());
 
-            const int loops = 1000000 * 10;
             var yarr = new byte[16];
-            var sw = Stopwatch.StartNew();
+            sw.Restart();
             for (int j = 0; j < 10; j++)
             {
                 for (int i = 0; i < loops; i++)
