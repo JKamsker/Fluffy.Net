@@ -5,6 +5,7 @@ using Fluffy.Net.Collections;
 using Fluffy.Net.Options;
 
 using System;
+using System.Diagnostics;
 using System.Net.Sockets;
 
 namespace Fluffy.Net.Packets.Modules
@@ -66,6 +67,8 @@ namespace Fluffy.Net.Packets.Modules
             _socket.BeginReceive(_buffer, 0, _nextSegmentLength, SocketFlags.None, ReceiveCallback, null);
         }
 
+        private int headerLen = 0;
+
         private void HandleStream()
         {
             switch (_state)
@@ -73,6 +76,11 @@ namespace Fluffy.Net.Packets.Modules
                 case IOState.HeaderLen:
                     if (_stream.Length >= 4)
                     {
+                        headerLen++;
+                        if (headerLen == 36802)
+                        {
+                            Debugger.Break();
+                        }
                         var nextSegmentLength = _stream.ReadInt32();
                         if (nextSegmentLength == -1)
                         {

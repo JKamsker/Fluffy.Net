@@ -2,7 +2,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 
 namespace PlayGround
@@ -28,22 +27,22 @@ namespace PlayGround
                 0xff,
             };
 
-            var arr1 = Enumerable.Range(0, 5000).Select(x => (byte)(x % 255)).ToArray();
-            var arr2 = Enumerable.Range(0, 5000).Select(x => (byte)(x % 255)).ToArray();
-            Console.WriteLine(arr1.Length);
-            for (int j = 0; j < 20; j++)
-            {
-                sw.Restart();
-                for (int i = 0; i < loops; i++)
-                {
-                    // var equal = FluffyCompare.ByteArrayCompare(arr1, arr2); var eq = arr1.SequenceEqual(arr2);
-                    var equal = FluffyCompare.ByteArrayCompare(arr1, arr2);
-                }
-                sw.Stop();
-                Console.WriteLine($"MemCmp: {sw.Elapsed.TotalMilliseconds}");
-            }
+            //var arr1 = Enumerable.Range(0, 5000).Select(x => (byte)(x % 255)).ToArray();
+            //var arr2 = Enumerable.Range(0, 5000).Select(x => (byte)(x % 255)).ToArray();
+            //Console.WriteLine(arr1.Length);
+            //for (int j = 0; j < 20; j++)
+            //{
+            //    sw.Restart();
+            //    for (int i = 0; i < loops; i++)
+            //    {
+            //        // var equal = FluffyCompare.ByteArrayCompare(arr1, arr2); var eq = arr1.SequenceEqual(arr2);
+            //        var equal = FluffyCompare.ByteArrayCompare(arr1, arr2);
+            //    }
+            //    sw.Stop();
+            //    Console.WriteLine($"MemCmp: {sw.Elapsed.TotalMilliseconds}");
+            //}
 
-            Console.ReadLine();
+            //Console.ReadLine();
             //fixed (byte* b = bx)
             //{
             //    *((int*)(b + 1)) = value;
@@ -67,31 +66,31 @@ namespace PlayGround
             var fg = new FakeGuid(gu.ToByteArray());
 
             var yarr = new byte[16];
-            sw.Restart();
-            for (int j = 0; j < 10; j++)
-            {
-                for (int i = 0; i < loops; i++)
-                {
-                    FluffyBitConverter.GetBytes(value, bx, 0);
-                }
-                sw.Stop();
-                Console.WriteLine($"Unsafe get bytes {sw.Elapsed.TotalMilliseconds}");
-                sw.Restart();
-            }
+            //sw.Restart();
+            //for (int j = 0; j < 10; j++)
+            //{
+            //    for (int i = 0; i < loops; i++)
+            //    {
+            //        FluffyBitConverter.Serialize(value, bx, 0);
+            //    }
+            //    sw.Stop();
+            //    Console.WriteLine($"Unsafe get bytes {sw.Elapsed.TotalMilliseconds}");
+            //    sw.Restart();
+            //}
 
-            Console.WriteLine("Switch");
-            for (int j = 0; j < 10; j++)
-            {
-                for (int i = 0; i < loops; i++)
-                {
-                    bx = BitConverter.GetBytes(value);
-                }
-                sw.Stop();
-                Console.WriteLine($"Unsafe get bytes {sw.Elapsed.TotalMilliseconds} {bx.Length}");
-                sw.Restart();
-            }
+            //Console.WriteLine("Switch");
+            //for (int j = 0; j < 10; j++)
+            //{
+            //    for (int i = 0; i < loops; i++)
+            //    {
+            //        bx = BitConverter.GetBytes(value);
+            //    }
+            //    sw.Stop();
+            //    Console.WriteLine($"Unsafe get bytes {sw.Elapsed.TotalMilliseconds} {bx.Length}");
+            //    sw.Restart();
+            //}
 
-            Console.ReadLine();
+            //Console.ReadLine();
             sw.Restart();
             for (int i = 0; i < loops; i++)
             {
@@ -103,6 +102,7 @@ namespace PlayGround
             }
             sw.Stop();
             Console.WriteLine($"Unsafe direct+arr.clear {sw.Elapsed.TotalMilliseconds}");
+
             sw.Restart();
             for (int i = 0; i < loops; i++)
             {
@@ -113,14 +113,15 @@ namespace PlayGround
             }
             sw.Stop();
             Console.WriteLine($"Unsafe direct {sw.Elapsed.TotalMilliseconds}");
-            sw.Restart();
 
+            sw.Restart();
             for (int i = 0; i < loops; i++)
             {
-                gu.SerializeTo(yarr, 0);
+                FluffyBitConverter.Serialize(gu, yarr, 0);
             }
             sw.Stop();
             Console.WriteLine($"Unsafe {sw.Elapsed.TotalMilliseconds}");
+
             sw.Restart();
             for (int i = 0; i < loops; i++)
             {

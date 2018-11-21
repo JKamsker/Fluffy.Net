@@ -6,6 +6,7 @@ using Fluffy.Net.Packets.Modules.Formatted;
 using Fluffy.Net.Packets.Modules.Raw;
 
 using System;
+using System.IO;
 
 namespace Fluffy.Net.Packets.Modules
 {
@@ -49,10 +50,15 @@ namespace Fluffy.Net.Packets.Modules
         internal void Send(byte opCode, LinkedStream stream,
             ParallelismOptions parallelismOption = ParallelismOptions.Parallel)
         {
-            _asyncSender.Send(new StreamOutputPacket(opCode, parallelismOption, stream)
+            _asyncSender.Send(new StandardOutputPacket(opCode, parallelismOption, stream)
             {
                 IsPrioritized = true
             });
+        }
+
+        public void SendStream(Guid streamId, Stream stream)
+        {
+            _asyncSender.Send(new StreamOutputPacket((byte)PacketTypes.StreamPacket, ParallelismOptions.Sync, streamId, stream));
         }
 
         public void Dispose()

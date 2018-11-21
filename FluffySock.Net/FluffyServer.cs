@@ -61,7 +61,8 @@ namespace Fluffy.Net
                 connectionInfo.Receiver.Start();
                 connectionInfo.PacketHandler.Default(x => PacketHandler.Handle(x, connectionInfo));
                 _connections.Add(connectionInfo);
-                OnNewConnection?.Invoke(this, connectionInfo);
+
+                OnNewConnection?.BeginInvoke(this, connectionInfo, null, null);
             }
             catch (SocketException ex)
             {

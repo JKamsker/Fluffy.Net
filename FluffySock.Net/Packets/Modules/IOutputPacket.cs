@@ -6,7 +6,7 @@ namespace Fluffy.Net.Packets.Modules
 {
     internal interface IOutputPacket : IDisposable
     {
-        bool IsPrioritized { get; set; }
+        bool IsPrioritized { get; }
         bool CanBreak { get; }
         bool HasFinished { get; }
 

@@ -1,38 +1,27 @@
-﻿using Fluffy.IO.Buffer;
-using Fluffy.Net.Options;
+﻿using Fluffy.Net.Options;
 using Fluffy.Unsafe;
 
 using System;
+using System.IO;
 
 namespace Fluffy.Net.Packets.Modules
 {
-    internal class StreamOutputPacket
-        : IOutputPacket
+    internal class StreamOutputPacket : IOutputPacket
     {
-        private readonly LinkedStream _stream;
-        private bool _isDisposed;
+        private Guid _streamId;
+        private Stream _stream;
 
-        public byte OpCode { get; set; }
-        public ParallelismOptions ParallelismOptions { get; set; }
-
-        /// <summary>
-        /// Is True when send progress has finished
-        /// </summary>
+        public bool IsPrioritized => false;
+        public bool CanBreak => true;
         public bool HasFinished { get; private set; }
+        public byte OpCode { get; }
+        public ParallelismOptions ParallelismOptions { get; }
 
-        public bool IsPrioritized { get; set; }
-
-        /// <summary>
-        /// Defines wether the handler can switch to more important Packets safely
-        /// </summary>
-        public bool CanBreak { get; private set; }
-
-        public bool HasSendHeaders { get; private set; }
-
-        public StreamOutputPacket(byte opCode, ParallelismOptions parallelismOption, LinkedStream stream)
+        public StreamOutputPacket(byte opCode, ParallelismOptions parallelismOption, Guid streamId, Stream stream)
         {
             OpCode = opCode;
             ParallelismOptions = parallelismOption;
+            _streamId = streamId;
             _stream = stream;
         }
 
@@ -42,7 +31,6 @@ namespace Fluffy.Net.Packets.Modules
             {
                 return 0;
             }
-
             if (count > buffer.Length)
             {
                 count = buffer.Length;
@@ -56,32 +44,30 @@ namespace Fluffy.Net.Packets.Modules
             if (_stream == null || _stream.Length == 0)
             {
                 HasFinished = true;
-                CanBreak = true;
+                Console.WriteLine($"Disposed");
                 Dispose();
                 return 0;
             }
 
-            int read = 0;
-            if (!HasSendHeaders)
-            {
-                //Length 4 Byte
-                //DynamicMethodDummy 1 Byte
-                //ParallelismOptions 1 Byte
+            int read = 4 + 2 + 16; //1x sizeof(int) - 2x sizeof(byte) - 1x sizeof(Guid)
+            //var blockLength = count - offset - 4; //ex buffer.Length
 
-                FluffyBitConverter.GetBytes(_stream.Length + 2, buffer, offset);
+            //Length 4 Byte
+            //DynamicMethodDummy 1 Byte
+            //ParallelismOptions 1 Byte
+            FluffyBitConverter.Serialize(count - 4, buffer, offset);
+            offset += 4;
+            buffer[offset++] = (byte)ParallelismOptions;
+            buffer[offset++] = OpCode;
+            //Injected body
+            FluffyBitConverter.Serialize(_streamId, buffer, offset);
+            offset += 16;
 
-                offset += 4;
-                buffer[offset++] = (byte)ParallelismOptions;
-                buffer[offset++] = OpCode;
-                read = 6;
-                HasSendHeaders = true;
-            }
-
-            read += _stream.Read(buffer, offset, count);
+            read += _stream.Read(buffer, offset, count - offset);
             if (_stream == null || _stream.Length == 0)
             {
                 HasFinished = true;
-                CanBreak = true;
+                Console.WriteLine($"Disposed");
                 Dispose();
             }
 
@@ -90,12 +76,6 @@ namespace Fluffy.Net.Packets.Modules
 
         public void Dispose()
         {
-            if (_isDisposed)
-            {
-                return;
-            }
-            _isDisposed = true;
-
             _stream?.Dispose();
         }
     }

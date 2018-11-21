@@ -10,7 +10,15 @@ namespace Fluffy.Net.Packets.Modules.Raw
 
         public override void Handle(LinkedStream stream)
         {
-            throw new NotImplementedException();
+            var guidBuffer = new byte[16];
+            var read = stream.Read(guidBuffer, 0, guidBuffer.Length);
+            if (read == guidBuffer.Length)
+            {
+                Console.WriteLine($"Received stream packet. " +
+                                  $"Guid: {new Guid(guidBuffer)} " +
+                                  $"Length: {stream.Length}");
+                stream.Dispose();
+            }
         }
     }
 }
