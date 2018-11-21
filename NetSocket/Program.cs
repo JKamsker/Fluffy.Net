@@ -14,6 +14,11 @@ namespace NetSocket
 
         private static void Main(string[] args)
         {
+            var guid = Guid.NewGuid();
+
+            var x = guid.ToByteArray();
+            var ng = new Guid(x);
+
             _server = new FluffyServer(8090);
             _client = new FluffyClient(IPAddress.Loopback, 8090);
 

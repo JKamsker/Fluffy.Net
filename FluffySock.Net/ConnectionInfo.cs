@@ -37,7 +37,7 @@ namespace Fluffy.Net
             Receiver.OnReceive += PacketHandler.Handle;
 #if DEBUG
 
-            PacketHandler.RegisterPacket<DummyPacket>();
+            PacketHandler.RegisterPacket<DummyPacketHandler>();
 #endif
             PacketHandler.RegisterPacket<FormattedPacketHandler>();
             PacketHandler.RegisterPacket<StreamPacketHandler>();

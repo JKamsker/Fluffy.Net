@@ -77,6 +77,10 @@
       <Project>{BD4B8F33-E100-422E-866D-779A4B38D2F8}</Project>
       <Name>Fluffy.IO</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Fluffy.Unsafe\Fluffy.Unsafe.csproj">
+      <Project>{76a1b05c-768c-416f-952f-83b39f875ecc}</Project>
+      <Name>Fluffy.Unsafe</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fluffy\Fluffy.csproj">
       <Project>{BAD50387-0819-4B30-B937-0C003D49312B}</Project>
       <Name>Fluffy</Name>

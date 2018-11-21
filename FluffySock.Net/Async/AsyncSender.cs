@@ -5,7 +5,6 @@ using Fluffy.Net.Packets.Modules;
 using System;
 using System.Collections.Concurrent;
 using System.Data;
-using System.IO;
 using System.Net.Sockets;
 
 namespace Fluffy.Net.Async
@@ -17,8 +16,6 @@ namespace Fluffy.Net.Async
         private readonly IObjectRecyclingFactory<RecyclableBuffer> _bufferFactory;
         private RecyclableBuffer _bufferWrapper;
         private byte[] _buffer;
-
-        private Stream _stream;
 
         private IOutputPacket _packet;
         private IOutputPacket _unprioritizedPacket;
@@ -72,6 +69,12 @@ namespace Fluffy.Net.Async
 
             _sendingInProgress = true;
 
+            if (_packet?.HasFinished == true)
+            {
+                _packet.Dispose();
+                _packet = null;
+            }
+
             if (!_priorityPacketQueue.IsEmpty && (_packet == null || (!_packet.IsPrioritized && _packet.CanBreak)))
             {
                 if (_packet != null)
@@ -109,6 +112,11 @@ namespace Fluffy.Net.Async
                         return false;
                     }
                 }
+            }
+
+            if (_packet == null)
+            {
+                return false;
             }
 
             var read = _packet.Read(_buffer, 0, _buffer.Length);
@@ -152,9 +160,14 @@ namespace Fluffy.Net.Async
 
             _bufferWrapper.Recycle();
 
-            while (_streamQueue.TryDequeue(out _stream))
+            while (_packetQueue.TryDequeue(out _packet))
             {
-                _stream.Dispose();
+                _packet.Dispose();
+            }
+
+            while (_priorityPacketQueue.TryDequeue(out _packet))
+            {
+                _packet.Dispose();
             }
 
             SendTaskRelay.Dispose();

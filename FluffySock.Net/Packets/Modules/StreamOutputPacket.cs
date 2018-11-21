@@ -1,5 +1,6 @@
 ﻿using Fluffy.IO.Buffer;
 using Fluffy.Net.Options;
+using Fluffy.Unsafe;
 
 using System;
 
@@ -67,8 +68,10 @@ namespace Fluffy.Net.Packets.Modules
                 //DynamicMethodDummy 1 Byte
                 //ParallelismOptions 1 Byte
 
-                var lengthBytes = BitConverter.GetBytes(_stream.Length + 2);
-                Array.Copy(lengthBytes, 0, buffer, offset, 4);
+                FluffyBitConverter.GetBytes(_stream.Length + 2, buffer, offset);
+
+                //var lengthBytes = BitConverter.GetBytes(_stream.Length + 2);
+                //Array.Copy(lengthBytes, 0, buffer, offset, 4);
                 offset += 4;
                 buffer[offset++] = (byte)ParallelismOptions;
                 buffer[offset++] = OpCode;
