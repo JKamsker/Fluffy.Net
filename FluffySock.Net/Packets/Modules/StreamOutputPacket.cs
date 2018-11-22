@@ -27,13 +27,20 @@ namespace Fluffy.Net.Packets.Modules
 
         public int Read(byte[] buffer, int offset, int count)
         {
-            if (count <= 0)
+            var realCount = count;
+            var maxCount = buffer.Length - offset;
+            var streamLength = (int)(_stream.Length - _stream.Position);
+
+            realCount = Math.Min(realCount, maxCount);
+
+            if (realCount <= 0)
             {
                 return 0;
             }
-            if (count > buffer.Length)
+
+            if (count > streamLength)
             {
-                count = buffer.Length;
+                count = streamLength;
             }
 
             if (_stream?.Length < 0)
@@ -41,7 +48,7 @@ namespace Fluffy.Net.Packets.Modules
                 throw new AggregateException("Stream length cannot be less than 0");
             }
 
-            if (_stream == null || _stream.Length == 0)
+            if (_stream == null || streamLength == 0)
             {
                 HasFinished = true;
                 Console.WriteLine($"Disposed");
@@ -64,13 +71,17 @@ namespace Fluffy.Net.Packets.Modules
             offset += 16;
 
             read += _stream.Read(buffer, offset, count - offset);
-            if (_stream == null || _stream.Length == 0)
+            if (_stream == null || _stream.Length - _stream.Position == 0)
             {
                 HasFinished = true;
                 Console.WriteLine($"Disposed");
                 Dispose();
             }
 
+            //if (read != buffer.Length)
+            //{
+            //    Debugger.Break();
+            //}
             return read;
         }
 
