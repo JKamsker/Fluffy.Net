@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace NetSocket
 {
@@ -34,7 +35,7 @@ namespace NetSocket
             Console.ReadLine();
         }
 
-        private static void OnNewConnection(object sender, ConnectionInfo connection)
+        private static async void OnNewConnection(object sender, ConnectionInfo connection)
         {
             var awesome = new MyAwesomeClass
             {
@@ -50,21 +51,22 @@ namespace NetSocket
             }
 
             connection.Sender.SendStream(Guid.NewGuid(), File.OpenRead(@"C:\Users\BEKO\Downloads\AP.Server.Host.7z"));
-            Console.ReadLine();
+            // Console.ReadLine();
 
             _sw = Stopwatch.StartNew();
             while (true)
             {
                 // awesome = srvEp.PacketHandler.Handle(awesome) as MyAwesomeClass;
-                awesome = connection.Sender.Send<MyAwesomeClass>(awesome).Value;
+                awesome = await connection.Sender.Send<MyAwesomeClass>(awesome).Task;
 
-                if (awesome.Packets % 300 == 0)
-                {
-                    _sw.Stop();
-                    Console.WriteLine($"AVG Delay: {(_sw.Elapsed.TotalMilliseconds / awesome.Packets)} ms " +
-                                      $"{awesome.Packets}:  ({awesome.Packets * 2 / _sw.Elapsed.TotalMilliseconds})");
-                    _sw.Start();
-                }
+                //if (awesome.Packets % 300 == 0)
+                //{
+                _sw.Stop();
+                Console.WriteLine($"AVG Delay: {(_sw.Elapsed.TotalMilliseconds / awesome.Packets)} ms " +
+                                  $"{awesome.Packets}:  ({awesome.Packets * 2 / _sw.Elapsed.TotalMilliseconds})");
+                await Task.Delay(1000);
+                _sw.Start();
+                // }
             }
         }
 

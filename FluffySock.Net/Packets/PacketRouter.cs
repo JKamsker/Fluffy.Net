@@ -30,7 +30,7 @@ namespace Fluffy.Net.Packets
         /// </summary>
         /// <typeparam name="T">
         /// </typeparam>
-        public void RegisterPacket<T>() where T : BasePacketHandler, new()
+        public T RegisterPacket<T>() where T : BasePacketHandler, new()
         {
             var instance = new T
             {
@@ -53,6 +53,8 @@ namespace Fluffy.Net.Packets
                     throw new AccessViolationException("Packet already defined");
                 }
             }
+
+            return instance;
         }
 
         internal void Handle(object sender, OnPacketReceiveEventArgs packet)
