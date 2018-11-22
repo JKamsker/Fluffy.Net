@@ -4,7 +4,9 @@ using Fluffy.Net.Packets.Modules.Formatted;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 
 namespace NetSocket
 {
@@ -38,6 +40,14 @@ namespace NetSocket
             {
                 AwesomeString = "AWESOME!!"
             };
+
+            using (var ha = MD5.Create())
+            using (var fs = File.OpenRead(@"C:\Users\BEKO\Downloads\AP.Server.Host.7z"))
+            {
+                var hash = ha.ComputeHash(fs);
+                var stringHash = string.Concat(hash.Select(x => x.ToString("x2")));
+                Console.WriteLine($"Hash is {stringHash}");
+            }
 
             connection.Sender.SendStream(Guid.NewGuid(), File.OpenRead(@"C:\Users\BEKO\Downloads\AP.Server.Host.7z"));
             Console.ReadLine();

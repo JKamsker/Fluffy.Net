@@ -5,7 +5,6 @@ using Fluffy.Net.Collections;
 using Fluffy.Net.Options;
 
 using System;
-using System.Diagnostics;
 using System.Net.Sockets;
 
 namespace Fluffy.Net.Packets.Modules
@@ -77,10 +76,7 @@ namespace Fluffy.Net.Packets.Modules
                     if (_stream.Length >= 4)
                     {
                         headerLen++;
-                        if (headerLen == 36802)
-                        {
-                            Debugger.Break();
-                        }
+
                         var nextSegmentLength = _stream.ReadInt32();
                         if (nextSegmentLength == -1)
                         {

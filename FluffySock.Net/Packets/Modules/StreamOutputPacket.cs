@@ -8,6 +8,16 @@ namespace Fluffy.Net.Packets.Modules
 {
     internal class StreamOutputPacket : IOutputPacket
     {
+        private const int PacketHeaderLengthSize = 4;
+        private const int ParallelismOptionsSize = 1;
+        private const int OpCodeSize = 1;
+        private const int EndOfFileSize = 1;
+        private const int GuidSize = 16;
+        private const int FirstLevelHeader = PacketHeaderLengthSize;
+        private const int SecondLevelHeader = ParallelismOptionsSize + OpCodeSize;
+        private const int ThirdLevelHeader = EndOfFileSize + GuidSize;
+        private const int Header = FirstLevelHeader + SecondLevelHeader + ThirdLevelHeader;
+
         private Guid _streamId;
         private Stream _stream;
 
@@ -38,39 +48,15 @@ namespace Fluffy.Net.Packets.Modules
                 return 0;
             }
 
-            if (count > streamLength)
-            {
-                count = streamLength;
-            }
-
-            if (_stream?.Length < 0)
+            if (streamLength < 0)
             {
                 throw new AggregateException("Stream length cannot be less than 0");
             }
 
-            if (_stream == null || streamLength == 0)
-            {
-                HasFinished = true;
-                Console.WriteLine($"Disposed");
-                Dispose();
-                return 0;
-            }
+            int read = Header; //1x sizeof(int) - 3x sizeof(byte) - 1x sizeof(Guid) = 22
+                               //var blockLength = count - offset - 4; //ex buffer.Length
 
-            int read = 4 + 2 + 16; //1x sizeof(int) - 2x sizeof(byte) - 1x sizeof(Guid)
-            //var blockLength = count - offset - 4; //ex buffer.Length
-
-            //Length 4 Byte
-            //DynamicMethodDummy 1 Byte
-            //ParallelismOptions 1 Byte
-            FluffyBitConverter.Serialize(count - 4, buffer, offset);
-            offset += 4;
-            buffer[offset++] = (byte)ParallelismOptions;
-            buffer[offset++] = OpCode;
-            //Injected body
-            FluffyBitConverter.Serialize(_streamId, buffer, offset);
-            offset += 16;
-
-            read += _stream.Read(buffer, offset, count - offset);
+            var bodyRead = _stream.Read(buffer, offset + Header, realCount - Header);
             if (_stream == null || _stream.Length - _stream.Position == 0)
             {
                 HasFinished = true;
@@ -78,11 +64,23 @@ namespace Fluffy.Net.Packets.Modules
                 Dispose();
             }
 
-            //if (read != buffer.Length)
-            //{
-            //    Debugger.Break();
-            //}
-            return read;
+            if (bodyRead == 0)
+            {
+                return 0;
+            }
+
+            //Length 4 Byte
+            //DynamicMethodDummy 1 Byte
+            //ParallelismOptions 1 Byte
+            FluffyBitConverter.Serialize(bodyRead + SecondLevelHeader + ThirdLevelHeader, buffer, offset);
+            offset += 4;
+            buffer[offset++] = (byte)ParallelismOptions;
+            buffer[offset++] = OpCode;
+            buffer[offset++] = (byte)(HasFinished ? 1 : 0);
+            //Injected body
+            FluffyBitConverter.Serialize(_streamId, buffer, offset);
+
+            return bodyRead + Header;
         }
 
         public void Dispose()
