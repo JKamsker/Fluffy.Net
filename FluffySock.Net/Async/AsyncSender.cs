@@ -75,49 +75,90 @@ namespace Fluffy.Net.Async
                 _packet = null;
             }
 
-            if (!_priorityPacketQueue.IsEmpty && (_packet == null || (!_packet.IsPrioritized && _packet.CanBreak)))
+            if (_packet != null)
             {
-                if (_packet != null)
+                if (!_packet.IsPrioritized && !_priorityPacketQueue.IsEmpty)
                 {
-                    if (_unprioritizedPacket != null)
-                    {
-                        throw new AggregateException("Invalid state: temporary variable not null");
-                    }
-
                     _unprioritizedPacket = _packet;
                     _packet = null;
                 }
-                if (!_priorityPacketQueue.TryDequeue(out _packet))
-                {
-                    throw new AggregateException("Invalid state: priority queue is empty");
-                }
             }
-            else if (_priorityPacketQueue.IsEmpty && (_packet == null || _packet.HasFinished))
+
+            if (_packet == null)
             {
-                if (_unprioritizedPacket != null)
+                if (!_priorityPacketQueue.IsEmpty)
                 {
-                    _packet = _unprioritizedPacket;
-                    _unprioritizedPacket = null;
+                    if (!_priorityPacketQueue.TryDequeue(out _packet))
+                    {
+                        throw new AggregateException("Invalid state: priority queue is empty");
+                    }
                 }
                 else
                 {
-                    _packet?.Dispose();
-                    if (_packetQueue.TryDequeue(out _packet))
+                    if (_unprioritizedPacket != null)
                     {
-                        return DoWork(true);
+                        _packet = _unprioritizedPacket;
+                        _unprioritizedPacket = null;
                     }
-                    else
+                    else if (!_packetQueue.IsEmpty)
                     {
-                        _sendingInProgress = false;
-                        return false;
+                        if (!_packetQueue.TryDequeue(out _packet))
+                        {
+                            throw new AggregateException("Invalid state: priority queue is empty");
+                        }
                     }
                 }
             }
 
             if (_packet == null)
             {
+                _sendingInProgress = false;
                 return false;
             }
+
+            //if (!_priorityPacketQueue.IsEmpty && (_packet == null || (!_packet.IsPrioritized && _packet.CanBreak)))
+            //{
+            //    if (_packet != null)
+            //    {
+            //        if (_unprioritizedPacket != null)
+            //        {
+            //            throw new AggregateException("Invalid state: temporary variable not null");
+            //        }
+
+            //        _unprioritizedPacket = _packet;
+            //        _packet = null;
+            //    }
+            //    if (!_priorityPacketQueue.TryDequeue(out _packet))
+            //    {
+            //        throw new AggregateException("Invalid state: priority queue is empty");
+            //    }
+            //}
+            //else if (_priorityPacketQueue.IsEmpty && (_packet == null || _packet.HasFinished))
+            //{
+            //    if (_unprioritizedPacket != null)
+            //    {
+            //        _packet = _unprioritizedPacket;
+            //        _unprioritizedPacket = null;
+            //    }
+            //    else
+            //    {
+            //        _packet?.Dispose();
+            //        if (_packetQueue.TryDequeue(out _packet))
+            //        {
+            //            return DoWork(true);
+            //        }
+            //        else
+            //        {
+            //            _sendingInProgress = false;
+            //            return false;
+            //        }
+            //    }
+            //}
+
+            //if (_packet == null)
+            //{
+            //    return false;
+            //}
 
             var read = _packet.Read(_buffer, 0, _buffer.Length);
             if (read <= 0)

@@ -110,6 +110,16 @@ namespace Fluffy.Net.Packets.Modules
             }
         }
 
+#if DEBUG
+
+        [Obsolete("Only for testing")]
+        internal void OnReceiveHandler(byte opCode, ParallelismOptions options, LinkedStream body)
+        {
+            OnReceive?.Invoke(this, new OnPacketReceiveEventArgs(opCode, options, body));
+        }
+
+#endif
+
         public void Dispose()
         {
             if (_disposed)

@@ -72,18 +72,20 @@ namespace Fluffy.Net.Packets.Modules.Formatted
             public override void SetResult(object value)
             {
                 T result = (T)value;
-
-                _completionSource.SetResult(result);
                 _value = result;
                 _hasCompleted = true;
+
+                _completionSource.SetResult(result);
                 _resetEvent.Set();
+                _resetEvent.Dispose();
+                _resetEvent = null;
             }
 
             private T GetValue()
             {
                 if (!_hasCompleted)
                 {
-                    _resetEvent.WaitOne();
+                    _resetEvent?.WaitOne();
                 }
 
                 return _value;

@@ -72,7 +72,7 @@ namespace Fluffy.Net.Async
                 _queue = q2;
                 _pushBackQueue = q1;
                 //TODO Remove TEST * 1000
-                _resetEvent.WaitOne(TimeSpan.FromMilliseconds(50));
+                _resetEvent.WaitOne(TimeSpan.FromMilliseconds(50 * 1000));
             }
 
             _running = false;
