@@ -43,9 +43,9 @@ namespace Fluffy.Net.Packets.Modules
                 return 0;
             }
 
-            if (count > buffer.Length)
+            if (count > buffer.Length - offset - 6)
             {
-                count = buffer.Length;
+                count = buffer.Length - offset - 6;
             }
 
             if (_stream?.Length < 0)

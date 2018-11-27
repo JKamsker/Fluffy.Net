@@ -63,7 +63,7 @@ namespace Fluffy.Net.Packets.Modules
                 HandleStream();
             }
 
-            _socket.BeginReceive(_buffer, 0, _nextSegmentLength, SocketFlags.None, ReceiveCallback, null);
+            _socket.BeginReceive(_buffer, 0, (int)(_nextSegmentLength - _stream.Length), SocketFlags.None, ReceiveCallback, null);
         }
 
         private int headerLen = 0;

@@ -4,7 +4,13 @@ using Fluffy.Net.Packets.Modules.Formatted;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
+using Fluffy.IO.Buffer;
+using Fluffy.IO.Recycling;
+using Fluffy.Net.Packets.Modules.Streaming;
 
 namespace NetSocket
 {
@@ -20,14 +26,17 @@ namespace NetSocket
 
             _client.Connection.PacketHandler.On<MyAwesomeClass>().Do(Awesome);
             _server.PacketHandler.On<MyAwesomeClass>().Do(Awesome);
+
+            _client.Connection.PacketHandler.On<StreamRegistration>().Do(x => StreamRegistration(x, _client.Connection));
+            _server.PacketHandler.On<StreamRegistration>().Do(StreamRegistration);
+
             _server.Start();
             _server.OnNewConnection += OnNewConnection;
 
             _client.Connect();
             Console.WriteLine("Connected");
             TypedTest(_client.Connection);
-            //_client.Test();
-            //_client.Test();
+
             Console.WriteLine("Test sent");
             Console.ReadLine();
         }
@@ -36,60 +45,37 @@ namespace NetSocket
         {
             var cid = 0;
 
-            var awesomeList = new List<MyAwesomeClass>
+            var awesomeList = new List<MyAwesomeClass>();
+
+            for (int i = 0; i < 100; i++)
             {
-                new MyAwesomeClass
+                awesomeList.Add(new MyAwesomeClass
                 {
                     Id = cid++,
                     AwesomeString = "AWESOME!!"
-                },
-                new MyAwesomeClass
-                {
-                    Id = cid++,
-                    AwesomeString = "AWESOME!!"
-                },
-                new MyAwesomeClass
-                {
-                    Id = cid++,
-                    AwesomeString = "AWESOME!!"
-                },
-                new MyAwesomeClass
-                {
-                    Id = cid++,
-                    AwesomeString = "AWESOME!!"
-                },
-                new MyAwesomeClass
-                {
-                    Id = cid++,
-                    AwesomeString = "AWESOME!!"
-                },
-                new MyAwesomeClass
-                {
-                    Id = cid++,
-                    AwesomeString = "AWESOME!!"
-                },
-                new MyAwesomeClass
-                {
-                    Id = cid++,
-                    AwesomeString = "AWESOME!!"
-                },
-            };
+                });
+            }
 
             var awesome = new MyAwesomeClass
             {
                 AwesomeString = "AWESOME!!"
             };
+            var streamFile = @"C:\Users\Weirdo\Downloads\SciFiEbooks\Der Wüstenplanet - Die Enzyklopädie Bd. 1 2.epub";
 
-            //using (var ha = MD5.Create())
-            //using (var fs = File.OpenRead(@"C:\Users\BEKO\Downloads\AP.Server.Host.7z"))
-            //{
-            //    var hash = ha.ComputeHash(fs);
-            //    var stringHash = string.Concat(hash.Select(x => x.ToString("x2")));
-            //    Console.WriteLine($"Hash is {stringHash}");
-            //}
+            using (var ha = MD5.Create())
+            using (var fs = File.OpenRead(streamFile))
+            {
+                var hash = ha.ComputeHash(fs);
+                var stringHash = string.Concat(hash.Select(x => x.ToString("x2")));
+                Console.WriteLine($"Hash is {stringHash}");
+            }
 
-            // connection.Sender.SendStream(Guid.NewGuid(), File.OpenRead(@"C:\Users\BEKO\Downloads\AP.Server.Host.7z"));
+            var registrationResult = await connection.Sender.Send<StreamRegistration>(new StreamRegistration());
+
+            connection.Sender.SendStream(registrationResult.Guid, File.OpenRead(streamFile));
             // Console.ReadLine();
+
+            Console.ReadLine();
 
             _sw = Stopwatch.StartNew();
             while (true)
@@ -102,7 +88,7 @@ namespace NetSocket
                 //    awesomeList[i] = tList[i].Value;
                 //}
 
-                //if (awesomeList[0].Packets % 500 == 0)
+                //if (awesomeList[0].Packets % 100 == 0)
                 //{
                 //    _sw.Stop();
                 //    var count = awesomeList.Sum(x => x.Packets);
@@ -111,20 +97,21 @@ namespace NetSocket
                 //                      $"{count}:  ({count * 2 / _sw.Elapsed.TotalMilliseconds})");
                 //    _sw.Start();
                 //}
-                //    _client.Connection.
 
                 //   awesome = srvEp.PacketHandler.Handle(awesome) as MyAwesomeClass;
-                //    awesome = await connection.Sender.Send<MyAwesomeClass>(awesome).Task;
 
-                awesome = connection.Sender.Send<MyAwesomeClass>(awesome).Value;
+                awesome = connection.Sender.Send<MyAwesomeClass>(awesome).Result;
+                //Or  awesome = await connection.Sender.Send<MyAwesomeClass>(awesome);
 
-                if (awesome.Packets % 500 == 0)
+                if (awesome.Packets % 3 == 0)
                 {
                     _sw.Stop();
                     Console.WriteLine($"AVG Delay: {(_sw.Elapsed.TotalMilliseconds / awesome.Packets)} ms " +
                                       $"{awesome.Packets}:  ({awesome.Packets * 2 / _sw.Elapsed.TotalMilliseconds})");
                     _sw.Start();
                 }
+
+                //  await Task.Delay(100);
             }
         }
 
@@ -138,6 +125,62 @@ namespace NetSocket
         {
             awesome.Packets++;
             return awesome;
+        }
+
+        private static StreamRegistration StreamRegistration(StreamRegistration registration, ConnectionInfo connection)
+        {
+            var hashAlgorithm = MD5.Create();
+            var buffer = BufferRecyclingMetaFactory<RecyclableBuffer>.MakeFactory(Capacity.Medium).GetBuffer();
+
+            var streamHandler = new DefaultStreamHandler(registration.Guid)
+            {
+                StreamNotificationThreshold = 1024 * 1024
+            };
+            //1KB
+            streamHandler.OnReceived += (handler, stream) =>
+            {
+                int read; //= stream.Read(buffer.Value, 0, buffer.Value.Length);
+                while ((read = stream.Read(buffer.Value, 0, buffer.Value.Length)) != 0)
+                {
+                    hashAlgorithm.TransformBlock(buffer.Value, 0, read, null, 0);
+                }
+
+                if (handler.HasFinished)
+                {
+                    hashAlgorithm.TransformFinalBlock(buffer.Value, 0, 0);
+                    var stringHash = string.Concat(hashAlgorithm.Hash.Select(x => x.ToString("x2")));
+
+                    Console.WriteLine($"Hash is {stringHash}");
+                    handler.Dispose();
+                }
+            };
+
+            connection.StreamPacketHandler.RegisterStream(streamHandler);
+            registration.StatusCode = StatusCode.Ok;
+            return registration;
+        }
+    }
+
+    public enum StatusCode
+    {
+        Default,
+        Ok,
+        Failure
+    }
+
+    [Serializable]
+    public class StreamRegistration
+    {
+        public StatusCode StatusCode { get; set; }
+        public Guid Guid { get; }
+
+        public StreamRegistration() : this(Guid.NewGuid())
+        {
+        }
+
+        public StreamRegistration(Guid guid)
+        {
+            Guid = guid;
         }
     }
 }

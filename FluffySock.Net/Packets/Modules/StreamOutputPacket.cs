@@ -43,9 +43,9 @@ namespace Fluffy.Net.Packets.Modules
 
             realCount = Math.Min(realCount, maxCount);
 
-            if (realCount <= 0)
+            if (realCount - Header - 128 <= 0)
             {
-                return 0;
+                return -1;
             }
 
             if (streamLength < 0)

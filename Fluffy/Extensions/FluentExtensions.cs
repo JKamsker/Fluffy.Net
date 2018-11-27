@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Fluffy.Extensions
 {
@@ -8,6 +9,14 @@ namespace Fluffy.Extensions
         {
             action(value);
             return value;
+        }
+
+        public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
+        {
+            foreach (var value in collection)
+            {
+                action(value);
+            }
         }
     }
 }

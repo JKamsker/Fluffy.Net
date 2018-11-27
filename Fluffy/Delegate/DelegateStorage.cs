@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Fluffy
+namespace Fluffy.Delegate
 {
     public class DelegateStorage<TInput, TOutput> : IObjectStorage<TOutput>
         where TInput : Enum

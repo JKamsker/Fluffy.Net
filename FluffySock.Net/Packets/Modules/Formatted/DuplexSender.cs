@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -60,8 +61,13 @@ namespace Fluffy.Net.Packets.Modules.Formatted
             private volatile bool _hasCompleted = false;
             private T _value;
 
-            public T Value => GetValue();
+            public T Result => GetValue();
             public Task<T> Task => _completionSource.Task;
+
+            public TaskAwaiter<T> GetAwaiter()
+            {
+                return _completionSource.Task.GetAwaiter();
+            }
 
             public DuplexResult()
             {

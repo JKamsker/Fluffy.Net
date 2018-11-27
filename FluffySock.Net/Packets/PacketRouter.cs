@@ -61,7 +61,8 @@ namespace Fluffy.Net.Packets
         {
             if (_packetList.TryGetValue(packet.OpCode, out var handler))
             {
-                // TODO: Test! packet.Options = ParallelismOptions.Sync;
+                // TODO: Test!
+                // packet.Options = ParallelismOptions.Sync;
                 switch (packet.Options)
                 {
                     case ParallelismOptions.Parallel:

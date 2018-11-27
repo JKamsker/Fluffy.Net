@@ -4,6 +4,7 @@ using Fluffy.Net.Packets.Modules.Raw;
 
 using System;
 using System.Net.Sockets;
+using Fluffy.Net.Packets.Modules.Streaming;
 
 namespace Fluffy.Net
 {
@@ -18,6 +19,7 @@ namespace Fluffy.Net
         public Sender Sender { get; private set; }
 
         public PacketRouter PacketHandler { get; private set; }
+        public StreamPacketHandler StreamPacketHandler { get; }
 
         public ConnectionInfo(FluffySocket fluffySocket)
             : this(fluffySocket.Socket, fluffySocket)
@@ -40,7 +42,7 @@ namespace Fluffy.Net
             PacketHandler.RegisterPacket<DummyPacketHandler>();
 #endif
             PacketHandler.RegisterPacket<FormattedPacketHandler>();
-            PacketHandler.RegisterPacket<StreamPacketHandler>();
+            StreamPacketHandler = PacketHandler.RegisterPacket<StreamPacketHandler>();
 
             PacketHandler
                 .On<ConnectionInfo>().Do(x => Console.Write($"You are awesome :3"))

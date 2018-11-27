@@ -60,8 +60,11 @@
     <Compile Include="Options\ParallelismOptions.cs" />
     <Compile Include="Packets\Modules\IOutputPacket.cs" />
     <Compile Include="Packets\Modules\Raw\BasePacketHandler.cs" />
-    <Compile Include="Packets\Modules\Raw\StreamPacketHandler.cs" />
+    <Compile Include="Packets\Modules\Streaming\IStreamHandler.cs" />
+    <Compile Include="Packets\Modules\Streaming\StreamPacketHandler.cs" />
     <Compile Include="Packets\Modules\StandardOutputPacket.cs" />
+    <Compile Include="Packets\Modules\Streaming\DefaultStreamHandler.cs" />
+    <Compile Include="Packets\Modules\Streaming\StreamRelayHandler.cs" />
     <Compile Include="Packets\Modules\StreamOutputPacket.cs" />
     <Compile Include="Packets\PacketRouter.cs" />
     <Compile Include="Packets\Modules\Raw\DummyPacketHandler.cs" />
