@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Fluffy.Tests")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A high-performance netowrk library")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Fluffy.Tests")]

@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("AllInOneExample-FullFramework")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A high-performance netowrk library")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("AllInOneExample-FullFramework")]

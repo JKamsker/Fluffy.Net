@@ -1,0 +1,6 @@
+language: csharp
+solution: Fluffy.sln
+install:
+  - nuget restore Fluffy.sln
+script:
+  - xbuild TreasureGen.sln /p:TargetFrameworkVersion="v4.5" 
