@@ -52,7 +52,6 @@
     <Compile Include="Async\AsyncSender.cs" />
     <Compile Include="Collections\OnPacketReceiveEventArgs.cs" />
     <Compile Include="ConnectionInfo.cs" />
-    <Compile Include="Utilities\ConnectAsyncExtension.cs" />
     <Compile Include="FluffyClient.cs" />
     <Compile Include="FluffyServer.cs" />
     <Compile Include="FluffySocket.cs" />
@@ -77,6 +76,7 @@
     <Compile Include="Packets\Modules\Sender.cs" />
     <Compile Include="Async\SendTaskRelay.cs" />
     <Compile Include="Async\SharedOutputQueueWorker.cs" />
+    <Compile Include="Async\AsyncSocketHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fluffy.IO\Fluffy.IO.csproj">

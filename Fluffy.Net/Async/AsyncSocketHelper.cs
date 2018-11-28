@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
-namespace Fluffy.Net.Utilities
+namespace Fluffy.Net.Async
 {
     public static class AsyncSocketHelper
     {

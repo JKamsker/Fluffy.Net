@@ -6,7 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using Fluffy.Net.Utilities;
+using Fluffy.Net.Async;
 
 namespace Fluffy.Net
 {

@@ -137,7 +137,7 @@ namespace AllInOneExample_FullFramework
                     _sw.Stop();
                     var count = dummy.Sum(x => x.Packets);
 
-                    Console.WriteLine($"AVG Delay: {(_sw.Elapsed.TotalMilliseconds / count)} ms " +
+                    Console.WriteLine($"AVG Delay: {(_sw.Elapsed.TotalMilliseconds / count):##0.00000} ms " +
                                       $"{count}:  ({count * 2 / _sw.Elapsed.TotalMilliseconds} p/ms)");
                     exitCounter++;
                     if (exitCounter >= 1000)
