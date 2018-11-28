@@ -1,10 +1,12 @@
 ﻿using Fluffy.IO.Buffer;
+
 using Fluffy.Net.Packets.Modules.Raw;
 
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Fluffy.Net.Utilities;
 
 namespace Fluffy.Net
 {
@@ -41,7 +43,7 @@ namespace Fluffy.Net
 
         public Task ConnectAsync()
         {
-            return Socket.ConnectAsync(_endPoint);
+            return AsyncSocketHelper.ConnectAsync(Socket, _endPoint);
         }
 
         public void Test()

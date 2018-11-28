@@ -60,7 +60,7 @@ namespace NetSocket
             {
                 AwesomeString = "AWESOME!!"
             };
-            var streamFile = @"C:\Users\Weirdo\Downloads\SciFiEbooks\Der Wüstenplanet - Die Enzyklopädie Bd. 1 2.epub";
+            var streamFile = @"D:\File\FileArchive\Bibliothek\SciFi\Der Wüstenplanet - Die Enzyklopädie Bd. 1 2.epub";
 
             using (var ha = MD5.Create())
             using (var fs = File.OpenRead(streamFile))

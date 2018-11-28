@@ -19,7 +19,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGround", "Test\PlayGrou
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fluffy.Unsafe", "Fluffy.Unsafe\Fluffy.Unsafe.csproj", "{76A1B05C-768C-416F-952F-83B39F875ECC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StandartTest", "Test\StandartTest\StandartTest.csproj", "{20C53DB5-A07E-4B0E-BE0B-F1FB0D6F66C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandartTest", "Test\StandartTest\StandartTest.csproj", "{20C53DB5-A07E-4B0E-BE0B-F1FB0D6F66C5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFiles", "{6A7AD048-1395-4902-B090-02ABAB4E0268}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
