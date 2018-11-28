@@ -99,9 +99,6 @@ namespace Fluffy.Net.Async
             return true;
         }
 
-        private int avg = 0;
-        private int total = 0;
-
         private void EvaluatePacket()
         {
             if (_packet?.HasFinished == true)

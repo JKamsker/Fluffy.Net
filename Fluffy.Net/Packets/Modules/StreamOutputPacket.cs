@@ -53,8 +53,8 @@ namespace Fluffy.Net.Packets.Modules
                 throw new AggregateException("Stream length cannot be less than 0");
             }
 
-            int read = Header; //1x sizeof(int) - 3x sizeof(byte) - 1x sizeof(Guid) = 22
-                               //var blockLength = count - offset - 4; //ex buffer.Length
+            // int read = Header; //1x sizeof(int) - 3x sizeof(byte) - 1x sizeof(Guid) = 22
+            //var blockLength = count - offset - 4; //ex buffer.Length
 
             var bodyRead = _stream.Read(buffer, offset + Header, realCount - Header);
             if (_stream == null || _stream.Length - _stream.Position == 0)
