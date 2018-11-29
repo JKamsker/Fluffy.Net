@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\IAuthentificationPackage.cs" />
     <Compile Include="Models\MyAwesomeClass.cs" />
     <Compile Include="Models\StatusCode.cs" />
     <Compile Include="Models\StreamPerformanceTest.cs" />
