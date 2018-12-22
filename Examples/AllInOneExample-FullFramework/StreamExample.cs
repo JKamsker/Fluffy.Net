@@ -13,6 +13,8 @@ namespace AllInOneExample_FullFramework
 {
     public class StreamExample
     {
+        private const string TestFilePath = @"C:\Users\Weirdo\Downloads\SciFiEbooks\Der Wüstenplanet - Die Enzyklopädie Bd. 1 2.epub";
+
         private bool _initialized;
         private readonly FluffyServer _server;
         private readonly FluffyClient _client;
@@ -46,7 +48,6 @@ namespace AllInOneExample_FullFramework
 
         private static async Task SendFileExampleAsync(ConnectionInfo connection)
         {
-            var streamFile = @"C:\Users\Weirdo\Downloads\SciFiEbooks\Der Wüstenplanet - Die Enzyklopädie Bd. 1 2.epub";
             var awesome = new MyAwesomeClass
             {
                 AwesomeString = "AWESOME!!"
@@ -56,14 +57,14 @@ namespace AllInOneExample_FullFramework
             Console.WriteLine($"Stream id is: {registration.Guid}");
 
             using (var ha = MD5.Create())
-            using (var fs = File.OpenRead(streamFile))
+            using (var fs = File.OpenRead(TestFilePath))
             {
                 var hash = ha.ComputeHash(fs);
                 var stringHash = string.Concat(hash.Select(x => x.ToString("x2")));
                 Console.WriteLine($"[Sender] Hash is {stringHash}");
             }
 
-            connection.Sender.SendStream(registration.Guid, File.OpenRead(streamFile));
+            connection.Sender.SendStream(registration.Guid, File.OpenRead(TestFilePath));
 
             while (true)
             {
@@ -100,6 +101,10 @@ namespace AllInOneExample_FullFramework
                     handler.Dispose();
                 }
             };
+
+            var ls = new LinkedStream();
+
+            ls.ReadAsync(buffer.Value, 0, 1024);
 
             connection.StreamPacketHandler.RegisterStream(streamHandler);
             registration.StatusCode = StatusCode.Ok;

@@ -9,12 +9,14 @@ namespace Fluffy.IO.Buffer
     {
         public int CacheSize => _cacheSize;
 
+        public override long Length => InternalLength;
+        protected virtual long InternalLength { get; set; }
+
         private LinkableBuffer _head;
         private LinkableBuffer _body;
 
         private IObjectRecyclingFactory<LinkableBuffer> _recyclingFactory;
         private readonly int _cacheSize;
-        private long _length;
 
         public LinkedStream(int cacheSize)
             : this(new BufferRecyclingFactory<LinkableBuffer>(cacheSize))
@@ -50,7 +52,7 @@ namespace Fluffy.IO.Buffer
         {
             buffer.Next = _head;
             _head = buffer;
-            _length += buffer.Length;
+            InternalLength += buffer.Length;
         }
 
         /// <summary>
@@ -77,7 +79,7 @@ namespace Fluffy.IO.Buffer
                 _head = targetBuffer;
             }
 
-            _length += written;
+            InternalLength += written;
         }
 
         public override void Write(byte[] buffer, int offset, int count)
@@ -99,7 +101,7 @@ namespace Fluffy.IO.Buffer
                 }
             }
 
-            _length += written;
+            InternalLength += written;
         }
 
         public override int Read(byte[] buffer, int offset, int count)
@@ -133,7 +135,7 @@ namespace Fluffy.IO.Buffer
                 readBytes += _head.Read(buffer, offset + readBytes, count - readBytes);
             }
 
-            _length -= readBytes;
+            InternalLength -= readBytes;
             return readBytes;
         }
 
@@ -197,8 +199,6 @@ namespace Fluffy.IO.Buffer
         public override bool CanRead => true;
         public override bool CanSeek => false;
         public override bool CanWrite => true;
-
-        public override long Length => _length;
 
         public override long Position
         {
