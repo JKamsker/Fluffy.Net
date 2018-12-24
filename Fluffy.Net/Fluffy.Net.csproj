@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Fluffy.Net</RootNamespace>
     <AssemblyName>Fluffy.Net</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -20,7 +20,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET47</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>7.3</LangVersion>
@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Async\AsyncSender.cs" />
     <Compile Include="Collections\OnPacketReceiveEventArgs.cs" />
+    <Compile Include="Compatibility\CompatibilityExtensions.cs" />
     <Compile Include="ConnectionInfo.cs" />
     <Compile Include="FluffyClient.cs" />
     <Compile Include="FluffyServer.cs" />
@@ -76,7 +77,6 @@
     <Compile Include="Packets\Modules\Sender.cs" />
     <Compile Include="Async\SendTaskRelay.cs" />
     <Compile Include="Async\SharedOutputQueueWorker.cs" />
-    <Compile Include="Async\AsyncSocketHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fluffy.IO\Fluffy.IO.csproj">

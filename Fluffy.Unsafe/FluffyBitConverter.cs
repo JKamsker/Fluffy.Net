@@ -34,9 +34,7 @@ namespace Fluffy.Unsafe
         }
 
         [System.Security.SecuritySafeCritical]
-#if NET40
-        [MethodImpl((MethodImplOptions)256)]
-#else
+#if !(NET35 || NET40)
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
         public static unsafe void Serialize(Guid value, byte[] target, int offset)

@@ -3,4 +3,5 @@ solution: Fluffy.sln
 install:
   - nuget restore Fluffy.sln
 script:
-  - xbuild Fluffy.sln /p:TargetFrameworkVersion="v4.5" 
+    - xbuild Fluffy.sln /t:Rebuild /p:Configuration=Release /p:TargetFrameworkVersion='v4.7' /p:DefineConstants="NET47"
+#OLD:   - xbuild Fluffy.sln /p:TargetFrameworkVersion="v4.7";DefineConstants="TRACE;DEBUG;NET47"

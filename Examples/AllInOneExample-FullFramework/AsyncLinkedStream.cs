@@ -85,9 +85,11 @@ namespace AllInOneExample_FullFramework
                 {
                     // handle.TaskCompletionSource.Task.
 
-#if NET46 || NET471          //https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.taskcompletionsource-1.trysetcanceled?view=netframework-4.6
+#if (NET46 || NET47)
+                    //https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.taskcompletionsource-1.trysetcanceled?view=netframework-4.6
                     handle.TaskCompletionSource.TrySetCanceled(handle.CancellationToken);
 #else
+                    // >= 4.5
                     handle.TaskCompletionSource.TrySetCanceled();
 #endif
                     return;

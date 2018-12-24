@@ -6,7 +6,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using Fluffy.Net.Async;
 
 namespace Fluffy.Net
 {
@@ -28,8 +27,6 @@ namespace Fluffy.Net
             };
 
             Connection = new ConnectionInfo(Socket, this);
-
-            // _connection.TypedPacketHandler.
         }
 
         public void Connect()
@@ -43,7 +40,7 @@ namespace Fluffy.Net
 
         public Task ConnectAsync()
         {
-            return AsyncSocketHelper.ConnectAsync(Socket, _endPoint);
+            return Socket.ConnectAsync(_endPoint);
         }
 
         public void Test()
