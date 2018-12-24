@@ -12,6 +12,7 @@ namespace AllInOneExample_FullFramework
 
         private static PacketExample _packetExample;
         private static StreamExample _streamExample;
+        private static StreamExample1 _streamExample1;
 
         private static void Main(string[] args)
         {
@@ -20,7 +21,8 @@ namespace AllInOneExample_FullFramework
             _server.Start();
 
             // _packetExample = new PacketExample(_server, _client).Initialize();
-            _streamExample = new StreamExample(_server, _client).Initialize();
+            // _streamExample = new StreamExample(_server, _client).Initialize();
+            _streamExample1 = new StreamExample1(_server, _client).Initialize();
 
             _client.Connect();
             Console.WriteLine("Connected");

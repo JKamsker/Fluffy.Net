@@ -12,6 +12,9 @@ namespace Fluffy.IO.Buffer
         public override long Length => InternalLength;
         protected virtual long InternalLength { get; set; }
 
+        public bool ClearBufferOnDispose { get; set; }
+        public bool IsDisposed { get; protected set; }
+
         private LinkableBuffer _head;
         private LinkableBuffer _body;
 
@@ -38,6 +41,7 @@ namespace Fluffy.IO.Buffer
         {
             _recyclingFactory = recyclingFactory;
             var buffer = _recyclingFactory.GetBuffer();
+            ClearBufferOnDispose = true;
 
             _head = buffer;
             _body = buffer;
@@ -173,11 +177,15 @@ namespace Fluffy.IO.Buffer
 
         public override void Close()
         {
-            //Recycle loop
-            while (TryMoveNext())
+            if (ClearBufferOnDispose)
             {
+                //Recycle loop
+                while (TryMoveNext())
+                {
+                }
             }
 
+            IsDisposed = true;
             base.Close();
         }
 

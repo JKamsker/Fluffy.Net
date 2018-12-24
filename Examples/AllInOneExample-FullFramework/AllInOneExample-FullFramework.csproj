@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsyncLinkedStream.cs" />
+    <Compile Include="AsyncStreamHandler.cs" />
     <Compile Include="Models\IAuthentificationPackage.cs" />
     <Compile Include="Models\MyAwesomeClass.cs" />
     <Compile Include="Models\StatusCode.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PacketExample.cs" />
     <Compile Include="StreamExample.cs" />
+    <Compile Include="StreamExample1.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

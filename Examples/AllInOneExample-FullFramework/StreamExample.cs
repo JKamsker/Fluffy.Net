@@ -54,7 +54,7 @@ namespace AllInOneExample_FullFramework
             };
 
             var registration = await connection.Sender.Send<StreamRegistration>(new StreamRegistration());
-            Console.WriteLine($"Stream id is: {registration.Guid}");
+            Console.WriteLine($"Stream id is: {registration.StreamIdentifier}");
 
             using (var ha = MD5.Create())
             using (var fs = File.OpenRead(TestFilePath))
@@ -64,7 +64,7 @@ namespace AllInOneExample_FullFramework
                 Console.WriteLine($"[Sender] Hash is {stringHash}");
             }
 
-            connection.Sender.SendStream(registration.Guid, File.OpenRead(TestFilePath));
+            connection.Sender.SendStream(registration.StreamIdentifier, File.OpenRead(TestFilePath));
 
             while (true)
             {
@@ -79,14 +79,14 @@ namespace AllInOneExample_FullFramework
             var hashAlgorithm = MD5.Create();
             var buffer = BufferRecyclingMetaFactory<RecyclableBuffer>.MakeFactory(Capacity.Medium).GetBuffer();
 
-            var streamHandler = new DefaultStreamHandler(registration.Guid)
+            var streamHandler = new DefaultStreamHandler(registration.StreamIdentifier)
             {
                 StreamNotificationThreshold = 1024 * 1024 //1KB
             };
 
             streamHandler.OnReceived += (handler, stream) =>
             {
-                int read; //= stream.Read(buffer.Value, 0, buffer.Value.Length);
+                int read;
                 while ((read = stream.Read(buffer.Value, 0, buffer.Value.Length)) != 0)
                 {
                     hashAlgorithm.TransformBlock(buffer.Value, 0, read, null, 0);
@@ -98,13 +98,9 @@ namespace AllInOneExample_FullFramework
                     var stringHash = string.Concat(hashAlgorithm.Hash.Select(x => x.ToString("x2")));
 
                     Console.WriteLine($"[Receiver] Hash is {stringHash}");
-                    handler.Dispose();
+                    buffer.Recycle();
                 }
             };
-
-            var ls = new LinkedStream();
-
-            ls.ReadAsync(buffer.Value, 0, 1024);
 
             connection.StreamPacketHandler.RegisterStream(streamHandler);
             registration.StatusCode = StatusCode.Ok;

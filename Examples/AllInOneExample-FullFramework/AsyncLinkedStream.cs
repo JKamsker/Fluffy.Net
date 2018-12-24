@@ -6,8 +6,10 @@ using Fluffy.IO.Recycling;
 
 namespace AllInOneExample_FullFramework
 {
-    internal class AsyncLinkedStream : LinkedStream
+    public class AsyncLinkedStream : LinkedStream, IDisposable
     {
+        private AsyncReadHelper _readHandle;
+
         #region Useless Constructors
 
         public AsyncLinkedStream() : base()
@@ -28,13 +30,6 @@ namespace AllInOneExample_FullFramework
 
         #endregion Useless Constructors
 
-        /// <summary>
-        /// Prevent event cascading
-        /// </summary>
-        private bool _lengthChangeNotifying;
-
-        public EventHandler<long> LengthChanged;
-
         protected override long InternalLength
         {
             get => base.InternalLength;
@@ -46,30 +41,80 @@ namespace AllInOneExample_FullFramework
                 }
                 base.InternalLength = value;
 
-                //Prevent event cascading
-                if (_lengthChangeNotifying)
-                {
-                    return;
-                }
-
-                _lengthChangeNotifying = true;
-                LengthChanged?.Invoke(this, value);
-                _lengthChangeNotifying = false;
+                DoReadAsync();
             }
         }
 
-        // private override long InternalLength { get; set; }
-
         public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
         {
-            LengthChanged += (sender, l) =>
+            if (_readHandle != null)
             {
-                if (InternalLength < count)
+                throw new AggregateException("Cannot read two times at once from the stream");
+            }
+
+            if (Length >= count || IsDisposed)
+            {
+                var readCount = Read(buffer, offset, count);
+                return Task.FromResult(readCount);
+            }
+
+            _readHandle = new AsyncReadHelper
+            {
+                Buffer = buffer,
+                Count = count,
+                Offset = offset,
+                TaskCompletionSource = new TaskCompletionSource<int>(),
+                CancellationToken = cancellationToken
+            };
+
+            return _readHandle.TaskCompletionSource.Task;
+        }
+
+        private void DoReadAsync(bool disposing = false)
+        {
+            if (_readHandle == null)
+            {
+                return;
+            }
+
+            if (Length >= _readHandle.Count || disposing)
+            {
+                var handle = Interlocked.Exchange(ref _readHandle, null);
+
+                if (handle.CancellationToken.IsCancellationRequested)
                 {
+                    handle.TaskCompletionSource.TrySetCanceled(handle.CancellationToken);
                     return;
                 }
-            };
-            return base.ReadAsync(buffer, offset, count, cancellationToken);
+
+                var (buffer, offset, count) = handle;
+                var readCount = Read(buffer, offset, count);
+
+                handle.TaskCompletionSource.SetResult(readCount);
+            }
+        }
+
+        public override void Close()
+        {
+            DoReadAsync(true);
+            base.Close();
+        }
+
+        private class AsyncReadHelper
+        {
+            public CancellationToken CancellationToken { get; set; }
+            public TaskCompletionSource<int> TaskCompletionSource { get; set; }
+
+            public byte[] Buffer { get; set; }
+            public int Offset { get; set; }
+            public int Count { get; set; }
+
+            public void Deconstruct(out byte[] buffer, out int offset, out int count)
+            {
+                buffer = Buffer;
+                offset = Offset;
+                count = Count;
+            }
         }
     }
 }
