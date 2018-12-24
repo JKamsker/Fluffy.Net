@@ -2,15 +2,18 @@
 
 Fluffy .NET is an easy-to-use Network library wich contains many useful features.
 
-#BUILDING
+# BUILDING
 
 - Framework Version > .NET 4.7
 -- Compiler Flag: NET47; NET46 ; NET45; NET40
 -- Unused Flags: NET80
 
-# Replace for testing other Target Frameworks:
+## Replace for testing other Target Frameworks:
 	<DefineConstants>TRACE;DEBUG;NET47</DefineConstants>
 	<TargetFrameworkVersion>.*?</TargetFrameworkVersion>
+
+## Building with MSBUILD:
+ - Example: MSBuild.exe Fluffy.sln /t:Rebuild /p:Configuration=Release /p:TargetFrameworkVersion='v4.7' /p:DefineConstants="NET47"
 
 # Todo
 - Raw-Stream sending API
