@@ -1,4 +1,9 @@
-﻿using System.Runtime.CompilerServices;
+﻿#if !NET40
+
+using System.Runtime.CompilerServices;
+
+#endif
+
 using System.Threading.Tasks;
 
 namespace Fluffy.Net.Packets
@@ -8,6 +13,10 @@ namespace Fluffy.Net.Packets
         TResult Result { get; }
         Task<TResult> Task { get; }
 
+#if !NET40
+
         TaskAwaiter<TResult> GetAwaiter();
+
+#endif
     }
 }

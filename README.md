@@ -4,7 +4,7 @@ Fluffy .NET is an easy-to-use Network library wich contains many useful features
 
 # BUILDING
 
-- Framework Version > .NET 4.7
+- Framework Version >= .NET 4.7
 -- Compiler Flag: NET47; NET46 ; NET45; NET40
 -- Unused Flags: NET80
 

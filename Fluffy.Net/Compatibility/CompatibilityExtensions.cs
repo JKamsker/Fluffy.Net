@@ -1,5 +1,6 @@
 ﻿//Integrated in >= NET471
 #if (NET47 || NET46 || NET45 || NET40)
+
 using System.Threading.Tasks;
 
 // ReSharper disable once CheckNamespace
@@ -31,4 +32,5 @@ namespace System.Net.Sockets
         }
     }
 }
+
 #endif

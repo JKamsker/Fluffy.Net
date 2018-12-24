@@ -1,15 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+
+#if !NET40
+
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Diagnostics;
 using AllInOneExample_FullFramework.Models;
 using Fluffy.Net;
+
+#endif
 
 namespace AllInOneExample_FullFramework
 {
     internal class PacketExample
     {
+#if NET40
+
+        public PacketExample Initialize()
+        {
+            Console.WriteLine("NET 4.0 doesn't support async/await");
+            return this;
+        }
+
+#else
         private bool _initialized;
         private readonly FluffyServer _server;
         private readonly FluffyClient _client;
@@ -120,5 +134,7 @@ namespace AllInOneExample_FullFramework
 
             return awesomeList;
         }
+
+#endif
     }
 }

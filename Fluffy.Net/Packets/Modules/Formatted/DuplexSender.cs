@@ -64,10 +64,14 @@ namespace Fluffy.Net.Packets.Modules.Formatted
             public T Result => GetValue();
             public Task<T> Task => _completionSource.Task;
 
+#if !NET40
+
             public TaskAwaiter<T> GetAwaiter()
             {
                 return _completionSource.Task.GetAwaiter();
             }
+
+#endif
 
             public DuplexResult()
             {

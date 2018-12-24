@@ -8,7 +8,14 @@ using Fluffy.Net.Packets.Modules.Streaming;
 
 namespace Fluffy.Net
 {
+#if NET40
+
+    public class ConnectionInfo : EventArgs, IDisposable
+#else
+
     public class ConnectionInfo : IDisposable
+#endif
+
     {
         public EventHandler<ConnectionInfo> OnDisposing;
         public Socket Socket { get; set; }
