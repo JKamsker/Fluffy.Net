@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using AllInOneExample_FullFramework.Models;
 using Fluffy.IO.Buffer;
@@ -53,12 +54,11 @@ namespace AllInOneExample_FullFramework
                 int total = 0;
                 var buffer = BufferRecyclingMetaFactory<RecyclableBuffer>.MakeFactory(Capacity.Medium).GetBuffer();
 
-                var handler = new AsyncStreamHandler(registration.StreamIdentifier);
-                connection.StreamPacketHandler.RegisterStream(handler);
+                var handler = connection.StreamPacketHandler.RegisterStream(new AsyncStreamHandler(registration.StreamIdentifier));
 
                 Console.WriteLine($"Reading stream...");
 
-                while ((read = await handler.Stream.ReadAsync(buffer.Value, 0, buffer.Value.Length)) != 0)
+                while ((read = await handler.Stream.ReadAsync(buffer.Value, 0, buffer.Value.Length, CancellationToken.None)) != 0)
                 {
                     total += read;
                     Console.WriteLine($"Read {read} bytes / {total} total ...");

@@ -69,7 +69,7 @@ namespace Fluffy.Net.Packets.Modules.Streaming
             }
         }
 
-        public StreamPacketHandler RegisterStream(IStreamHandler handler)
+        public THandler RegisterStream<THandler>(THandler handler) where THandler : IStreamHandler
         {
             if (_streamDictionary.ContainsKey(handler.StreamIdentifier))
             {
@@ -77,7 +77,7 @@ namespace Fluffy.Net.Packets.Modules.Streaming
             }
 
             _streamDictionary[handler.StreamIdentifier] = handler;
-            return this;
+            return handler;
         }
 
         public void Dispose()
