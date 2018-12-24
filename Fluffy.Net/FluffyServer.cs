@@ -76,11 +76,4 @@ namespace Fluffy.Net
             Socket.BeginAccept(AcceptCallback, null);
         }
     }
-
-    internal enum DynamicMethodDummy : byte
-    {
-        Test1,
-        Test2,
-        Test3
-    }
 }

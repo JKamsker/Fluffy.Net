@@ -83,7 +83,13 @@ namespace AllInOneExample_FullFramework
 
                 if (handle.CancellationToken.IsCancellationRequested)
                 {
+                    // handle.TaskCompletionSource.Task.
+
+#if NET46 || NET471          //https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.taskcompletionsource-1.trysetcanceled?view=netframework-4.6
                     handle.TaskCompletionSource.TrySetCanceled(handle.CancellationToken);
+#else
+                    handle.TaskCompletionSource.TrySetCanceled();
+#endif
                     return;
                 }
 
