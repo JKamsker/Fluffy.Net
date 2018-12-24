@@ -5,7 +5,7 @@ Fluffy .NET is an easy-to-use Network library wich contains many useful features
 #BUILDING
 
 - Framework Version > .NET 4.7
--- Compiler Flag: NET471
+-- Compiler Flag: NET471; NET61 ; NET40;
 
 # Todo
 - Raw-Stream sending API
