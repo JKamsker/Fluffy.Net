@@ -1,4 +1,13 @@
 language: csharp
+matrix:
+  include:
+    - mono: latest
+    
+branches:
+  only:
+    - master
+    - develop
+    
 solution: Fluffy.sln
 install:
   - nuget restore Fluffy.sln
