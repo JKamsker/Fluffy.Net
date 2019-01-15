@@ -40,7 +40,7 @@ namespace Fluffy.Net
 
         public Task ConnectAsync()
         {
-            return Socket.ConnectAsync(_endPoint);
+            return Socket.ConnectAsync(_endPoint).ContinueWith(x => Connection.Receiver.Start());
         }
 
         public void Test()
