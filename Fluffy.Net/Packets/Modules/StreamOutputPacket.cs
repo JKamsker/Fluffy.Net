@@ -60,7 +60,10 @@ namespace Fluffy.Net.Packets.Modules
             if (_stream == null || _stream.Length - _stream.Position == 0)
             {
                 HasFinished = true;
-                Console.WriteLine($"Disposed");
+#if DEBUG
+                Console.WriteLine($"[StreamOutputPacket][Read] Disposed");
+#endif
+
                 Dispose();
             }
 

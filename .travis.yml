@@ -1,6 +1,19 @@
 language: csharp
+matrix:
+  include:
+    - mono: latest
+    
+branches:
+  only:
+    - master
+    - develop
+    
 solution: Fluffy.sln
 install:
   - nuget restore Fluffy.sln
 script:
-  - xbuild Fluffy.sln /p:TargetFrameworkVersion="v4.5" 
+    #- xbuild Fluffy.sln /m /t:Rebuild /p:Configuration=Release /p:TargetFrameworkVersion='v4.0' /p:DefineConstants="NET40"
+    - msbuild Fluffy.sln /m /t:Rebuild /p:Configuration=Release /p:TargetFrameworkVersion='v4.5' /p:DefineConstants="NET45"
+    - msbuild Fluffy.sln /m /t:Rebuild /p:Configuration=Release /p:TargetFrameworkVersion='v4.6' /p:DefineConstants="NET46"
+    - msbuild Fluffy.sln /m /t:Rebuild /p:Configuration=Release /p:TargetFrameworkVersion='v4.7' /p:DefineConstants="NET47"
+#OLD:   - xbuild Fluffy.sln /p:TargetFrameworkVersion="v4.7";DefineConstants="TRACE;DEBUG;NET47"

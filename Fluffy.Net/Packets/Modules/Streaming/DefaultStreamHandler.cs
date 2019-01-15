@@ -38,9 +38,10 @@ namespace Fluffy.Net.Packets.Modules.Streaming
         {
             HasFinished = true;
             OnReceived?.Invoke(this, Stream);
+            Dispose();
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             Stream?.Dispose();
         }

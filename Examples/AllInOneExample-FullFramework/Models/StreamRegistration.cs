@@ -3,10 +3,24 @@
 namespace AllInOneExample_FullFramework.Models
 {
     [Serializable]
+    public class FileStreamRegistration : StreamRegistration
+    {
+        public Guid FileIdentifier { get; set; }
+
+        public FileStreamRegistration() : base()
+        {
+        }
+
+        public FileStreamRegistration(Guid guid) : base(guid)
+        {
+        }
+    }
+
+    [Serializable]
     public class StreamRegistration
     {
         public StatusCode StatusCode { get; set; }
-        public Guid Guid { get; }
+        public Guid StreamIdentifier { get; set; }
 
         public StreamRegistration() : this(Guid.NewGuid())
         {
@@ -14,7 +28,7 @@ namespace AllInOneExample_FullFramework.Models
 
         public StreamRegistration(Guid guid)
         {
-            Guid = guid;
+            StreamIdentifier = guid;
         }
     }
 }

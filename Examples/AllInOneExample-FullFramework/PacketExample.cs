@@ -1,19 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+
+#if !NET40
+
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Diagnostics;
 using AllInOneExample_FullFramework.Models;
 using Fluffy.Net;
+
+#endif
 
 namespace AllInOneExample_FullFramework
 {
     internal class PacketExample
     {
+#if NET40
+
+        public PacketExample Initialize()
+        {
+            Console.WriteLine("NET 4.0 doesn't support async/await");
+            return this;
+        }
+
+#else
         private bool _initialized;
         private readonly FluffyServer _server;
         private readonly FluffyClient _client;
         private static Stopwatch _sw;
+
+        public bool ParallelExample { get; set; }
 
         public PacketExample(FluffyServer server, FluffyClient client)
         {
@@ -42,9 +58,31 @@ namespace AllInOneExample_FullFramework
             return awesome;
         }
 
-        private static async void OnNewConnection(object sender, ConnectionInfo connection)
+        private async void OnNewConnection(object sender, ConnectionInfo connection)
         {
-            await SendMultipleStresstestAsync(connection);
+            if (ParallelExample)
+            {
+                await SendMultipleStresstestAsync(connection);
+            }
+            else
+            {
+                await SendNonParallel(connection);
+            }
+        }
+
+        public static async Task SendNonParallel(ConnectionInfo connection)
+        {
+            var dummy = new MyAwesomeClass
+            {
+                Id = 1,
+                AwesomeString = "AWESOME!!"
+            };
+
+            while (true)
+            {
+                dummy = await connection.Sender.Send<MyAwesomeClass>(dummy);
+                Console.WriteLine($"{dummy.Id} \t {dummy.Packets} \t {dummy.AwesomeString}");
+            }
         }
 
         public static async Task SendMultipleStresstestAsync(ConnectionInfo connection)
@@ -96,5 +134,7 @@ namespace AllInOneExample_FullFramework
 
             return awesomeList;
         }
+
+#endif
     }
 }

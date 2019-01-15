@@ -1,21 +1,19 @@
-﻿using System;
-using System.Net;
-using System.Net.Sockets;
+﻿//Integrated in >= NET471
+#if (NET47 || NET46 || NET45 || NET40)
+
 using System.Threading.Tasks;
 
-namespace Fluffy.Net.Async
+// ReSharper disable once CheckNamespace
+namespace System.Net.Sockets
 {
-    public static class AsyncSocketHelper
+    public static class CompatibilityExtensions
     {
         /// <summary>Establishes a connection to a remote host.</summary>
         /// <param name="socket">The socket that is used for establishing a connection.</param>
         /// <param name="remoteEP">An EndPoint that represents the remote device.</param>
         /// <returns>An asynchronous Task.</returns>
-        public static Task ConnectAsync(Socket socket, EndPoint remoteEP)
+        public static Task ConnectAsync(this Socket socket, EndPoint remoteEP)
         {
-#if NET471
-            return socket.ConnectAsync(remoteEP);
-#else
             TaskCompletionSource<bool> completionSource = new TaskCompletionSource<bool>((object)socket);
             socket.BeginConnect(remoteEP, (AsyncCallback)(iar =>
             {
@@ -31,7 +29,8 @@ namespace Fluffy.Net.Async
                 }
             }), (object)completionSource);
             return (Task)completionSource.Task;
-#endif
         }
     }
 }
+
+#endif

@@ -12,7 +12,8 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -20,10 +21,11 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET45</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>7.3</LangVersion>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -34,6 +36,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>7.3</LangVersion>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -51,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Async\AsyncSender.cs" />
     <Compile Include="Collections\OnPacketReceiveEventArgs.cs" />
+    <Compile Include="Compatibility\CompatibilityExtensions.cs" />
     <Compile Include="ConnectionInfo.cs" />
     <Compile Include="FluffyClient.cs" />
     <Compile Include="FluffyServer.cs" />
@@ -76,7 +80,6 @@
     <Compile Include="Packets\Modules\Sender.cs" />
     <Compile Include="Async\SendTaskRelay.cs" />
     <Compile Include="Async\SharedOutputQueueWorker.cs" />
-    <Compile Include="Async\AsyncSocketHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fluffy.IO\Fluffy.IO.csproj">
