@@ -30,7 +30,10 @@ namespace Fluffy.IO.Recycling
 
         public void Recycle(T @object)
         {
-            Recycle(@object);
+            if (@object is FluffyBuffer flb)
+            {
+                Recycle(flb);
+            }
         }
 
         public void Recycle(FluffyBuffer @object)

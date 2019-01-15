@@ -1,0 +1,27 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+                    xmlns:viewModels="clr-namespace:ChatClient.ViewModels"
+                    xmlns:models="clr-namespace:ChatClient.Models">
+    <!--xmlns:local="clr-namespace:ChatClient.Resources"-->
+    <DataTemplate x:Key="TemplateEndpoint"
+                  DataType="{x:Type models:EndpointModel}">
+
+        <TextBlock Text="{Binding Description}"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Bottom" />
+    </DataTemplate>
+
+    <Style x:Key="ComboboxEndpoints"
+           TargetType="{x:Type ComboBox}">
+
+        <Setter Property="ItemTemplate"
+                Value="{StaticResource TemplateEndpoint}" />
+
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+
+        <!--<Setter Property="Margin"
+                Value="20" />-->
+    </Style>
+</ResourceDictionary>

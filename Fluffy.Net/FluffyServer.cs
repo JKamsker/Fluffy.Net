@@ -54,7 +54,7 @@ namespace Fluffy.Net
             {
                 var socket = Socket.EndAccept(result);
                 var connectionInfo = new ConnectionInfo(socket, this);
-                connectionInfo.OnDisposing += (_, x) =>
+                connectionInfo.OnDisposed += (_, x) =>
                 {
                     _connections.Remove(connectionInfo);
                 };

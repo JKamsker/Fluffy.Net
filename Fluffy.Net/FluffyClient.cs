@@ -41,9 +41,10 @@ namespace Fluffy.Net
             Connection.Receiver.Start();
         }
 
-        public Task ConnectAsync()
+        public async Task ConnectAsync()
         {
-            return AsyncSocketHelper.ConnectAsync(Socket, _endPoint);
+            await AsyncSocketHelper.ConnectAsync(Socket, _endPoint).ConfigureAwait(false);
+            Connection.Receiver.Start();
         }
 
         public void Test()

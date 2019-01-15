@@ -10,7 +10,10 @@ namespace Fluffy.Net
 {
     public class ConnectionInfo : IDisposable
     {
+        public Guid Identifier { get; }
+        public EventHandler<ConnectionInfo> OnDisposed;
         public EventHandler<ConnectionInfo> OnDisposing;
+
         public Socket Socket { get; set; }
 
         public FluffySocket FluffySocket { get; set; }
@@ -28,6 +31,7 @@ namespace Fluffy.Net
 
         public ConnectionInfo(Socket socket, FluffySocket fluffySocket)
         {
+            Identifier = Guid.NewGuid();
             Socket = socket;
             FluffySocket = fluffySocket;
 
@@ -37,6 +41,8 @@ namespace Fluffy.Net
             Receiver = new Receiver(socket);
 
             Receiver.OnReceive += PacketHandler.Handle;
+            Receiver.OnDisposing += (sender, receiver) => Dispose();
+
 #if DEBUG
 
             PacketHandler.RegisterPacket<DummyPacketHandler>();
@@ -44,17 +50,20 @@ namespace Fluffy.Net
             PacketHandler.RegisterPacket<FormattedPacketHandler>();
             StreamPacketHandler = PacketHandler.RegisterPacket<StreamPacketHandler>();
 
-            PacketHandler
-                .On<ConnectionInfo>().Do(x => Console.Write($"You are awesome :3"))
-                .Default(x => Console.Write($"Lol, Default"));
+            //PacketHandler
+            //    .On<ConnectionInfo>().Do(x => Console.Write($"You are awesome :3"))
+            //    .Default(x => Console.Write($"Lol, Default"));
         }
 
         public void Dispose()
         {
+            OnDisposing?.Invoke(this, this);
             Socket?.Dispose();
             // ReSharper disable once DelegateSubtraction
             Receiver.OnReceive -= PacketHandler.Handle;
-            OnDisposing?.Invoke(this, this);
+            OnDisposed?.Invoke(this, this);
+
+            Console.WriteLine("Disposed");
         }
     }
 }

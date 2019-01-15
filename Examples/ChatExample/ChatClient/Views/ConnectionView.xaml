@@ -1,0 +1,83 @@
+﻿<Window x:Class="ChatClient.Views.ConnectionView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ChatClient.Views"
+        xmlns:viewModels="clr-namespace:ChatClient.ViewModels"
+        mc:Ignorable="d"
+        Title="ConnectionViewModelModel"
+        MinHeight="211.102" MinWidth="237.076"
+        Height="198.102" Width="417.076"
+        d:DataContext="{d:DesignInstance Type={x:Type viewModels:ConnectionViewModel}}">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/ConnectionView.Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="61" Width="*" />
+            <ColumnDefinition Width="8*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="Server:"
+                   Grid.Row="0"
+                   Grid.Column="0"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   Margin="5" />
+
+        <ComboBox Grid.Row="0"
+                  Grid.Column="1"
+                  Margin="5"
+                  ItemsSource="{Binding Servers}"
+                  SelectedItem="{Binding SelectedEndpoint}"
+                  Style="{StaticResource ComboboxEndpoints}" />
+
+        <TextBlock Text="User:"
+                   Grid.Row="1"
+                   Grid.Column="0"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   Margin="5" />
+
+        <TextBox Grid.Row="1"
+                 Grid.Column="1"
+                 Margin="5"
+                 Text="{Binding Name}"
+                 HorizontalContentAlignment="Left"
+                 VerticalAlignment="Center" />
+
+        <TextBlock Text="Password:"
+                   Grid.Row="2"
+                   Grid.Column="0"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   Margin="5" />
+
+        <TextBox Grid.Row="2"
+                 Grid.Column="1"
+                 Text="{Binding Password}"
+                 Margin="5"
+                 HorizontalContentAlignment="Left"
+                 VerticalAlignment="Center" />
+
+        <Button Grid.Row="3"
+                Grid.Column="1"
+                Margin="5"
+                Content="Connect"
+                Command="{Binding ConnectCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+    </Grid>
+</Window>

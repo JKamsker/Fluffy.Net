@@ -24,6 +24,7 @@ namespace Fluffy.Net.Packets.Modules
         private LinkableBuffer _bufferWrapper;
 
         public EventHandler<OnPacketReceiveEventArgs> OnReceive;
+        public EventHandler<Receiver> OnDisposing;
 
         internal Receiver(Socket socket)
         {
@@ -50,20 +51,28 @@ namespace Fluffy.Net.Packets.Modules
 
         private void ReceiveCallback(IAsyncResult ar)
         {
-            int bytesRead = _socket.EndReceive(ar);
-            if (bytesRead == 0)
+            try
             {
-                Console.WriteLine($"Received 0 bytes, closing Socket!");
-                return;
-            }
+                int bytesRead = _socket.EndReceive(ar);
+                if (bytesRead == 0)
+                {
+                    Console.WriteLine($"Received 0 bytes, closing Socket!");
+                    return;
+                }
 
-            _stream.Write(_buffer, 0, bytesRead);
-            while (_stream.Length >= _nextSegmentLength)
+                _stream.Write(_buffer, 0, bytesRead);
+                while (_stream.Length >= _nextSegmentLength)
+                {
+                    HandleStream();
+                }
+
+                _socket.BeginReceive(_buffer, 0, (int)(_nextSegmentLength - _stream.Length), SocketFlags.None, ReceiveCallback, null);
+            }
+            catch (SocketException e) when (e.ErrorCode == 10054)
             {
-                HandleStream();
+                //Connection was closed
+                Dispose();
             }
-
-            _socket.BeginReceive(_buffer, 0, (int)(_nextSegmentLength - _stream.Length), SocketFlags.None, ReceiveCallback, null);
         }
 
         private int headerLen = 0;
@@ -126,9 +135,9 @@ namespace Fluffy.Net.Packets.Modules
             {
                 return;
             }
-
             _disposed = true;
 
+            OnDisposing?.Invoke(this, this);
             _socket?.Dispose();
             _stream?.Dispose();
             _bufferWrapperFac.Recycle(_bufferWrapper);
