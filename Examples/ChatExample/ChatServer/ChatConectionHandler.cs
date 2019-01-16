@@ -4,6 +4,7 @@ using ChatSharedComps;
 using ChatSharedComps.Login;
 using ChatSharedComps.Messaging;
 using Fluffy.Net;
+using Fluffy.Net.Packets.Modules.Formatted;
 
 namespace ChatServer
 {
@@ -73,16 +74,18 @@ namespace ChatServer
                 return new BaseResponse(false);
             }
 
+            message.Message.Sender = Identifier;
+
             switch (message.MessageType)
             {
                 case MessageType.BroadCast:
-                    _pool.SendMessage(message.Message, x => x.Identifier != Identifier);
+                    _pool.SendMessage(message.Message);
                     break;
 
                 case MessageType.MultiCast:
                     if (message.Receipients?.Count >= 0)
                     {
-                        _pool.SendMessage(message.Message, x => message.Receipients.Contains(x.Identifier));
+                        _pool.SendMessage(message.Message, x => message.Receipients.Contains(x.Identifier) || x.Identifier == Identifier);
                     }
                     break;
 

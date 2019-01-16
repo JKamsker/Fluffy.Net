@@ -15,11 +15,18 @@ namespace ChatServer
             _chatPool = new ChatPool();
             _server = new FluffyServer(8001);
             _server.OnNewConnection += OnNewConnection;
+            _server.PacketHandler.On<CrashRequest>().Do(x => CauseCrash());
 
             _server.Start();
             Console.WriteLine("Server started, press [EXIT] to exit");
             Console.ReadLine();
             Console.ReadLine();
+        }
+
+        private static void CauseCrash()
+        {
+            //throw new ArgumentException("Yolo");
+            Console.WriteLine("Crash!");
         }
 
         private static void OnNewConnection(object sender, ConnectionInfo e)

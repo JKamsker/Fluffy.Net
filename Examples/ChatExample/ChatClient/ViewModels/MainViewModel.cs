@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -9,6 +10,7 @@ using ChatClient.Utilities;
 using ChatSharedComps;
 using ChatSharedComps.Messaging;
 using Fluffy.Net;
+using Fluffy.Net.Packets.Modules.Formatted;
 
 namespace ChatClient.ViewModels
 {
@@ -60,6 +62,8 @@ namespace ChatClient.ViewModels
 
         public ICommand SendCommand => new RelayCommand(OnSendClicked);
 
+        public ICommand CrashCommand => new RelayCommand(OnCrashClicked);
+
         public MainViewModel(FluffyClient client, List<ChatUser> chatUsers)
         {
             _client = client;
@@ -88,6 +92,15 @@ namespace ChatClient.ViewModels
             Messages += $"[{DateTime.Now:t}] {sender}: {obj.Text}\n";
         }
 
+        private async void OnCrashClicked(object obj)
+        {
+            var result = await _client.Connection.Sender.Send<BaseResponse>(new CrashRequest());
+            if (result)
+            {
+                MessageBox.Show($"Result true: {result.Message}");
+            }
+        }
+
         private async void OnSendClicked(object obj)
         {
             var message = new MessageRequest
@@ -99,6 +112,7 @@ namespace ChatClient.ViewModels
                     Text = Message
                 }
             };
+            var sw = Stopwatch.StartNew();
             var result = await _client.Connection.Sender.Send<BaseResponse>(message);
 
             if (!result)
@@ -106,7 +120,12 @@ namespace ChatClient.ViewModels
                 MessageBox.Show("An error occurred while sending the message");
                 return;
             }
-            MessageReceived(message.Message);
+            //for (int i = 0; i < 100; i++)
+            //{
+            //}
+            sw.Stop();
+            Debug.WriteLine($"Took {sw.Elapsed.TotalMilliseconds} ms");
+
             Message = string.Empty;
         }
     }

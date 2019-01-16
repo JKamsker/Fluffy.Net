@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ChatSharedComps
+namespace Fluffy.Net.Packets.Modules.Formatted
 {
     [Serializable]
     public class BaseResponse
@@ -20,7 +20,7 @@ namespace ChatSharedComps
 
         public static implicit operator bool(BaseResponse d)
         {
-            return d.Success;
+            return d?.Success ?? false;
         }
     }
 }

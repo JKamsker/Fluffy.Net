@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Windows;
@@ -23,6 +24,12 @@ namespace ChatClient.ViewModels
                         Address = IPAddress.Parse("127.0.0.1"),
                         Port = 8001,
                         Description = "LocalHost"
+                    },
+                    new EndpointModel
+                    {
+                        Address = IPAddress.Parse("37.59.53.54"),
+                        Port = 8001,
+                        Description = "TestServer"
                     }
                 }
             };
@@ -102,6 +109,12 @@ namespace ChatClient.ViewModels
 
             var client = new FluffyClient(SelectedEndpoint.Address, SelectedEndpoint.Port);
             await client.ConnectAsync();
+            client.Connection.OnDisposing += (sender, info) =>
+            {
+                MessageBox.Show("Server Shutdown");
+                Environment.Exit(0);
+            };
+
             var response = await client.Connection.Sender.Send<LoginResponse>(new LoginRequest
             {
                 Name = _name,

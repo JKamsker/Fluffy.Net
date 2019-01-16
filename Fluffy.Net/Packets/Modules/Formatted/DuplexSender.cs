@@ -24,7 +24,20 @@ namespace Fluffy.Net.Packets.Modules.Formatted
         private object HandleRequest(SendTransferObject obj)
         {
             obj.State = STOState.Response;
-            obj.Value = _connection.PacketHandler.Handle(obj.Value);
+            try
+            {
+                obj.Value = _connection.PacketHandler.Handle(obj.Value);
+            }
+            catch (Exception e)
+            {
+                obj.HasFailed = true;
+                obj.Value = null;
+                obj.ExceptionMessage = e.ToString();
+                if (e.GetType().IsSerializable)
+                {
+                    obj.Exception = e;
+                }
+            }
             return obj;
         }
 
@@ -32,7 +45,7 @@ namespace Fluffy.Net.Packets.Modules.Formatted
         {
             if (_wrappers.TryRemove(obj.Guid, out var wrapper))
             {
-                wrapper.SetResult(obj.Value);
+                wrapper.SetResult(obj);
             }
             else
             {
@@ -51,7 +64,7 @@ namespace Fluffy.Net.Packets.Modules.Formatted
 
         private abstract class DuplexResult
         {
-            public abstract void SetResult(object value);
+            public abstract void SetResult(SendTransferObject value);
         }
 
         private class DuplexResult<T> : DuplexResult, IPacketResult<T>
@@ -79,13 +92,23 @@ namespace Fluffy.Net.Packets.Modules.Formatted
                 _resetEvent = new ManualResetEvent(false);
             }
 
-            public override void SetResult(object value)
+            private SendTransferObject _transferObject;
+
+            public override void SetResult(SendTransferObject value)
             {
-                T result = (T)value;
+                _transferObject = value;
+                T result = (T)value.Value;
                 _value = result;
                 _hasCompleted = true;
+                if (value.HasFailed)
+                {
+                    _completionSource.SetException(value.Exception);
+                }
+                else
+                {
+                    _completionSource.SetResult(result);
+                }
 
-                _completionSource.SetResult(result);
                 _resetEvent.Set();
                 _resetEvent.Dispose();
                 _resetEvent = null;
@@ -96,6 +119,7 @@ namespace Fluffy.Net.Packets.Modules.Formatted
                 if (!_hasCompleted)
                 {
                     _resetEvent?.WaitOne();
+                    throw _transferObject.Exception ?? new Exception(_transferObject.ExceptionMessage);
                 }
 
                 return _value;
@@ -113,7 +137,12 @@ namespace Fluffy.Net.Packets.Modules.Formatted
         {
             public STOState State { get; set; }
             public Guid Guid { get; }
+
             public object Value { get; set; }
+
+            public bool HasFailed { get; set; }
+            public string ExceptionMessage { get; set; }
+            public Exception Exception { get; set; }
 
             public SendTransferObject(object value)
             {

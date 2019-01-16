@@ -5,6 +5,7 @@ using Fluffy.Net.Packets.Modules.Raw;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -57,25 +58,32 @@ namespace Fluffy.Net.Packets
             return instance;
         }
 
-        internal void Handle(object sender, OnPacketReceiveEventArgs packet)
+        internal async void Handle(object sender, OnPacketReceiveEventArgs packet)
         {
-            if (_packetList.TryGetValue(packet.OpCode, out var handler))
+            try
             {
-                // TODO: Test!
-                // packet.Options = ParallelismOptions.Sync;
-                switch (packet.Options)
+                if (_packetList.TryGetValue(packet.OpCode, out var handler))
                 {
-                    case ParallelismOptions.Parallel:
-                        Task.Run(() => HandleInternal(handler, packet));
-                        break;
+                    // TODO: Test!
+                    // packet.Options = ParallelismOptions.Sync;
+                    switch (packet.Options)
+                    {
+                        case ParallelismOptions.Parallel:
+                            await Task.Run(() => HandleInternal(handler, packet));
+                            break;
 
-                    case ParallelismOptions.Sync:
-                        HandleInternal(handler, packet);
-                        break;
+                        case ParallelismOptions.Sync:
+                            HandleInternal(handler, packet);
+                            break;
 
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex, "Error");
             }
         }
 

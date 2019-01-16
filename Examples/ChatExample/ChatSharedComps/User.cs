@@ -18,4 +18,10 @@ namespace ChatSharedComps
     public class ChatUserLeft : ChatUser
     {
     }
+
+    [Serializable]
+    public class CrashRequest
+    {
+        public string CrashText { get; set; }
+    }
 }

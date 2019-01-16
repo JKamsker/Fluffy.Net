@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using ChatSharedComps.Messaging;
+using Fluffy.Net.Packets.Modules.Formatted;
 
 namespace ChatSharedComps.Login
 {

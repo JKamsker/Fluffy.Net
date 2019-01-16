@@ -60,9 +60,11 @@
     <Compile Include="FluffyServer.cs" />
     <Compile Include="FluffySocket.cs" />
     <Compile Include="Packets\IPacketResult.cs" />
+    <Compile Include="Packets\Modules\Formatted\BaseResponse.cs" />
     <Compile Include="Packets\Modules\Formatted\DuplexSender.cs" />
     <Compile Include="Options\IOState.cs" />
     <Compile Include="Options\ParallelismOptions.cs" />
+    <Compile Include="Packets\Modules\Formatted\ExceptionResponse.cs" />
     <Compile Include="Packets\Modules\IOutputPacket.cs" />
     <Compile Include="Packets\Modules\Raw\BasePacketHandler.cs" />
     <Compile Include="Packets\Modules\Streaming\IStreamHandler.cs" />

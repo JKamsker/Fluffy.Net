@@ -21,6 +21,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="6*" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
@@ -31,6 +32,7 @@
                  Grid.Row="0"
                  Margin="5"
                  IsReadOnly="True"
+                 HorizontalScrollBarVisibility="Auto"
                  Text="{Binding Messages}" />
 
         <ListBox Grid.Column="1"
@@ -48,5 +50,11 @@
                 Margin="5"
                 Content="Send"
                 Command="{Binding SendCommand}" />
+
+        <Button Grid.Row="2"
+                Grid.Column="1"
+                Margin="5"
+                Content="Crash!"
+                Command="{Binding CrashCommand}" />
     </Grid>
 </Window>
