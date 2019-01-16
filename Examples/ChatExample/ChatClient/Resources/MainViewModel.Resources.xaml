@@ -1,0 +1,17 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:viewModels="clr-namespace:ChatClient.ViewModels"
+                    xmlns:models="clr-namespace:ChatClient.Models"
+                    xmlns:chatSharedComps="clr-namespace:ChatSharedComps;assembly=ChatSharedComps">
+    <DataTemplate x:Key="TemplateUserList"
+                  DataType="{x:Type chatSharedComps:ChatUser}">
+        <TextBlock Text="{Binding UserName}" />
+    </DataTemplate>
+
+    <Style x:Key="UserList"
+           TargetType="{x:Type ListBox}">
+
+        <Setter Property="ItemTemplate"
+                Value="{StaticResource TemplateUserList}" />
+    </Style>
+</ResourceDictionary>

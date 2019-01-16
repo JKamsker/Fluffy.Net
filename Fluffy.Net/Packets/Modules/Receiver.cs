@@ -53,10 +53,11 @@ namespace Fluffy.Net.Packets.Modules
         {
             try
             {
-                int bytesRead = _socket.EndReceive(ar);
-                if (bytesRead == 0)
+                int bytesRead = _socket.EndReceive(ar, out var errorCode);
+                if (errorCode != SocketError.Success || bytesRead == 0)
                 {
-                    Console.WriteLine($"Received 0 bytes, closing Socket!");
+                    Console.WriteLine($"Error: {errorCode} / RX: {bytesRead}");
+                    Dispose();
                     return;
                 }
 

@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Markup;
 
 namespace ChatClient.Extensions
@@ -16,6 +18,17 @@ namespace ChatClient.Extensions
         {
             window.InitializeComponent();
             return window;
+        }
+
+        public static void Remove<T>(this ObservableCollection<T> collection, Predicate<T> predicate)
+        {
+            for (int i = collection.Count - 1; i >= 0; i--)
+            {
+                if (predicate(collection[i]))
+                {
+                    collection.RemoveAt(i);
+                }
+            }
         }
     }
 }

@@ -3,7 +3,6 @@
 
                     xmlns:viewModels="clr-namespace:ChatClient.ViewModels"
                     xmlns:models="clr-namespace:ChatClient.Models">
-    <!--xmlns:local="clr-namespace:ChatClient.Resources"-->
     <DataTemplate x:Key="TemplateEndpoint"
                   DataType="{x:Type models:EndpointModel}">
 
@@ -20,8 +19,5 @@
 
         <Setter Property="VerticalContentAlignment"
                 Value="Center" />
-
-        <!--<Setter Property="Margin"
-                Value="20" />-->
     </Style>
 </ResourceDictionary>

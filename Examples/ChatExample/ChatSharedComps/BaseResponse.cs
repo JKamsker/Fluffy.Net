@@ -17,5 +17,10 @@ namespace ChatSharedComps
         public BaseResponse()
         {
         }
+
+        public static implicit operator bool(BaseResponse d)
+        {
+            return d.Success;
+        }
     }
 }

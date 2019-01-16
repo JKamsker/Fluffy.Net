@@ -60,6 +60,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Resources\MainViewModel.Resources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ConnectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -78,6 +82,7 @@
     <Compile Include="Utilities\RelayCommand.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\ConnectionViewModel.cs" />
+    <Compile Include="Utilities\DispatchService.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\ConnectionView.xaml.cs">
       <DependentUpon>ConnectionView.xaml</DependentUpon>
@@ -117,6 +122,10 @@
     <ProjectReference Include="..\..\..\Fluffy.Net\Fluffy.Net.csproj">
       <Project>{E945D22D-E811-4AE0-B021-6D3A7F9FA55C}</Project>
       <Name>Fluffy.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Fluffy\Fluffy.csproj">
+      <Project>{BAD50387-0819-4B30-B937-0C003D49312B}</Project>
+      <Name>Fluffy</Name>
     </ProjectReference>
     <ProjectReference Include="..\ChatSharedComps\ChatSharedComps.csproj">
       <Project>{5057EEA3-0EC6-4504-9FC5-245CD985E9C0}</Project>

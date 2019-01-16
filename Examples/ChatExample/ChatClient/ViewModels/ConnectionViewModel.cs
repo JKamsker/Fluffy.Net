@@ -30,6 +30,7 @@ namespace ChatClient.ViewModels
         private string _name;
         private string _password;
         private EndpointModel _selectedEndpoint;
+        private volatile bool _connecting = false;
 
         public ObservableCollection<EndpointModel> Servers { get; private set; }
 
@@ -83,8 +84,6 @@ namespace ChatClient.ViewModels
             get => new RelayCommand(x => OnConnectClick(x), x => !_connecting);
         }
 
-        private volatile bool _connecting = false;
-
         private async void OnConnectClick(object callingWindow)
         {
             if (string.IsNullOrEmpty(Name))
@@ -114,6 +113,9 @@ namespace ChatClient.ViewModels
                 var window = new MainWindow
                 {
                     DataContext = new MainViewModel(client, response.ChatUsers)
+                    {
+                        Title = Name,
+                    }
                 }.Initialize();
                 window.Show();
                 if (callingWindow is Window wnd)

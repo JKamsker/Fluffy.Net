@@ -48,7 +48,6 @@ namespace ChatServer
 
             var chatUsers = _pool.Connections
                  .Where(x => !string.IsNullOrEmpty(x.UserName))
-                 .Where(x => x.Identifier != Identifier)
                  .ToList();
 
             foreach (var chatUser in chatUsers)

@@ -69,8 +69,6 @@ namespace Fluffy.Net
             // ReSharper disable once DelegateSubtraction
             Receiver.OnReceive -= PacketHandler.Handle;
             OnDisposed?.Invoke(this, this);
-
-            Console.WriteLine("Disposed");
         }
     }
 }

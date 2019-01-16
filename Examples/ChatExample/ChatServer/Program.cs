@@ -1,4 +1,5 @@
 ﻿using System;
+using ChatSharedComps;
 using Fluffy.Net;
 
 namespace ChatServer
@@ -34,6 +35,7 @@ namespace ChatServer
             _chatPool.Remove(e);
             e.OnDisposing -= OnClientDisconnecting;
 
+            _chatPool.SendMessage(new ChatUserLeft { Identifier = e.Identifier }, x => x.Identifier != e.Identifier);
             Console.WriteLine($"Client left: {e.Identifier}/{e.Socket.RemoteEndPoint}");
         }
     }
