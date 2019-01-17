@@ -2,7 +2,6 @@
 
 using System;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace AllInOneExample_FullFramework
 {
@@ -28,10 +27,6 @@ namespace AllInOneExample_FullFramework
             _client.Connect();
             Console.WriteLine("Connected");
             Console.ReadLine();
-        }
-
-        public static async Task Lol()
-        {
         }
     }
 }

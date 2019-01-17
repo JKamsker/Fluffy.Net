@@ -69,7 +69,7 @@ namespace Fluffy.IO.Buffer
             }
             _disposing = true;
 
-            if (Value != null)
+            if (Value != null && recycle)
             {
                 Recycler?.Recycle(Value);
             }

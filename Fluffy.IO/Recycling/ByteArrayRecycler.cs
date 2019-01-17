@@ -48,6 +48,12 @@ namespace Fluffy.IO.Recycling
             {
                 throw new AggregateException("Invalid object");
             }
+#if DEBUG
+        if (_bufferStack.Any(x => ReferenceEquals(x, array)))
+            {
+                Debugger.Break();
+            }
+#endif
 
             _bufferStack.TryAdd(array);
         }

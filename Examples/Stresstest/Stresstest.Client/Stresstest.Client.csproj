@@ -4,40 +4,36 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BAD50387-0819-4B30-B937-0C003D49312B}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Fluffy</RootNamespace>
-    <AssemblyName>Fluffy</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <ProjectGuid>{9A339C3D-011E-4DC0-A8FE-37071EE0A0A2}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Stresstest.Client</RootNamespace>
+    <AssemblyName>Stresstest.Client</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NET45</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.3</LangVersion>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE;RELEASE;NET45</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.3</LangVersion>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Activities" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -47,25 +43,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Collections\FluffyConcurrentStack.cs" />
-    <Compile Include="Collections\FluffyStack.cs" />
-    <Compile Include="Compatibility\IReadOnlyCollection.cs" />
-    <Compile Include="Compatibility\EventHandler.cs" />
-    <Compile Include="Delegate\DelegateStorage.cs" />
-    <Compile Include="Delegate\Extension.cs" />
-    <Compile Include="Extensions\FluentExtensions.cs" />
-    <Compile Include="Extensions\SerialisationExtensions.cs" />
-    <Compile Include="Fluent\ContextAwareDecisionNode.cs" />
-    <Compile Include="Fluent\ContextAwareTypeSwitch.cs" />
-    <Compile Include="Fluent\DecisionNode.cs" />
-    <Compile Include="Fluent\IDecisionNode.cs" />
-    <Compile Include="Fluent\ICheckable.cs" />
-    <Compile Include="Fluent\IConfigurable.cs" />
-    <Compile Include="Fluent\IInvokable.cs" />
-    <Compile Include="Fluent\TypeSwitch.cs" />
-    <Compile Include="IObjectStorage.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TaskUtility.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Fluffy.Net\Fluffy.Net.csproj">
+      <Project>{E945D22D-E811-4AE0-B021-6D3A7F9FA55C}</Project>
+      <Name>Fluffy.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Fluffy\Fluffy.csproj">
+      <Project>{BAD50387-0819-4B30-B937-0C003D49312B}</Project>
+      <Name>Fluffy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Stresstest.SharedComps\Stresstest.SharedComps.csproj">
+      <Project>{CF2876C4-3FF4-4F09-9578-0ACC9F5DA8D8}</Project>
+      <Name>Stresstest.SharedComps</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
