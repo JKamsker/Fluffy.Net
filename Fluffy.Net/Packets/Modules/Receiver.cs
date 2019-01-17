@@ -141,7 +141,7 @@ namespace Fluffy.Net.Packets.Modules
             OnDisposing?.Invoke(this, this);
             _socket?.Dispose();
             _stream?.Dispose();
-            _bufferWrapperFac.Recycle(_bufferWrapper);
+            _bufferWrapper.Dispose();
         }
     }
 

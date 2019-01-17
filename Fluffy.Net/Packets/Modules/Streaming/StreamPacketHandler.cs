@@ -10,7 +10,7 @@ namespace Fluffy.Net.Packets.Modules.Streaming
     public class StreamPacketHandler : BasePacketHandler, IDisposable
     {
         private byte[] _buffer;
-        private RecyclableBuffer _flufBuf;
+        private FluffyBuffer _flufBuf;
         private bool _disposed;
 
         public bool AllowUnknownStreams { get; set; }
@@ -23,7 +23,7 @@ namespace Fluffy.Net.Packets.Modules.Streaming
 
         public StreamPacketHandler() : base()
         {
-            _flufBuf = BufferRecyclingMetaFactory<RecyclableBuffer>.MakeFactory(Capacity.Medium).GetBuffer();
+            _flufBuf = BufferRecyclingMetaFactory<FluffyBuffer>.MakeFactory(Capacity.Medium).GetBuffer();
             _buffer = _flufBuf.Value;
 
             _streamDictionary = new ConcurrentDictionary<Guid, IStreamHandler>();
@@ -89,7 +89,7 @@ namespace Fluffy.Net.Packets.Modules.Streaming
 
             _disposed = true;
 
-            _flufBuf.Recycle();
+            _flufBuf.Dispose();
             _buffer = null;
 
             _streamDictionary.Values.ForEach(x => x.Dispose());

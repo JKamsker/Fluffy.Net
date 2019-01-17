@@ -2,7 +2,7 @@
 
 namespace Fluffy.IO.Buffer
 {
-    public class LinkableBuffer : RecyclableBuffer
+    public class LinkableBuffer : FluffyBuffer
     {
         public LinkableBuffer Next { get; internal set; }
 

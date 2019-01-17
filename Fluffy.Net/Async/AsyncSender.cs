@@ -13,8 +13,8 @@ namespace Fluffy.Net.Async
     {
         private readonly Socket _socket;
 
-        private readonly IObjectRecyclingFactory<RecyclableBuffer> _bufferFactory;
-        private RecyclableBuffer _bufferWrapper;
+        private readonly IObjectRecyclingFactory<FluffyBuffer> _bufferFactory;
+        private FluffyBuffer _bufferWrapper;
         private byte[] _buffer;
 
         private IOutputPacket _packet;
@@ -36,7 +36,7 @@ namespace Fluffy.Net.Async
             _socket = socket;
 
             SendTaskRelay = new SendTaskRelay(() => DoWork());
-            _bufferFactory = BufferRecyclingMetaFactory<RecyclableBuffer>.MakeFactory(Capacity.Medium);
+            _bufferFactory = BufferRecyclingMetaFactory<FluffyBuffer>.MakeFactory(Capacity.Medium);
             _bufferWrapper = _bufferFactory.GetBuffer();
             _buffer = _bufferWrapper.Value;
 
@@ -147,9 +147,16 @@ namespace Fluffy.Net.Async
         {
             _currentAsyncResult = null;
 
-            if (_socket.EndSend(ar) != messageSize)
+            if (_socket.EndSend(ar, out var socketError) != messageSize && socketError == SocketError.Success)
             {
                 throw new DataException("Message size does not match the amount of bytes sent");
+            }
+
+            if (socketError != SocketError.Success)
+            {
+                Console.WriteLine($"SocketError: {socketError}");
+                Dispose();
+                return;
             }
 
             if (!DoWork(true))
@@ -164,7 +171,7 @@ namespace Fluffy.Net.Async
             {
                 if (_currentAsyncResult != null)
                 {
-                    _socket?.EndSend(_currentAsyncResult);
+                    _socket?.EndSend(_currentAsyncResult, out _);
                 }
             }
             catch (Exception)
@@ -172,7 +179,16 @@ namespace Fluffy.Net.Async
                 //Ignore
             }
 
-            _bufferWrapper.Recycle();
+            try
+            {
+                _socket?.Dispose();
+            }
+            catch (Exception e)
+            {
+                //Ignore
+            }
+
+            _bufferWrapper.Dispose();
 
             while (_packetQueue.TryDequeue(out _packet))
             {

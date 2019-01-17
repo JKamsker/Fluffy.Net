@@ -158,7 +158,7 @@ namespace Fluffy.IO.Buffer
                 targetStream.Write(buffer, 0, read);
                 totalRead += read;
             }
-            tempBuffer.Recycle();
+            tempBuffer.Dispose();
             return targetStream;
         }
 
@@ -171,7 +171,7 @@ namespace Fluffy.IO.Buffer
 
             var headBuffer = _head;
             _head = _head.Next;
-            headBuffer.Recycle();
+            headBuffer.Dispose();
             return true;
         }
 

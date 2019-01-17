@@ -1,4 +1,5 @@
-﻿using Fluffy.IO.Buffer;
+﻿using System;
+using Fluffy.IO.Buffer;
 
 namespace Fluffy.IO.Recycling
 {
@@ -23,23 +24,34 @@ namespace Fluffy.IO.Recycling
         public T GetBuffer()
         {
             var result = new T();
-            result.Initialize(_byteArrayRecycler);
+            result.OnDisposing += OnBufferDisposing;
             result.Initialize(_byteArrayRecycler.GetBuffer());
             return result;
         }
 
-        public void Recycle(T @object)
+        private void OnBufferDisposing(BufferObject<byte> buffer, byte[] value)
         {
-            if (@object is FluffyBuffer flb)
+            buffer.OnDisposing -= OnBufferDisposing;
+            if (value.Length != Capacity)
             {
-                Recycle(flb);
+                throw new AggregateException("Buffer size doesn't match capacity");
             }
+            _byteArrayRecycler.Recycle(value);
+
         }
 
-        public void Recycle(FluffyBuffer @object)
-        {
-            _byteArrayRecycler.Recycle(@object.Value);
-            @object.Dispose();
-        }
+        //public void Recycle(T @object)
+        //{
+        //    if (@object is FluffyBuffer flb)
+        //    {
+        //        Recycle(flb);
+        //    }
+        //}
+
+        //public void Recycle(FluffyBuffer @object)
+        //{
+        //    _byteArrayRecycler.Recycle(@object.Value);
+        //    @object.Dispose();
+        //}
     }
 }

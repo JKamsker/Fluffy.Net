@@ -2,7 +2,7 @@
 
 namespace Fluffy.IO.Buffer
 {
-    public interface IObjectRecyclingFactory<T> : IRecycler<T>
+    public interface IObjectRecyclingFactory<out T>
     {
         T GetBuffer();
     }

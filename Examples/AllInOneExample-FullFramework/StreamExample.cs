@@ -77,7 +77,7 @@ namespace AllInOneExample_FullFramework
         private static StreamRegistration StreamRegistration(StreamRegistration registration, ConnectionInfo connection)
         {
             var hashAlgorithm = MD5.Create();
-            var buffer = BufferRecyclingMetaFactory<RecyclableBuffer>.MakeFactory(Capacity.Medium).GetBuffer();
+            var buffer = BufferRecyclingMetaFactory<FluffyBuffer>.MakeFactory(Capacity.Medium).GetBuffer();
 
             var streamHandler = new DefaultStreamHandler(registration.StreamIdentifier)
             {
@@ -98,7 +98,7 @@ namespace AllInOneExample_FullFramework
                     var stringHash = string.Concat(hashAlgorithm.Hash.Select(x => x.ToString("x2")));
 
                     Console.WriteLine($"[Receiver] Hash is {stringHash}");
-                    buffer.Recycle();
+                    buffer.Dispose();
                 }
             };
 

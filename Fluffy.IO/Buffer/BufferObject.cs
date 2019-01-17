@@ -1,13 +1,17 @@
 ﻿using Fluffy.IO.Recycling;
 
 using System;
+using Fluffy.Delegate;
 
 namespace Fluffy.IO.Buffer
 {
     public class BufferObject<T>
         : IResettable, ICapacityInitiatable, IBufferObject<T>, IDisposable
     {
+        public EventHandler<BufferObject<T>, T[]> OnDisposing;
+
         private protected bool Initiated;
+        private bool _disposing;
 
         public T[] Value { get; private protected set; }
         public int High { get; internal set; }
@@ -137,6 +141,13 @@ namespace Fluffy.IO.Buffer
 
         public virtual void Dispose()
         {
+            if (_disposing)
+            {
+                return;   
+            }
+            _disposing = true;
+
+            OnDisposing?.Invoke(this,Value);
             Value = null;
         }
     }

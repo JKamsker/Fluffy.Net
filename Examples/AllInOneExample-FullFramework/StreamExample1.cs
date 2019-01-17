@@ -52,7 +52,7 @@ namespace AllInOneExample_FullFramework
             {
                 int read;
                 int total = 0;
-                var buffer = BufferRecyclingMetaFactory<RecyclableBuffer>.MakeFactory(Capacity.Medium).GetBuffer();
+                var buffer = BufferRecyclingMetaFactory<FluffyBuffer>.MakeFactory(Capacity.Medium).GetBuffer();
 
                 var handler = connection.StreamPacketHandler.RegisterStream(new AsyncStreamHandler(registration.StreamIdentifier));
 
@@ -64,7 +64,7 @@ namespace AllInOneExample_FullFramework
                     Console.WriteLine($"Read {read} bytes / {total} total ...");
                 }
 
-                buffer.Recycle();
+                buffer.Dispose();
                 Console.WriteLine("Finished reading from stream");
             }
             else
