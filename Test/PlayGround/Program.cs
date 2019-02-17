@@ -12,6 +12,7 @@ namespace PlayGround
 
         private static unsafe void Main(string[] args)
         {
+            return;
             var sw = Stopwatch.StartNew();
 
             long value = 16;

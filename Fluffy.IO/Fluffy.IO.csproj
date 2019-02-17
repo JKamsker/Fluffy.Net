@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Buffer\FakeLinkableBuffer.cs" />
     <Compile Include="Buffer\FakeRecycler.cs" />
+    <Compile Include="Exceptions\LockedException.cs" />
     <Compile Include="Buffer\RecyclableBuffer.cs" />
     <Compile Include="Buffer\BufferObject.cs" />
     <Compile Include="Buffer\FluffyBuffer.cs" />

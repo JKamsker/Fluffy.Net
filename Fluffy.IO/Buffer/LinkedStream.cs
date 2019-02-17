@@ -1,7 +1,9 @@
 ﻿using Fluffy.IO.Recycling;
 
 using System;
+using System.Data;
 using System.IO;
+using Fluffy.IO.Exceptions;
 
 namespace Fluffy.IO.Buffer
 {
@@ -21,6 +23,7 @@ namespace Fluffy.IO.Buffer
         private IObjectRecyclingFactory<LinkableBuffer> _recyclingFactory;
         private readonly int _cacheSize;
         private bool _locked;
+        private EventHandler OnDisposing;
 
         public LinkedStream(int cacheSize)
             : this(new BufferRecyclingFactory<LinkableBuffer>(cacheSize))
@@ -55,6 +58,10 @@ namespace Fluffy.IO.Buffer
         /// </param>
         public void EnqueueHead(LinkableBuffer buffer)
         {
+            if (_locked)
+            {
+                throw new LockedException("Stream is locked!");
+            }
             buffer.Next = _head;
             _head = buffer;
             InternalLength += buffer.Length;
@@ -71,10 +78,16 @@ namespace Fluffy.IO.Buffer
         /// </param>
         public void WriteHead(byte[] buffer, int offset, int count)
         {
+            if (_locked)
+            {
+                throw new LockedException("Stream is locked!");
+            }
+
             if (count == 0)
             {
                 return;
             }
+
             int written = 0;
             while (written < count)
             {
@@ -89,6 +102,11 @@ namespace Fluffy.IO.Buffer
 
         public override void Write(byte[] buffer, int offset, int count)
         {
+            if (_locked)
+            {
+                throw new LockedException("Stream is locked!");
+            }
+
             if (count == 0)
             {
                 return;
@@ -111,6 +129,10 @@ namespace Fluffy.IO.Buffer
 
         public override int Read(byte[] buffer, int offset, int count)
         {
+            if (_locked)
+            {
+                throw new LockedException("Stream is locked!");
+            }
             if (count <= 0)
             {
                 return 0;
@@ -178,6 +200,7 @@ namespace Fluffy.IO.Buffer
 
         public override void Close()
         {
+            OnDisposing?.Invoke(this, null);
             if (ClearBufferOnDispose)
             {
                 //Recycle loop
@@ -208,11 +231,23 @@ namespace Fluffy.IO.Buffer
 
         public LinkedStream MakeShadowCopy()
         {
+            if (!_locked)
+            {
+                throw new ConstraintException("Object is not locked");
+            }
+
             var shadowCopy = new LinkedStream();
             shadowCopy._head = _head.CreateShadowCopy();
             shadowCopy._body = shadowCopy._head.Last();
 
+            OnDisposing += OnEventHandler;
             return shadowCopy;
+
+            void OnEventHandler(object _, EventArgs __)
+            {
+                OnDisposing -= OnEventHandler;
+                shadowCopy?.Dispose(true);
+            }
         }
 
         public override void Flush()
