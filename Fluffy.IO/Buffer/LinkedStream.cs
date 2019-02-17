@@ -20,6 +20,7 @@ namespace Fluffy.IO.Buffer
 
         private IObjectRecyclingFactory<LinkableBuffer> _recyclingFactory;
         private readonly int _cacheSize;
+        private bool _locked;
 
         public LinkedStream(int cacheSize)
             : this(new BufferRecyclingFactory<LinkableBuffer>(cacheSize))
@@ -187,6 +188,31 @@ namespace Fluffy.IO.Buffer
 
             IsDisposed = true;
             base.Close();
+        }
+
+        /// <summary>
+        /// Locks any R/W activity for a ShadowStream creation
+        /// </summary>
+        public void Lock()
+        {
+            _locked = true;
+        }
+
+        /// <summary>
+        /// Unlocks R/W activity, but disposes all shadowcopies
+        /// </summary>
+        public void UnLock()
+        {
+            _locked = false;
+        }
+
+        public LinkedStream MakeShadowCopy()
+        {
+            var shadowCopy = new LinkedStream();
+            shadowCopy._head = _head.CreateShadowCopy();
+            shadowCopy._body = shadowCopy._head.Last();
+
+            return shadowCopy;
         }
 
         public override void Flush()

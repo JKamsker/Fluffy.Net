@@ -143,11 +143,11 @@ namespace Fluffy.IO.Buffer
         {
             if (_disposing)
             {
-                return;   
+                return;
             }
             _disposing = true;
 
-            OnDisposing?.Invoke(this,Value);
+            OnDisposing?.Invoke(this, Value);
             Value = null;
         }
     }

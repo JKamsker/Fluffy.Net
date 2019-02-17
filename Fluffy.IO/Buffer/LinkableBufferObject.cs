@@ -23,5 +23,34 @@ namespace Fluffy.IO.Buffer
             Next = null;
             base.Reset();
         }
+
+        public LinkableBuffer Last()
+        {
+            if (Next != null)
+            {
+                return Next.Last();
+            }
+
+            return this;
+        }
+
+        public virtual LinkableBuffer CreateShadowCopy()
+        {
+            var result = new LinkableBuffer
+            {
+                Value = this.Value,
+                High = this.High,
+                Low = this.Low,
+                Next = Next?.CreateShadowCopy()
+            };
+
+            return result;
+
+            void OnEventHandler(BufferObject<byte> sender, byte[] bytes)
+            {
+                OnDisposing -= OnEventHandler;
+                result?.Dispose();
+            }
+        }
     }
 }
