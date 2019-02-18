@@ -218,7 +218,7 @@ namespace Fluffy.IO.Buffer
                 {
                 }
             }
-
+            _shadowCopies?.ForEach(x => x.Dispose(true));
             IsDisposed = true;
             base.Close();
         }
@@ -237,7 +237,7 @@ namespace Fluffy.IO.Buffer
         public void UnLock()
         {
             _locked = false;
-            _shadowCopies.ForEach(x => x.Dispose());
+            _shadowCopies.ForEach(x => x.Dispose(true));
         }
 
         public LinkedStream MakeShadowCopy()
