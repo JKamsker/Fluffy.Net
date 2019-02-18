@@ -54,6 +54,7 @@
     <Compile Include="Delegate\DelegateStorage.cs" />
     <Compile Include="Delegate\Extension.cs" />
     <Compile Include="Extensions\FluentExtensions.cs" />
+    <Compile Include="Extensions\HashExtensions.cs" />
     <Compile Include="Extensions\SerialisationExtensions.cs" />
     <Compile Include="Fluent\ContextAwareDecisionNode.cs" />
     <Compile Include="Fluent\ContextAwareTypeSwitch.cs" />

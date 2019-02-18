@@ -38,6 +38,7 @@ namespace Fluffy.IO.Buffer
         {
             var result = new LinkableBuffer
             {
+                Initiated = this.Initiated,
                 Value = this.Value,
                 High = this.High,
                 Low = this.Low,

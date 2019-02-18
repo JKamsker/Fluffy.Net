@@ -1,6 +1,7 @@
 ﻿using Fluffy.IO.Recycling;
 
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using Fluffy.IO.Exceptions;
@@ -10,6 +11,7 @@ namespace Fluffy.IO.Buffer
     public class LinkedStream : Stream, IDisposable
     {
         public int CacheSize => _cacheSize;
+        private List<LinkedStream> _shadowCopies;
 
         public override long Length => InternalLength;
         protected virtual long InternalLength { get; set; }
@@ -49,6 +51,14 @@ namespace Fluffy.IO.Buffer
 
             _head = buffer;
             _body = buffer;
+        }
+
+        public LinkedStream(bool isPrivate)
+        {
+            if (!isPrivate)
+            {
+                throw new TypeInitializationException("Not initialized", null);
+            }
         }
 
         /// <summary>
@@ -227,6 +237,7 @@ namespace Fluffy.IO.Buffer
         public void UnLock()
         {
             _locked = false;
+            _shadowCopies.ForEach(x => x.Dispose());
         }
 
         public LinkedStream MakeShadowCopy()
@@ -236,16 +247,28 @@ namespace Fluffy.IO.Buffer
                 throw new ConstraintException("Object is not locked");
             }
 
-            var shadowCopy = new LinkedStream();
-            shadowCopy._head = _head.CreateShadowCopy();
+            var shadowCopy = new LinkedStream(true)
+            {
+                _head = _head.CreateShadowCopy(),
+                _recyclingFactory = this._recyclingFactory,
+                InternalLength = this.InternalLength,
+            };
             shadowCopy._body = shadowCopy._head.Last();
 
             OnDisposing += OnEventHandler;
+
+            if (_shadowCopies == null)
+            {
+                _shadowCopies = new List<LinkedStream>();
+            }
+            _shadowCopies.Add(shadowCopy);
+
             return shadowCopy;
 
             void OnEventHandler(object _, EventArgs __)
             {
                 OnDisposing -= OnEventHandler;
+                _shadowCopies.Remove(shadowCopy);
                 shadowCopy?.Dispose(true);
             }
         }
