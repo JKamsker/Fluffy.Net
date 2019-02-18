@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using Fluffy.IO.Exceptions;
+using Fluffy.Utilities;
 
 namespace Fluffy.IO.Buffer
 {
@@ -226,9 +227,10 @@ namespace Fluffy.IO.Buffer
         /// <summary>
         /// Locks any R/W activity for a ShadowStream creation
         /// </summary>
-        public void Lock()
+        public IDisposable Lock()
         {
             _locked = true;
+            return DisposableFactory.FromDelegates(UnLock);
         }
 
         /// <summary>
@@ -240,11 +242,18 @@ namespace Fluffy.IO.Buffer
             _shadowCopies.ForEach(x => x.Dispose(true));
         }
 
-        public LinkedStream MakeShadowCopy()
+        public LinkedStream CreateShadowCopy(bool lockIfUnlocked = false)
         {
             if (!_locked)
             {
-                throw new ConstraintException("Object is not locked");
+                if (lockIfUnlocked)
+                {
+                    Lock();
+                }
+                else
+                {
+                    throw new ConstraintException("Object is not locked");
+                }
             }
 
             var shadowCopy = new LinkedStream(true)

@@ -67,6 +67,7 @@
     <Compile Include="IObjectStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskUtility.cs" />
+    <Compile Include="Utilities\DisposableFactory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

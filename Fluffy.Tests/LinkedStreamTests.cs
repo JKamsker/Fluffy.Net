@@ -108,8 +108,8 @@ namespace Fluffy.Tests
 
                 ls.Lock();
 
-                using (var shadowCopy1 = new BinaryReader(ls.MakeShadowCopy()))
-                using (var shadowCopy2 = new BinaryReader(ls.MakeShadowCopy()))
+                using (var shadowCopy1 = new BinaryReader(ls.CreateShadowCopy()))
+                using (var shadowCopy2 = new BinaryReader(ls.CreateShadowCopy()))
                 {
                     while (true)
                     {
