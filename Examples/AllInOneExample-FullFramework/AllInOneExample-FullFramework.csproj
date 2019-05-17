@@ -76,7 +76,7 @@
       <Name>Fluffy.IO</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Fluffy.Net\Fluffy.Net.csproj">
-      <Project>{990FECEB-E50A-4D66-B4D7-4443CE41A6A1}</Project>
+      <Project>{e945d22d-e811-4ae0-b021-6d3a7f9fa55c}</Project>
       <Name>Fluffy.Net</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Fluffy\Fluffy.csproj">

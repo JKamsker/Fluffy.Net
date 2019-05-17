@@ -63,11 +63,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Fluffy.Net\Fluffy.Net.csproj">
-      <Project>{E945D22D-E811-4AE0-B021-6D3A7F9FA55C}</Project>
+      <Project>{e945d22d-e811-4ae0-b021-6d3a7f9fa55c}</Project>
       <Name>Fluffy.Net</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Fluffy\Fluffy.csproj">
-      <Project>{BAD50387-0819-4B30-B937-0C003D49312B}</Project>
+      <Project>{bad50387-0819-4b30-b937-0c003d49312b}</Project>
       <Name>Fluffy</Name>
     </ProjectReference>
     <ProjectReference Include="..\ChatSharedComps\ChatSharedComps.csproj">

@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.452
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fluffy.Net", "Fluffy.Net\Fluffy.Net.csproj", "{E945D22D-E811-4AE0-B021-6D3A7F9FA55C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluffy.Net", "Fluffy.Net\Fluffy.Net.csproj", "{E945D22D-E811-4AE0-B021-6D3A7F9FA55C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fluffy.IO", "Fluffy.IO\Fluffy.IO.csproj", "{BD4B8F33-E100-422E-866D-779A4B38D2F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluffy.IO", "Fluffy.IO\Fluffy.IO.csproj", "{BD4B8F33-E100-422E-866D-779A4B38D2F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fluffy", "Fluffy\Fluffy.csproj", "{BAD50387-0819-4B30-B937-0C003D49312B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluffy", "Fluffy\Fluffy.csproj", "{BAD50387-0819-4B30-B937-0C003D49312B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{69282BE1-FF39-45BA-86FB-A970065F6FCC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGround", "Test\PlayGround\PlayGround.csproj", "{0D9F9B8C-9729-4B49-B32A-603A6ED39383}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fluffy.Unsafe", "Fluffy.Unsafe\Fluffy.Unsafe.csproj", "{76A1B05C-768C-416F-952F-83B39F875ECC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluffy.Unsafe", "Fluffy.Unsafe\Fluffy.Unsafe.csproj", "{76A1B05C-768C-416F-952F-83B39F875ECC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".SolutionFiles", ".SolutionFiles", "{6A7AD048-1395-4902-B090-02ABAB4E0268}"
 	ProjectSection(SolutionItems) = preProject

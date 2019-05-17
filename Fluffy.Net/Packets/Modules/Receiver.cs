@@ -22,9 +22,13 @@ namespace Fluffy.Net.Packets.Modules
 
         private IObjectRecyclingFactory<LinkableBuffer> _bufferWrapperFac;
         private LinkableBuffer _bufferWrapper;
-
+#if NET40
+        public Fluffy.Compatibility.EventHandler<OnPacketReceiveEventArgs> OnReceive;
+        public Fluffy.Compatibility.EventHandler<Receiver> OnDisposing;
+#else
         public EventHandler<OnPacketReceiveEventArgs> OnReceive;
         public EventHandler<Receiver> OnDisposing;
+#endif
 
         internal Receiver(Socket socket)
         {

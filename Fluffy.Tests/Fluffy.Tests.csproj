@@ -60,17 +60,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Fluffy.IO\Fluffy.IO.csproj">
-      <Project>{BD4B8F33-E100-422E-866D-779A4B38D2F8}</Project>
+      <Project>{bd4b8f33-e100-422e-866d-779a4b38d2f8}</Project>
       <Name>Fluffy.IO</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fluffy\Fluffy.csproj">
-      <Project>{BAD50387-0819-4B30-B937-0C003D49312B}</Project>
+      <Project>{bad50387-0819-4b30-b937-0c003d49312b}</Project>
       <Name>Fluffy</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

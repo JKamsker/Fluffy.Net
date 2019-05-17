@@ -2,19 +2,33 @@
 
 using System;
 using System.Collections.Generic;
+
 using System.Net;
 using System.Net.Sockets;
+
+#if NET40
+    using System.Collections.ObjectModel;
+    using system = Fluffy.Compatibility;
+#else
+using system = System;
+#endif
 
 namespace Fluffy.Net
 {
     public class FluffyServer : FluffySocket
     {
-        public IReadOnlyCollection<ConnectionInfo> Connections => _connections;
+        //TODO: Manually implementing READONLYCOLLECTION
+#if NET40
+        public ReadOnlyCollection<ConnectionInfo> Connections => _connections.AsReadOnly();
+#else
+        public IReadOnlyCollection<ConnectionInfo> Connections => _connections.AsReadOnly();
+#endif
+
         private List<ConnectionInfo> _connections;
 
         public ContextAwareTypeSwitch<ConnectionInfo> PacketHandler { get; private set; }
 
-        public EventHandler<ConnectionInfo> OnNewConnection;
+        public system::EventHandler<ConnectionInfo> OnNewConnection;
 
         public FluffyServer(int port)
             : this(IPAddress.Any, port)

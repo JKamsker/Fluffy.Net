@@ -5,6 +5,12 @@ using Fluffy.IO.Buffer;
 using Fluffy.IO.Recycling;
 using Fluffy.Net.Packets.Modules.Raw;
 
+#if NET40
+    using system = Fluffy.Compatibility;
+#else
+using system = System;
+#endif
+
 namespace Fluffy.Net.Packets.Modules.Streaming
 {
     public class StreamPacketHandler : BasePacketHandler, IDisposable
@@ -14,7 +20,7 @@ namespace Fluffy.Net.Packets.Modules.Streaming
         private bool _disposed;
 
         public bool AllowUnknownStreams { get; set; }
-        public EventHandler<DefaultStreamHandler> OnNewStream;
+        public system::EventHandler<DefaultStreamHandler> OnNewStream;
 
         /// <summary>
         /// Doesn't have to be Thread safe
