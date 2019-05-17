@@ -62,7 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Fluffy.IO\Fluffy.IO.csproj">
-      <Project>{BD4B8F33-E100-422E-866D-779A4B38D2F8}</Project>
+      <Project>{bd4b8f33-e100-422e-866d-779a4b38d2f8}</Project>
       <Name>Fluffy.IO</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Fluffy.Net\Fluffy.Net.csproj">
