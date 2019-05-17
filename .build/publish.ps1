@@ -1,7 +1,9 @@
 param (
     [String]$creds
 )
-Write-Host $creds;
+
+Write-Host "Creds:: $creds";
+Write-Host "Credstype:: $($creds.GetType())"
 return;
 if ((Get-Command "nuget.exe" -ErrorAction SilentlyContinue) -eq $null) {
     throw  "NUGET NOT FOUND!"
