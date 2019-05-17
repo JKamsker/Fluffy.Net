@@ -3,6 +3,15 @@
   <PropertyGroup>
     <LangVersion>7.3</LangVersion>
     <TargetFrameworks>net47;net46;net45;net40</TargetFrameworks>
+    <Configurations>Debug;Release;ReleaseBuild</Configurations>
+	
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Jonas Kamsker</Authors>
+    <Copyright>MIT</Copyright>
+    <PackageProjectUrl>https://github.com/J-kit/Fluffy.Net</PackageProjectUrl>
+    <PackageIconUrl>https://avatars2.githubusercontent.com/u/11245306?s=60&amp;v=4</PackageIconUrl>
+    <RepositoryUrl>https://github.com/J-kit/Fluffy.Net</RepositoryUrl>
+    <PackageTags>J-Kit, Network Library</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net47'">
