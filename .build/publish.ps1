@@ -9,7 +9,7 @@ if ((Get-Command "nuget.exe" -ErrorAction SilentlyContinue) -eq $null) {
 $items = Get-Item ..\*\*\ReleaseBuild\*.nupkg
 foreach ($item in $items) {
    Write-Host "Publishing $($item.Name)"
-   nuget push $($item.FullName) -Source "https://api.nuget.org/v3/index.json" -ApiKey $creds -Verbosity detailed
+   nuget push $($item.FullName) -Source "https://api.nuget.org/v3/index.json" -ApiKey "$creds" -Verbosity detailed
 }
 
 
