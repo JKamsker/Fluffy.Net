@@ -15,22 +15,22 @@ variables:
   buildConfiguration: 'ReleaseBuild'
 
 steps:
-- task: NuGetToolInstaller@0
+# - task: NuGetToolInstaller@0
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
+# - task: NuGetCommand@2
+#   inputs:
+#     restoreSolution: '$(solution)'
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+# - task: VSBuild@1
+#   inputs:
+#     solution: '$(solution)'
+#     platform: '$(buildPlatform)'
+#     configuration: '$(buildConfiguration)'
 
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+# - task: VSTest@2
+#   inputs:
+#     platform: '$(buildPlatform)'
+#     configuration: '$(buildConfiguration)'
 
 - task: PowerShell@2
   env:
@@ -39,4 +39,4 @@ steps:
     filePath: '.build\publish.ps1'
     failOnStderr: true
     workingDirectory: '.build'
-    arguments: '-xx -creds $(env:COLLECTIONID)'
+    arguments: '-xx -creds ax'
