@@ -33,9 +33,9 @@ steps:
 #     configuration: '$(buildConfiguration)'
 
 - task: PowerShell@2
+  env:
+    COLLECTIONID: $(system.collectionId)
   inputs:
-    env:
-      COLLECTIONID: $(system.collectionId)
     filePath: '.build\publish.ps1'
     failOnStderr: true
     workingDirectory: '.build'
