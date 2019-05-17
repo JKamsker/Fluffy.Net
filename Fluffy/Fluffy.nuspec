@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://github.com/J-kit/Fluffy.Net</licenseUrl>
+    <projectUrl>https://github.com/J-kit/Fluffy.Net</projectUrl>
+    <iconUrl>https://avatars2.githubusercontent.com/u/11245306</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Fluffy .NET is an easy-to-use Network library wich contains many useful features.</description>
+    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <copyright>Copyright 2019</copyright>
+    <tags>J-Kit</tags>
+  </metadata>
+</package>
