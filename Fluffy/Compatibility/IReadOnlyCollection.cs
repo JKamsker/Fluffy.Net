@@ -1,4 +1,5 @@
-﻿#if NET40
+﻿//NET40
+#if false
 // ==++==
 //
 //   Copyright (c) Microsoft Corporation.  All rights reserved.

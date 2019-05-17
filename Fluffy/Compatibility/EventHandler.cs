@@ -1,7 +1,8 @@
-﻿#if false
+﻿#if true
 
+//NET40
 // ReSharper disable once CheckNamespace
-namespace System
+namespace Fluffy.Compatibility
 {
     public delegate void EventHandler<TEventArgs>(object sender, TEventArgs e);
 }

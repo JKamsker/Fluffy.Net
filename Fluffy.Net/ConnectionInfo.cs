@@ -1,25 +1,26 @@
 ﻿using Fluffy.Net.Packets;
 using Fluffy.Net.Packets.Modules;
 using Fluffy.Net.Packets.Modules.Raw;
+using Fluffy.Net.Packets.Modules.Streaming;
 
 using System;
 using System.Net.Sockets;
-using Fluffy.Net.Packets.Modules.Streaming;
+
+#if NET40
+    using system = Fluffy.Compatibility;
+#else
+using system = System;
+#endif
 
 namespace Fluffy.Net
 {
-#if NET40
-
-    public class ConnectionInfo : EventArgs, IDisposable
-#else
-
     public class ConnectionInfo : IDisposable
-#endif
 
     {
         public Guid Identifier { get; }
-        public EventHandler<ConnectionInfo> OnDisposed;
-        public EventHandler<ConnectionInfo> OnDisposing;
+
+        public system::EventHandler<ConnectionInfo> OnDisposed;
+        public system::EventHandler<ConnectionInfo> OnDisposing;
 
         public Socket Socket { get; set; }
 

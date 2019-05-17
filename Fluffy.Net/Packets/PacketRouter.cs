@@ -69,7 +69,12 @@ namespace Fluffy.Net.Packets
                     switch (packet.Options)
                     {
                         case ParallelismOptions.Parallel:
+#if NET40
+                            await TaskEx.Run(() => HandleInternal(handler, packet));
+#else
                             await Task.Run(() => HandleInternal(handler, packet));
+#endif
+
                             break;
 
                         case ParallelismOptions.Sync:
@@ -102,7 +107,10 @@ namespace Fluffy.Net.Packets
             return _packetList[opCode];
         }
 
+#if !NET40
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
         private void HandleInternal(BasePacketHandler handler, OnPacketReceiveEventArgs packet)
         {
             handler.Handle(packet.Body);

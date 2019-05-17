@@ -183,7 +183,7 @@ namespace Fluffy.Net.Async
             {
                 _socket?.Dispose();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //Ignore
             }

@@ -53,6 +53,13 @@
       <Project>{E945D22D-E811-4AE0-B021-6D3A7F9FA55C}</Project>
       <Name>Fluffy.Net</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Fluffy\Fluffy.csproj">
+      <Project>{bad50387-0819-4b30-b937-0c003d49312b}</Project>
+      <Name>Fluffy</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
