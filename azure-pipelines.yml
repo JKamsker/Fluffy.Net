@@ -37,4 +37,4 @@ steps:
     filePath: '.build\publish.ps1'
     failOnStderr: true
     workingDirectory: '.build'
-    arguments: '-xx -creds ${system.collectionId}'
+    arguments: '-xx -creds ${env:system.collectionId}'
