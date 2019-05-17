@@ -1,27 +1,16 @@
 param (
-    [switch]$xx,
-    [switch]$xy,
     [String]$creds
 )
 
-if ($xx) {
-    Write-Host "XX set"
-}else{
-    Write-Host "XX not set"
+if ((Get-Command "nuget.exe" -ErrorAction SilentlyContinue) -eq $null) {
+    throw  "NUGET NOT FOUND!"
 }
-if ($xy) {
-    Write-Host "xy set"
-}else{
-    Write-Host "xy not set"
-}
-
-Write-Host "Creds: $creds"
 
 $items = Get-Item ..\*\*\ReleaseBuild\*.nupkg
-
-if (Get-Command "nuget.exe" -ErrorAction SilentlyContinue) {
-    throw  "NUGET FOUND!"
+foreach ($item in $items) {
+   Write-Host "Publishing $($item.Name)"
+   nuget push $($item.FullName) -Verbosity detailed -ApiKey $creds -Source 'https://api.nuget.org/v3/index.json'
 }
-throw  "NUGET NOT FOUND!"
 
-Write-Host $items
+
+Write-Host "Publishing finished"
