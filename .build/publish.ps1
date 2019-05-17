@@ -1,7 +1,8 @@
 param (
     [String]$creds
 )
-
+Write-Host $creds;
+return;
 if ((Get-Command "nuget.exe" -ErrorAction SilentlyContinue) -eq $null) {
     throw  "NUGET NOT FOUND!"
 }
