@@ -31,10 +31,10 @@ steps:
 #   inputs:
 #     platform: '$(buildPlatform)'
 #     configuration: '$(buildConfiguration)'
-- powershell: Write-Host "This is a script that could use $env:TEXT"
+- powershell: Write-Host "This is a script that could use $env:NugetSecret"
 - task: PowerShell@2
   inputs:
     filePath: '.build\publish.ps1'
     failOnStderr: true
     workingDirectory: '.build'
-    arguments: '-xx -creds ${env:system.collectionId}'
+    arguments: '-xx -creds $env:NugetSecret'
