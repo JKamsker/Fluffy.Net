@@ -13,6 +13,7 @@
     <PackageIconUrl>https://avatars2.githubusercontent.com/u/11245306?s=60&amp;v=4</PackageIconUrl>
     <RepositoryUrl>https://github.com/J-kit/Fluffy.Net</RepositoryUrl>
     <PackageTags>J-Kit, Network Library</PackageTags>
+	<Version>1.0.1</Version>
   </PropertyGroup>
   
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net47'">
