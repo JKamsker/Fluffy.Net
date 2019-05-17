@@ -31,12 +31,10 @@ steps:
 #   inputs:
 #     platform: '$(buildPlatform)'
 #     configuration: '$(buildConfiguration)'
-
+- powershell: Write-Host "This is a script that could use $env:SYSTEM_ACCESSTOKEN"
 - task: PowerShell@2
-  env:
-    COLLECTIONID: $(system.collectionId)
   inputs:
     filePath: '.build\publish.ps1'
     failOnStderr: true
     workingDirectory: '.build'
-    arguments: '-xx -creds $(COLLECTIONID)'
+    arguments: '-xx -creds ${system.collectionId}'
