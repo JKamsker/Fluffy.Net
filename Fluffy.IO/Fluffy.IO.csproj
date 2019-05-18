@@ -37,8 +37,12 @@
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2'">
     <DefineConstants>NETCOREAPP2_2</DefineConstants>
   </PropertyGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\Fluffy\Fluffy.csproj" />
   </ItemGroup>
-
+  
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NETCore.App" Version="2.2.0"  Condition="'$(TargetFramework)' == 'netcoreapp2.2'"/>
+	</ItemGroup>
 </Project>
