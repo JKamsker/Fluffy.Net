@@ -25,3 +25,4 @@ foreach ($item in $items) {
 
 
 Write-Host "Publishing finished"
+$LASTEXITCODE = 0;
