@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <LangVersion>7.3</LangVersion>
-    <TargetFrameworks>net47;net46;net45;net40</TargetFrameworks>
+	<TargetFrameworks>net472;net47;net46;net45;net40;netcoreapp2.2</TargetFrameworks>
     <Configurations>Debug;Release;ReleaseBuild</Configurations>
 	
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -12,15 +11,19 @@
     <PackageIconUrl>https://avatars2.githubusercontent.com/u/11245306?s=60&amp;v=4</PackageIconUrl>
     <RepositoryUrl>https://github.com/J-kit/Fluffy.Net</RepositoryUrl>
     <PackageTags>J-Kit, Network Library</PackageTags>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
   </PropertyGroup>
-
+  
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net472'">
+    <DefineConstants>NET472</DefineConstants>
+  </PropertyGroup>
+  
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net47'">
     <DefineConstants>NET47</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net46'">
-    <DefineConstants>NET45</DefineConstants>
+    <DefineConstants>NET46</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net45'">
@@ -28,9 +31,12 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net40'">
-    <DefineConstants>net40</DefineConstants>
+    <DefineConstants>NET40</DefineConstants>
   </PropertyGroup>
-
+  
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2'">
+    <DefineConstants>NETCOREAPP2_2</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fluffy\Fluffy.csproj" />
   </ItemGroup>

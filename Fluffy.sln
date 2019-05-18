@@ -44,6 +44,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stresstest.Server", "Exampl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stresstest.SharedComps", "Stresstest.SharedComps\Stresstest.SharedComps.csproj", "{CF2876C4-3FF4-4F09-9578-0ACC9F5DA8D8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.Core", "Test\Playground.Core\Playground.Core.csproj", "{8A5F4AAF-4767-402C-862F-5A20DAEFF849}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -118,6 +120,12 @@ Global
 		{CF2876C4-3FF4-4F09-9578-0ACC9F5DA8D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF2876C4-3FF4-4F09-9578-0ACC9F5DA8D8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CF2876C4-3FF4-4F09-9578-0ACC9F5DA8D8}.ReleaseBuild|Any CPU.ActiveCfg = ReleaseBuild|Any CPU
+		{8A5F4AAF-4767-402C-862F-5A20DAEFF849}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A5F4AAF-4767-402C-862F-5A20DAEFF849}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A5F4AAF-4767-402C-862F-5A20DAEFF849}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A5F4AAF-4767-402C-862F-5A20DAEFF849}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A5F4AAF-4767-402C-862F-5A20DAEFF849}.ReleaseBuild|Any CPU.ActiveCfg = Release|Any CPU
+		{8A5F4AAF-4767-402C-862F-5A20DAEFF849}.ReleaseBuild|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -133,6 +141,7 @@ Global
 		{9A339C3D-011E-4DC0-A8FE-37071EE0A0A2} = {D2CB46B1-3982-4751-B55F-8E59E57C64F5}
 		{2F400FB2-2202-47AF-851A-8A8415550974} = {D2CB46B1-3982-4751-B55F-8E59E57C64F5}
 		{CF2876C4-3FF4-4F09-9578-0ACC9F5DA8D8} = {D2CB46B1-3982-4751-B55F-8E59E57C64F5}
+		{8A5F4AAF-4767-402C-862F-5A20DAEFF849} = {69282BE1-FF39-45BA-86FB-A970065F6FCC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C961F9F0-5891-4A42-9867-E41C3C6ED0DA}
