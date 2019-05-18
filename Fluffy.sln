@@ -125,7 +125,6 @@ Global
 		{8A5F4AAF-4767-402C-862F-5A20DAEFF849}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A5F4AAF-4767-402C-862F-5A20DAEFF849}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8A5F4AAF-4767-402C-862F-5A20DAEFF849}.ReleaseBuild|Any CPU.ActiveCfg = Release|Any CPU
-		{8A5F4AAF-4767-402C-862F-5A20DAEFF849}.ReleaseBuild|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
