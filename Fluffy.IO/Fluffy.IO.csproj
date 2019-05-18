@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <LangVersion>7.3</LangVersion>
-	<TargetFrameworks>net472;net47;net46;net45;net40;netcoreapp2.2</TargetFrameworks>
+	<TargetFrameworks>net472;net47;net46;net45;net40</TargetFrameworks>
     <Configurations>Debug;Release;ReleaseBuild</Configurations>
 	
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
