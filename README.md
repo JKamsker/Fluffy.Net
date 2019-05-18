@@ -1,6 +1,21 @@
-# Fluffy .NET
+# Fluffy .NET  
+Available at [![NuGet version (Fluffy.Net)](https://img.shields.io/nuget/v/Fluffy.Net.svg?style=flat-square)](https://www.nuget.org/packages/Fluffy.Net/)
+
+
+| Package  |  Build Status  | Nuget |
+|---|---|---|
+| Fluffy | [![Build Status](https://dev.azure.com/jonaskamsker/Fluffy.Net/_apis/build/status/J-kit.Fluffy.Net?branchName=master)](https://dev.azure.com/jonaskamsker/Fluffy.Net/_build/latest?definitionId=2&branchName=master)  | [![NuGet version (Fluffy)](https://img.shields.io/nuget/v/Fluffy.svg?style=flat-square)](https://www.nuget.org/packages/Fluffy/)  |
+| Fluffy.IO | [![Build Status](https://dev.azure.com/jonaskamsker/Fluffy.Net/_apis/build/status/J-kit.Fluffy.Net?branchName=master)](https://dev.azure.com/jonaskamsker/Fluffy.Net/_build/latest?definitionId=2&branchName=master)  | [![NuGet version (Fluffy.IO)](https://img.shields.io/nuget/v/Fluffy.IO.svg?style=flat-square)](https://www.nuget.org/packages/Fluffy.IO/)  |
+| Fluffy.Net | [![Build Status](https://dev.azure.com/jonaskamsker/Fluffy.Net/_apis/build/status/J-kit.Fluffy.Net?branchName=master)](https://dev.azure.com/jonaskamsker/Fluffy.Net/_build/latest?definitionId=2&branchName=master)  | [![NuGet version (Fluffy.Net)](https://img.shields.io/nuget/v/Fluffy.Net.svg?style=flat-square)](https://www.nuget.org/packages/Fluffy.Net/)  |
+| Fluffy.Unsafe | [![Build Status](https://dev.azure.com/jonaskamsker/Fluffy.Net/_apis/build/status/J-kit.Fluffy.Net?branchName=master)](https://dev.azure.com/jonaskamsker/Fluffy.Net/_build/latest?definitionId=2&branchName=master)  | [![NuGet version (Fluffy.Unsafe)](https://img.shields.io/nuget/v/Fluffy.Unsafe.svg?style=flat-square)](https://www.nuget.org/packages/Fluffy.Unsafe/)  |
+
 
 Fluffy .NET is an easy-to-use Network library wich contains many useful features.
+
+
+
+
+
 
 # BUILDING
 
