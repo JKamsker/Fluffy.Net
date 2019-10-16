@@ -1,11 +1,12 @@
-﻿using Fluffy.IO.Recycling;
+﻿using Fluffy.IO.Exceptions;
+using Fluffy.IO.Recycling;
+using Fluffy.Utilities;
 
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using Fluffy.IO.Exceptions;
-using Fluffy.Utilities;
+using System.Runtime.CompilerServices;
 
 namespace Fluffy.IO.Buffer
 {
@@ -69,6 +70,8 @@ namespace Fluffy.IO.Buffer
         /// </param>
         public void EnqueueHead(LinkableBuffer buffer)
         {
+            ThrowIfDisposed();
+
             if (_locked)
             {
                 throw new LockedException("Stream is locked!");
@@ -89,6 +92,8 @@ namespace Fluffy.IO.Buffer
         /// </param>
         public void WriteHead(byte[] buffer, int offset, int count)
         {
+            ThrowIfDisposed();
+
             if (_locked)
             {
                 throw new LockedException("Stream is locked!");
@@ -113,6 +118,8 @@ namespace Fluffy.IO.Buffer
 
         public override void Write(byte[] buffer, int offset, int count)
         {
+            ThrowIfDisposed();
+
             if (_locked)
             {
                 throw new LockedException("Stream is locked!");
@@ -140,6 +147,8 @@ namespace Fluffy.IO.Buffer
 
         public override int Read(byte[] buffer, int offset, int count)
         {
+            ThrowIfDisposed();
+
             if (_locked)
             {
                 throw new LockedException("Stream is locked!");
@@ -179,6 +188,8 @@ namespace Fluffy.IO.Buffer
 
         public LinkedStream ReadToLinkedStream(int count)
         {
+            ThrowIfDisposed();
+
             int read = 0;
             int totalRead = 0;
 
@@ -198,6 +209,8 @@ namespace Fluffy.IO.Buffer
 
         private bool TryMoveNext()
         {
+            ThrowIfDisposed();
+
             if (_head == null)
             {
                 return false;
@@ -209,26 +222,13 @@ namespace Fluffy.IO.Buffer
             return true;
         }
 
-        public override void Close()
-        {
-            OnDisposing?.Invoke(this, null);
-            if (ClearBufferOnDispose)
-            {
-                //Recycle loop
-                while (TryMoveNext())
-                {
-                }
-            }
-            _shadowCopies?.ForEach(x => x.Dispose(true));
-            IsDisposed = true;
-            base.Close();
-        }
-
         /// <summary>
         /// Locks any R/W activity for a ShadowStream creation
         /// </summary>
         public IDisposable Lock()
         {
+            ThrowIfDisposed();
+
             _locked = true;
             return DisposableFactory.FromDelegates(UnLock);
         }
@@ -238,12 +238,16 @@ namespace Fluffy.IO.Buffer
         /// </summary>
         public void UnLock()
         {
+            ThrowIfDisposed();
+
             _locked = false;
             _shadowCopies.ForEach(x => x.Dispose(true));
         }
 
         public LinkedStream CreateShadowCopy(bool lockIfUnlocked = false)
         {
+            ThrowIfDisposed();
+
             if (!_locked)
             {
                 if (lockIfUnlocked)
@@ -270,7 +274,17 @@ namespace Fluffy.IO.Buffer
             {
                 _shadowCopies = new List<LinkedStream>();
             }
+
             _shadowCopies.Add(shadowCopy);
+
+            shadowCopy.OnDisposing += (copy, __) =>
+            {
+                _shadowCopies.Remove((LinkedStream)copy);
+                if (_shadowCopies.Count == 0)
+                {
+                    UnLock();
+                }
+            };
 
             return shadowCopy;
 
@@ -279,6 +293,32 @@ namespace Fluffy.IO.Buffer
                 OnDisposing -= OnEventHandler;
                 _shadowCopies.Remove(shadowCopy);
                 shadowCopy?.Dispose(true);
+            }
+        }
+
+        public override void Close()
+        {
+            OnDisposing?.Invoke(this, null);
+            if (ClearBufferOnDispose)
+            {
+                //Recycle loop
+                while (TryMoveNext())
+                {
+                }
+            }
+            _shadowCopies?.ForEach(x => x.Dispose(true));
+            IsDisposed = true;
+            base.Close();
+        }
+
+#if NET45 || NET46 || NET47 || NET472 || NETCOREAPP2_2 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+        private void ThrowIfDisposed()
+        {
+            if (IsDisposed)
+            {
+                throw new ObjectDisposedException($"{nameof(LinkedStream)} is disposed!");
             }
         }
 

@@ -5,15 +5,18 @@
 
    <TargetFrameworks>net472;net47;net46;net45;net40</TargetFrameworks>
     <Configurations>Debug;Release;ReleaseBuild</Configurations>
-	
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <IncludeSource>true</IncludeSource>
+    
     <Authors>Jonas Kamsker</Authors>
     <Copyright>MIT</Copyright>
     <PackageProjectUrl>https://github.com/J-kit/Fluffy.Net</PackageProjectUrl>
     <PackageIconUrl>https://avatars2.githubusercontent.com/u/11245306?s=60&amp;v=4</PackageIconUrl>
     <RepositoryUrl>https://github.com/J-kit/Fluffy.Net</RepositoryUrl>
     <PackageTags>J-Kit, Network Library</PackageTags>
-	<Version>1.0.2</Version>
+	<Version>1.0.3</Version>
   </PropertyGroup>
   
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net472'">
