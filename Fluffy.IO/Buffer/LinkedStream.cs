@@ -298,6 +298,10 @@ namespace Fluffy.IO.Buffer
 
         public override void Close()
         {
+            if (IsDisposed)
+            {
+                return;
+            }
             OnDisposing?.Invoke(this, null);
             if (ClearBufferOnDispose)
             {
@@ -311,7 +315,8 @@ namespace Fluffy.IO.Buffer
             base.Close();
         }
 
-#if NET45 || NET46 || NET47 || NET472 || NETCOREAPP2_2 
+#if NET45 || NET46 || NET47 || NET472 || NETCOREAPP2_2
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
         private void ThrowIfDisposed()
