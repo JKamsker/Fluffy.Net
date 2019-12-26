@@ -11,7 +11,7 @@ if ((Get-Command "nuget.exe" -ErrorAction SilentlyContinue) -eq $null) {
     throw  "NUGET NOT FOUND!"
 }
 
-$items = Get-Item ..\*\*\ReleaseBuild\*.nupkg
+$items = Get-Item ..\*\*\ReleaseBuild\*.symbols.nupkg
 foreach ($item in $items) {
    Write-Host "Publishing $($item.Name)"
    try {

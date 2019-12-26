@@ -63,6 +63,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Fluffy.IO\Fluffy.IO.csproj">
+      <Project>{BD4B8F33-E100-422E-866D-779A4B38D2F8}</Project>
+      <Name>Fluffy.IO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Fluffy.Unsafe\Fluffy.Unsafe.csproj">
       <Project>{76A1B05C-768C-416F-952F-83B39F875ECC}</Project>
       <Name>Fluffy.Unsafe</Name>

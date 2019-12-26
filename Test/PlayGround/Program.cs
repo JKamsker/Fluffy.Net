@@ -8,6 +8,7 @@ using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
+using Fluffy.IO.Buffer;
 
 namespace PlayGround
 {
@@ -208,6 +209,22 @@ namespace PlayGround
 
 
 
+
+            var data = Encoding.UTF8.GetBytes("Hallo Welt 123 123");
+            var ls = new LinkedStream();
+            ls.Write(data, 0, data.Length);
+
+            using (var sc = ls.CreateShadowCopy(true))
+            {
+                using (var sc1 = ls.CreateShadowCopy(true))
+                {
+
+                }
+               // ls.Write(data, 0, data.Length);
+            }
+            ls.Write(data, 0, data.Length);
+
+            return;
             var sw = Stopwatch.StartNew();
 
             long value = 16;
