@@ -20,9 +20,9 @@ namespace AllInOneExample_FullFramework
             _client = new FluffyClient(IPAddress.Loopback, 8090);
             _server.Start();
 
-            // _packetExample = new PacketExample(_server, _client).Initialize();
+            //  _packetExample = new PacketExample(_server, _client).Initialize();
             // _streamExample = new StreamExample(_server, _client).Initialize();
-            _streamExample1 = new StreamExample1(_server, _client).Initialize();
+           _streamExample1 = new StreamExample1(_server, _client).Initialize();
 
             _client.Connect();
             Console.WriteLine("Connected");

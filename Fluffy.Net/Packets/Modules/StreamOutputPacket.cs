@@ -2,10 +2,14 @@
 using Fluffy.Unsafe;
 
 using System;
+using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace Fluffy.Net.Packets.Modules
 {
+
+
     internal class StreamOutputPacket : IOutputPacket
     {
         private const int PacketHeaderLengthSize = 4;
@@ -16,7 +20,8 @@ namespace Fluffy.Net.Packets.Modules
         private const int FirstLevelHeader = PacketHeaderLengthSize;
         private const int SecondLevelHeader = ParallelismOptionsSize + OpCodeSize;
         private const int ThirdLevelHeader = EndOfFileSize + GuidSize;
-        private const int Header = FirstLevelHeader + SecondLevelHeader + ThirdLevelHeader;
+
+        private static readonly int HeaderSize = PacketHeader.Size + StreamPacketHeader.Size;
 
         private Guid _streamId;
         private Stream _stream;
@@ -39,16 +44,15 @@ namespace Fluffy.Net.Packets.Modules
         {
             var realCount = count;
             var maxCount = buffer.Length - offset;
-            var streamLength = (int)(_stream.Length - _stream.Position);
 
             realCount = Math.Min(realCount, maxCount);
 
-            if (realCount - Header - 128 <= 0)
+            if (realCount - PacketHeader.Size - 128 <= 0)
             {
                 return -1;
             }
 
-            if (streamLength < 0)
+            if ((_stream.Length - _stream.Position) < 0)
             {
                 throw new AggregateException("Stream length cannot be less than 0");
             }
@@ -56,7 +60,10 @@ namespace Fluffy.Net.Packets.Modules
             // int read = Header; //1x sizeof(int) - 3x sizeof(byte) - 1x sizeof(Guid) = 22
             //var blockLength = count - offset - 4; //ex buffer.Length
 
-            var bodyRead = _stream.Read(buffer, offset + Header, realCount - Header);
+            //var bodyRead = _stream.Read(buffer, offset + Header, realCount - Header);
+
+
+            var bodyRead = _stream.Read(buffer, offset + HeaderSize, realCount - HeaderSize);
             if (_stream == null || _stream.Length - _stream.Position == 0)
             {
                 HasFinished = true;
@@ -72,18 +79,24 @@ namespace Fluffy.Net.Packets.Modules
                 return 0;
             }
 
-            //Length 4 Byte
-            //DynamicMethodDummy 1 Byte
-            //ParallelismOptions 1 Byte
-            FluffyBitConverter.Serialize(bodyRead + SecondLevelHeader + ThirdLevelHeader, buffer, offset);
-            offset += 4;
-            buffer[offset++] = (byte)ParallelismOptions;
-            buffer[offset++] = OpCode;
-            buffer[offset++] = (byte)(HasFinished ? 1 : 0);
-            //Injected body
-            FluffyBitConverter.Serialize(_streamId, buffer, offset);
+            var packetHeader = new PacketHeader
+            {
+                PacketLength = bodyRead + SecondLevelHeader + ThirdLevelHeader,
+                ParallelismOptions = (byte)ParallelismOptions,
+                OpCode = this.OpCode,
 
-            return bodyRead + Header;
+            };
+
+            var streamPacketHeader = new StreamPacketHeader
+            {
+                HasFinished = (byte)(HasFinished ? 1 : 0),
+                StreamId = _streamId
+            };
+
+            offset += FluffyBitConverter.Serialize(packetHeader, buffer, offset);
+            offset += FluffyBitConverter.Serialize(streamPacketHeader, buffer, offset);
+
+            return bodyRead + offset;
         }
 
         public void Dispose()

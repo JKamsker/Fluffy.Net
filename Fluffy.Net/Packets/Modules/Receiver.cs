@@ -80,7 +80,7 @@ namespace Fluffy.Net.Packets.Modules
             }
         }
 
-        private int headerLen = 0;
+
 
         private void HandleStream()
         {
@@ -89,8 +89,6 @@ namespace Fluffy.Net.Packets.Modules
                 case IOState.HeaderLen:
                     if (_stream.Length >= 4)
                     {
-                        headerLen++;
-
                         var nextSegmentLength = _stream.ReadInt32();
                         if (nextSegmentLength == -1)
                         {

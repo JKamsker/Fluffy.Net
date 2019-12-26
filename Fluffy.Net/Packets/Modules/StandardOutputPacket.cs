@@ -6,8 +6,7 @@ using System;
 
 namespace Fluffy.Net.Packets.Modules
 {
-    internal class StandardOutputPacket
-        : IOutputPacket
+    internal class StandardOutputPacket : IOutputPacket
     {
         private readonly LinkedStream _stream;
         private bool _isDisposed;
@@ -31,6 +30,7 @@ namespace Fluffy.Net.Packets.Modules
 
         public StandardOutputPacket(byte opCode, ParallelismOptions parallelismOption, LinkedStream stream)
         {
+            IsPrioritized = true;
             OpCode = opCode;
             ParallelismOptions = parallelismOption;
             _stream = stream;
@@ -64,16 +64,16 @@ namespace Fluffy.Net.Packets.Modules
             int read = 0;
             if (!HasSendHeaders)
             {
-                //Length 4 Byte
-                //DynamicMethodDummy 1 Byte
-                //ParallelismOptions 1 Byte
+                var header = new PacketHeader
+                {
+                    PacketLength = (int)_stream.Length + 2,
+                    ParallelismOptions = (byte)ParallelismOptions,
+                    OpCode = this.OpCode,
+                };
 
-                FluffyBitConverter.Serialize((int)_stream.Length + 2, buffer, offset);
+                offset += read = FluffyBitConverter.Serialize(header, buffer, offset);
 
-                offset += 4;
-                buffer[offset++] = (byte)ParallelismOptions;
-                buffer[offset++] = OpCode;
-                read = 6;
+
                 HasSendHeaders = true;
             }
 

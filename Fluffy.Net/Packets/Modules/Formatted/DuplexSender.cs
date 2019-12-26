@@ -21,7 +21,7 @@ namespace Fluffy.Net.Packets.Modules.Formatted
             _connection.PacketHandler.On<SendTransferObject>(x => x.State == STOState.Response).Do(HandleResponse);
         }
 
-        private object HandleRequest(SendTransferObject obj)
+        private SendTransferObject HandleRequest(SendTransferObject obj)
         {
             obj.State = STOState.Response;
             try
@@ -85,9 +85,21 @@ namespace Fluffy.Net.Packets.Modules.Formatted
             }
 
 #endif
-
+            private static TaskCreationOptions CreationOptions
+            {
+                get
+                {
+#if NET46 || NET47 || NET472
+                    //https://github.com/davidfowl/AspNetCoreDiagnosticScenarios/blob/master/AsyncGuidance.md#always-create-taskcompletionsourcet-with-taskcreationoptionsruncontinuationsasynchronously
+                    return TaskCreationOptions.RunContinuationsAsynchronously;
+#else
+                    return TaskCreationOptions.None;
+#endif
+                }
+            }
             public DuplexResult()
             {
+                //TODO: CreationOptions
                 _completionSource = new TaskCompletionSource<T>();
                 _resetEvent = new ManualResetEvent(false);
             }

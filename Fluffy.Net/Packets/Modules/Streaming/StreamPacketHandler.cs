@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using Fluffy.Extensions;
 using Fluffy.IO.Buffer;
 using Fluffy.IO.Recycling;
@@ -58,6 +59,7 @@ namespace Fluffy.Net.Packets.Modules.Streaming
                     else
                     {
                         //Ignore
+                        Trace.WriteLine($"Stream Ignored: {guid}");
                         return;
                     }
                 }

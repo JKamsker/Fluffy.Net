@@ -1,10 +1,12 @@
 ﻿using Fluffy.Fluent;
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 using System.Net;
 using System.Net.Sockets;
+using Fluffy.Net.Compatibility;
 
 #if NET40
     using System.Collections.ObjectModel;
@@ -17,12 +19,7 @@ namespace Fluffy.Net
 {
     public class FluffyServer : FluffySocket
     {
-        //TODO: Manually implementing READONLYCOLLECTION
-#if NET40
-        public ReadOnlyCollection<ConnectionInfo> Connections => _connections.AsReadOnly();
-#else
-        public IReadOnlyCollection<ConnectionInfo> Connections => _connections.AsReadOnly();
-#endif
+        public IReadOnlyCollection<ConnectionInfo> Connections => _connections.ToReadOnly();
 
         private List<ConnectionInfo> _connections;
 
@@ -44,17 +41,17 @@ namespace Fluffy.Net
                 Blocking = false,
                 NoDelay = true,
                 ReceiveTimeout = int.MaxValue,
-                SendTimeout = int.MaxValue
+                SendTimeout = int.MaxValue,
+                LingerState = new LingerOption(true, 1)
             };
 
             Socket.Bind(new IPEndPoint(address, port));
             Socket.Listen((int)SocketOptionName.MaxConnections);
-            Socket.LingerState = new LingerOption(true, 1);
         }
 
         public FluffyServer Start()
         {
-            for (int i = 0; i < 15; i++)
+            for (var i = 0; i < 15; i++)
             {
                 Socket.BeginAccept(AcceptCallback, null);
             }

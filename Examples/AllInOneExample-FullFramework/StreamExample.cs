@@ -64,7 +64,7 @@ namespace AllInOneExample_FullFramework
                 Console.WriteLine($"[Sender] Hash is {stringHash}");
             }
 
-            connection.Sender.SendStream(registration.StreamIdentifier, File.OpenRead(TestFilePath));
+            connection.Sender.SendStream(registration.StreamIdentifier.Value, File.OpenRead(TestFilePath));
 
             while (true)
             {
@@ -79,7 +79,7 @@ namespace AllInOneExample_FullFramework
             var hashAlgorithm = MD5.Create();
             var buffer = BufferRecyclingMetaFactory<FluffyBuffer>.MakeFactory(Capacity.Medium).GetBuffer();
 
-            var streamHandler = new DefaultStreamHandler(registration.StreamIdentifier)
+            var streamHandler = new DefaultStreamHandler(registration.StreamIdentifier.Value)
             {
                 StreamNotificationThreshold = 1024 * 1024 //1KB
             };

@@ -20,7 +20,7 @@ namespace AllInOneExample_FullFramework.Models
     public class StreamRegistration
     {
         public StatusCode StatusCode { get; set; }
-        public Guid StreamIdentifier { get; set; }
+        public Guid? StreamIdentifier { get; set; }
 
         public StreamRegistration() : this(Guid.NewGuid())
         {

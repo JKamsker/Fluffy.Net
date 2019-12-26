@@ -11,7 +11,7 @@ namespace AllInOneExample_FullFramework
 {
     internal class StreamExample1
     {
-        private const string TestFilePath = @"F:\File\Downloads\ChromeSetup.exe";
+        private const string TestFilePath = @"C:\Users\Jonas Kamsker\source\repos\LinkedList.sln";
 
         private readonly FluffyServer _server;
         private readonly FluffyClient _client;
@@ -47,14 +47,18 @@ namespace AllInOneExample_FullFramework
         private static async Task ReceiveFileExample(ConnectionInfo connection)
         {
             var fileGuid = Guid.NewGuid(); //Here we want some file guid
-            var registration = await connection.Sender.Send<FileStreamRegistration>(new FileStreamRegistration { FileIdentifier = fileGuid });
+            var registration = new FileStreamRegistration { FileIdentifier = fileGuid, StreamIdentifier = Guid.NewGuid() };
+            var handler = connection.StreamPacketHandler.RegisterStream(new AsyncStreamHandler(registration.StreamIdentifier.Value));
+
+            registration = await connection.Sender.Send<FileStreamRegistration>(registration);
+
             if (registration.StatusCode == StatusCode.Ok)
             {
                 int read;
                 int total = 0;
                 var buffer = BufferRecyclingMetaFactory<FluffyBuffer>.MakeFactory(Capacity.Medium).GetBuffer();
 
-                var handler = connection.StreamPacketHandler.RegisterStream(new AsyncStreamHandler(registration.StreamIdentifier));
+                // var handler = connection.StreamPacketHandler.RegisterStream(new AsyncStreamHandler(registration.StreamIdentifier));
 
                 Console.WriteLine($"Reading stream...");
 
@@ -76,8 +80,8 @@ namespace AllInOneExample_FullFramework
         private static FileStreamRegistration StreamRegistration(FileStreamRegistration registration, ConnectionInfo connection)
         {
             //Do some logic with the guid
-            registration.StreamIdentifier = Guid.NewGuid();
-            connection.Sender.SendStream(registration.StreamIdentifier, File.OpenRead(TestFilePath));
+            registration.StreamIdentifier ??= Guid.NewGuid();
+            connection.Sender.SendStream(registration.StreamIdentifier.Value, File.OpenRead(TestFilePath));
             registration.StatusCode = StatusCode.Ok;
             return registration;
         }
