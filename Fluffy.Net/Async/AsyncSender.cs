@@ -116,29 +116,31 @@ namespace Fluffy.Net.Async
                 }
             }
 
-            if (_packet == null)
+            if (_packet != null)
             {
-                if (!_priorityPacketQueue.IsEmpty)
+                return;
+            }
+
+            if (_priorityPacketQueue.IsEmpty)
+            {
+                if (_unprioritizedPacket != null)
                 {
-                    if (!_priorityPacketQueue.TryDequeue(out _packet))
+                    _packet = _unprioritizedPacket;
+                    _unprioritizedPacket = null;
+                }
+                else if (!_packetQueue.IsEmpty)
+                {
+                    if (!_packetQueue.TryDequeue(out _packet))
                     {
                         throw new AggregateException("Invalid state: priority queue is empty");
                     }
                 }
-                else
+            }
+            else
+            {
+                if (!_priorityPacketQueue.TryDequeue(out _packet))
                 {
-                    if (_unprioritizedPacket != null)
-                    {
-                        _packet = _unprioritizedPacket;
-                        _unprioritizedPacket = null;
-                    }
-                    else if (!_packetQueue.IsEmpty)
-                    {
-                        if (!_packetQueue.TryDequeue(out _packet))
-                        {
-                            throw new AggregateException("Invalid state: priority queue is empty");
-                        }
-                    }
+                    throw new AggregateException("Invalid state: priority queue is empty");
                 }
             }
         }
