@@ -29,6 +29,8 @@ namespace Fluffy.Unsafe
             return size;
         }
 
+       
+
         public static unsafe int SizeOf<T>() where T : unmanaged
         {
             return sizeof(T);

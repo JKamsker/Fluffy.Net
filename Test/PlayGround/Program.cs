@@ -191,6 +191,8 @@ namespace PlayGround
 
             FluffyBitConverter.Serialize(header, target1, offset);
 
+
+
             Repro.TestPacketOld(target2, offset);
 
             var ok = target1.SequenceEqual(target2);
