@@ -48,6 +48,9 @@ namespace Fluffy
 
         public static object GetResultDynamic(Task task)
         {
+
+            dynamic a = "";
+
             if (HasResult(task))
             {
                 return ((dynamic)task).Result;

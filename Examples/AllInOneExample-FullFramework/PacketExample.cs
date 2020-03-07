@@ -6,7 +6,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Diagnostics;
+
 using AllInOneExample_FullFramework.Models;
+
 using Fluffy.Net;
 
 #endif
@@ -78,10 +80,18 @@ namespace AllInOneExample_FullFramework
                 AwesomeString = "AWESOME!!"
             };
 
+            var sw = Stopwatch.StartNew();
             while (true)
             {
                 dummy = await connection.Sender.Send<MyAwesomeClass>(dummy);
-                Console.WriteLine($"{dummy.Id} \t {dummy.Packets} \t {dummy.AwesomeString}");
+                // Console.WriteLine(dummy.Packets);
+                if (dummy.Packets % 1000 == 0)
+                {
+                    sw.Stop();
+                    Console.WriteLine($"Time per 1000: {sw.Elapsed.TotalMilliseconds} ms | Pmsg: {sw.Elapsed.TotalMilliseconds / 1000} ms");
+                    sw.Restart();
+                }
+                //Console.WriteLine($"{dummy.Id} \t {dummy.Packets} \t {dummy.AwesomeString}");
             }
         }
 

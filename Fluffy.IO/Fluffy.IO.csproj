@@ -15,6 +15,7 @@
     <RepositoryUrl>https://github.com/J-kit/Fluffy.Net</RepositoryUrl>
     <PackageTags>J-Kit, Network Library</PackageTags>
     <Version>1.0.5</Version>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
   
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net472'">
@@ -46,6 +47,6 @@
   </ItemGroup>
   
 	<ItemGroup>
-		<PackageReference Include="Microsoft.NETCore.App" Version="2.2.0"  Condition="'$(TargetFramework)' == 'netcoreapp2.2'"/>
+		<PackageReference Include="Microsoft.NETCore.App" Version="2.2.0" Condition="'$(TargetFramework)' == 'netcoreapp2.2'" />
 	</ItemGroup>
 </Project>

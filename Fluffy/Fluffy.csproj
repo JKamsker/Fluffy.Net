@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <LangVersion>7.3</LangVersion>
-    <TargetFrameworks>net472;net47;net46;net45;net40</TargetFrameworks>
+    <TargetFrameworks>net472;net47;net46;net45;net40;netstandard21</TargetFrameworks>
     <Configurations>Debug;Release;ReleaseBuild</Configurations>
     
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -15,6 +15,7 @@
     <RepositoryUrl>https://github.com/J-kit/Fluffy.Net</RepositoryUrl>
     <PackageTags>J-Kit, Network Library</PackageTags>
 	<Version>1.0.5</Version>
+	<Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
   
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net472'">
@@ -36,9 +37,13 @@
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net40'">
     <DefineConstants>NET40</DefineConstants>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2'">
     <DefineConstants>NETCOREAPP2_2</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard21'">
+    <DefineConstants>NETSTANDARD21</DefineConstants>
   </PropertyGroup>
   
   <ItemGroup>
