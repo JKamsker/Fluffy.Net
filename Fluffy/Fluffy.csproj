@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <LangVersion>7.3</LangVersion>
-    <TargetFrameworks>net472;net47;net46;net45;net40;netstandard21</TargetFrameworks>
+    <TargetFrameworks>net472;net47;net46;net45;net40;netstandard2.1</TargetFrameworks>
     <Configurations>Debug;Release;ReleaseBuild</Configurations>
     
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -37,21 +37,33 @@
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net40'">
     <DefineConstants>NET40</DefineConstants>
   </PropertyGroup>
-
+  
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2'">
     <DefineConstants>NETCOREAPP2_2</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard21'">
-    <DefineConstants>NETSTANDARD21</DefineConstants>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.1'">
+    <DefineConstants>NETSTANDARD2_1</DefineConstants>
   </PropertyGroup>
   
   <ItemGroup>
     <PackageReference Include="Microsoft.Bcl.Async" Version="1.0.168" Condition="'$(TargetFramework)' == 'net40'" />
-	<PackageReference Include="Microsoft.NETCore.App" Version="2.2.0" Condition="'$(TargetFramework)' == 'netcoreapp2.2'" />
+	  <PackageReference Include="Microsoft.NETCore.App" Version="2.2.0" Condition="'$(TargetFramework)' == 'netcoreapp2.2'" />
+
+    <!--<PackageReference Include="Microsoft.CSharp" Condition="'$(TargetFramework)' == 'netcoreapp2.2'">-->
+    <PackageReference Include="Microsoft.CSharp" Condition="$(TargetFramework.StartsWith('netcoreapp')) OR $(TargetFramework.StartsWith('net47')) OR ('$(TargetFramework)' == 'net45') OR ('$(TargetFramework)' == 'net46')">
+        <Version>4.7.0</Version>
+    </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
+  
+<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+  <PackageReference Include="NETStandard.Library">
+      <Version>2.0.3</Version>
+    </PackageReference>
   </ItemGroup>
+  
+  <!--<ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>-->
 </Project>

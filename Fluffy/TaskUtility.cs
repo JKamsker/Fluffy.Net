@@ -46,18 +46,16 @@ namespace Fluffy
             return referenceBaseType != null && referenceBaseType == typeof(Task);
         }
 
-        public static object GetResultDynamic(Task task)
-        {
+        //public static object GetResultDynamic(Task task)
+        //{
+        //    if (HasResult(task))
+        //    {
+        //        var tsk = (dynamic)task;
+        //        return tsk.Result;
+        //    }
 
-            dynamic a = "";
-
-            if (HasResult(task))
-            {
-                return ((dynamic)task).Result;
-            }
-
-            return default;
-        }
+        //    return default;
+        //}
 
         private static FieldInfo GetResultFieldInfo(Task task)
         {

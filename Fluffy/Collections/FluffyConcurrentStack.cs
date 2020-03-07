@@ -7,7 +7,7 @@ namespace Fluffy.Collections
 {
     [Serializable]
     [DebuggerDisplay("Count = {Count}")]
-#if (!NETCOREAPP2_2 && !NETSTANDARD21)
+#if (!NETCOREAPP2_2 && !NETSTANDARD2_1)
     [HostProtection(SecurityAction.LinkDemand, ExternalThreading = true, Synchronization = true)]
 #endif
 

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <LangVersion>7.3</LangVersion>
 
-   <TargetFrameworks>net472;net47;net46;net45;net40</TargetFrameworks>
+   <TargetFrameworks>net472;net47;net46;net45;net40;netstandard2.1</TargetFrameworks>
     <Configurations>Debug;Release;ReleaseBuild</Configurations>
 		
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -42,6 +42,10 @@
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2'">
     <DefineConstants>NETCOREAPP2_2</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.1'">
+    <DefineConstants>NETSTANDARD2_1</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup>

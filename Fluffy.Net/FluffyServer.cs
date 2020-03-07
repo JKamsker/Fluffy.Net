@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using Fluffy.Net.Compatibility;
 
 #if NET40
@@ -73,7 +74,11 @@ namespace Fluffy.Net
                 connectionInfo.PacketHandler.Default(x => PacketHandler.Handle(x, connectionInfo));
                 _connections.Add(connectionInfo);
 
+#if NETSTANDARD
+                Task.Run(() => OnNewConnection.Invoke(this, connectionInfo));
+#else
                 OnNewConnection?.BeginInvoke(this, connectionInfo, null, null);
+#endif
             }
             catch (SocketException ex)
             {

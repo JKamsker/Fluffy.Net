@@ -6,6 +6,8 @@ namespace Fluffy.Fluent
 {
     public class TypeSwitch : IDecisionConfigurator
     {
+        private object _lockObject = new object();
+
         private protected readonly Dictionary<Type, List<ICheckable>> _checkableDictionary;
 
         //    private protected readonly List<ICheckable> _ceckables;
@@ -19,14 +21,16 @@ namespace Fluffy.Fluent
 
         public virtual object Handle<T>(T @object)
         {
-            if (_checkableDictionary.TryGetValue(typeof(T), out var checkables))
+            if (!_checkableDictionary.TryGetValue(typeof(T), out var checkables))
             {
-                foreach (var checkable in checkables.Where(x => x.Check(@object)).Cast<IInvokable<T>>())
+                return _defaultFunc?.Invoke(@object);
+            }
+
+            foreach (var checkable in checkables.Where(x => x.Check(@object)).Cast<IInvokable<T>>())
+            {
+                if (checkable.Invoke(@object, out var result))
                 {
-                    if (checkable.Invoke(@object, out var result))
-                    {
-                        return result;
-                    }
+                    return result;
                 }
             }
 
@@ -35,14 +39,16 @@ namespace Fluffy.Fluent
 
         public virtual object Handle(object @object)
         {
-            if (_checkableDictionary.TryGetValue(@object.GetType(), out var checkables))
+            if (!_checkableDictionary.TryGetValue(@object.GetType(), out var checkables))
             {
-                foreach (var checkable in checkables.Where(x => x.Check(@object)).Cast<IInvokable>())
+                return _defaultFunc?.Invoke(@object);
+            }
+
+            foreach (var checkable in checkables.Where(x => x.Check(@object)).Cast<IInvokable>())
+            {
+                if (checkable.Invoke(@object, out var result))
                 {
-                    if (checkable.Invoke(@object, out var result))
-                    {
-                        return result;
-                    }
+                    return result;
                 }
             }
 
@@ -54,7 +60,7 @@ namespace Fluffy.Fluent
             return On<T>(x => true);
         }
 
-        private static object _lockObject = new object();
+
 
         public virtual IDecisionNode<T> On<T>(Predicate<T> condition)
         {
