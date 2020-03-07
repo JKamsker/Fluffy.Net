@@ -8,10 +8,11 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>PlayGround</RootNamespace>
     <AssemblyName>PlayGround</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -106,6 +107,10 @@
     <ProjectReference Include="..\..\Fluffy.Unsafe\Fluffy.Unsafe.csproj">
       <Project>{76A1B05C-768C-416F-952F-83B39F875ECC}</Project>
       <Name>Fluffy.Unsafe</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fluffy\Fluffy.csproj">
+      <Project>{BAD50387-0819-4B30-B937-0C003D49312B}</Project>
+      <Name>Fluffy</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

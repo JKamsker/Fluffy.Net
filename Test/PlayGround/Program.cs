@@ -1,4 +1,6 @@
-﻿using Fluffy.Unsafe;
+﻿using Fluffy.Fluent;
+using Fluffy.IO.Buffer;
+using Fluffy.Unsafe;
 
 using System;
 using System.Collections.Generic;
@@ -6,60 +8,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
-using Fluffy.IO.Buffer;
 
 namespace PlayGround
 {
-    //[StructLayout(LayoutKind.Explicit)]
-    //struct ByteArray
-    //{
-    //    [FieldOffset(0)]
-    //    public byte Byte1;
-    //    [FieldOffset(1)]
-    //    public byte Byte2;
-    //    [FieldOffset(2)]
-    //    public byte Byte3;
-    //    [FieldOffset(3)]
-    //    public byte Byte4;
-    //    [FieldOffset(4)]
-    //    public byte Byte5;
-    //    [FieldOffset(5)]
-    //    public byte Byte6;
-    //    [FieldOffset(6)]
-    //    public byte Byte7;
-    //    [FieldOffset(7)]
-    //    public byte Byte8;
-
-
-    //    [FieldOffset(0)]
-    //    public int Int1;
-    //    [FieldOffset(4)]
-    //    public int Int2;
-
-
-    //    [FieldOffset(0)]
-    //    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 7)]
-    //    public byte[] arr;
-    //}
-    //[StructLayout(LayoutKind.Explicit)]
-    //public struct IndexStruct
-    //{
-    //    [FieldOffset(0)]
-    //    public byte[16] data;
-
-    //    [FieldOffset(16)]
-    //    public short idx16;
-
-    //    [FieldOffset(18)]
-    //    public int idx32;
-    //}
-
-
-
-    static class SizeHelper
+    internal static class SizeHelper
     {
         private static Dictionary<Type, int> sizes = new Dictionary<Type, int>();
 
@@ -130,12 +84,11 @@ namespace PlayGround
         private const int ThirdLevelHeader = EndOfFileSize + GuidSize;
         private const int Header = FirstLevelHeader + SecondLevelHeader + ThirdLevelHeader;
 
-
         public static bool Check()
         {
             var offset = 10;
             var reaCount = 100;
-            
+
             var ok1 = (offset + Header) == offset + SizeHelper.MySizeOf<PacketHeader>();
             var ok2 = (reaCount - Header) == reaCount - SizeHelper.MySizeOf<PacketHeader>();
 
@@ -170,10 +123,38 @@ namespace PlayGround
     {
         private const int loops = 10000000;
 
+        private static void TestTypeSwitch()
+        {
+            var ts = new TypeSwitch()
+                .On<Dummy>().Do(x => { })
+                .On<Dummy1>().Do(x => { }) as TypeSwitch;
 
+            object dummy = new Dummy
+            {
+                Yolo = ""
+            };
+
+
+            for (int j = 0; j < 100; j++)
+            {
+                var sw = Stopwatch.StartNew();
+                for (int i = 0; i < 1_000_000; i++)
+                {
+                    ts.HandleFast(dummy);
+                }
+                sw.Stop();
+                Console.WriteLine($"Took {sw.Elapsed.TotalMilliseconds} ms");
+            }
+          
+            Console.ReadLine();
+            //ts.On<Dummy>(x => x.Yolo.Contains("aa")).Do()
+        }
 
         private static unsafe void Main(string[] args)
         {
+            TestTypeSwitch();
+            return;
+
             var offset = 10;
 
             var header = new PacketHeader
@@ -192,8 +173,6 @@ namespace PlayGround
 
             FluffyBitConverter.Serialize(header, target1, offset);
 
-
-
             Repro.TestPacketOld(target2, offset);
 
             var ok = target1.SequenceEqual(target2);
@@ -203,15 +182,9 @@ namespace PlayGround
             //Debugger.Break();
             //FluffyBitConverter.SerializeGeneric(header, target, 10);
 
-
-
             var size = SizeHelper.MySizeOf<PacketHeader>();
 
-
             // var size = SizeHelper.SizeOfType2(typeof(PacketHeader));
-
-
-
 
             var data = Encoding.UTF8.GetBytes("Hallo Welt 123 123");
             var ls = new LinkedStream();
@@ -221,9 +194,8 @@ namespace PlayGround
             {
                 using (var sc1 = ls.CreateShadowCopy(true))
                 {
-
                 }
-               // ls.Write(data, 0, data.Length);
+                // ls.Write(data, 0, data.Length);
             }
             ls.Write(data, 0, data.Length);
 
@@ -306,89 +278,87 @@ namespace PlayGround
             //    sw.Restart();
             //}
 
-            Console.WriteLine($"------------- BYTE TO GUID ----------");
-            Guid gnew = default;
-            FluffyBitConverter.Serialize(gu, yarr, 0);
-            gnew = FluffyBitConverter.FromBytes<Guid>(yarr);
+            //Console.WriteLine($"------------- BYTE TO GUID ----------");
+            //Guid gnew = default;
+            //FluffyBitConverter.Serialize(gu, yarr, 0);
+            //gnew = FluffyBitConverter.FromBytes<Guid>(yarr);
 
-            gnew = FluffyBitConverter.ReadUsingMarshalUnsafe<Guid>(yarr);
-            Console.WriteLine(gnew.ToString());
-            // Array.Clear(yarr, 0, yarr.Length);
-            Console.WriteLine(gnew.ToString());
+            //gnew = FluffyBitConverter.ReadUsingMarshalUnsafe<Guid>(yarr);
+            //Console.WriteLine(gnew.ToString());
+            //// Array.Clear(yarr, 0, yarr.Length);
+            //Console.WriteLine(gnew.ToString());
 
-            sw.Restart();
-            for (int i = 0; i < loops; i++)
-            {
-                gnew = FluffyBitConverter.FromBytes<Guid>(yarr);
-            }
-            sw.Stop();
-            Console.WriteLine($"Marshalling: {sw.Elapsed.TotalMilliseconds}");
-            Console.WriteLine(gnew.ToString());
+            //sw.Restart();
+            //for (int i = 0; i < loops; i++)
+            //{
+            //    gnew = FluffyBitConverter.FromBytes<Guid>(yarr);
+            //}
+            //sw.Stop();
+            //Console.WriteLine($"Marshalling: {sw.Elapsed.TotalMilliseconds}");
+            //Console.WriteLine(gnew.ToString());
 
-            sw.Restart();
-            for (int i = 0; i < loops; i++)
-            {
-                gnew = FluffyBitConverter.ReadUsingMarshalUnsafe<Guid>(yarr);
-            }
-            sw.Stop();
-            Console.WriteLine($"Marshalling+unsafe: {sw.Elapsed.TotalMilliseconds}");
-            Console.WriteLine(gnew.ToString());
+            //sw.Restart();
+            //for (int i = 0; i < loops; i++)
+            //{
+            //    gnew = FluffyBitConverter.ReadUsingMarshalUnsafe<Guid>(yarr);
+            //}
+            //sw.Stop();
+            //Console.WriteLine($"Marshalling+unsafe: {sw.Elapsed.TotalMilliseconds}");
+            //Console.WriteLine(gnew.ToString());
 
+            //sw.Restart();
+            //for (int i = 0; i < loops; i++)
+            //{
+            //    gnew = new Guid(yarr);
+            //}
+            //sw.Stop();
+            //Console.WriteLine($"New Guid: {sw.Elapsed.TotalMilliseconds}");
+            //Console.WriteLine(gnew.ToString());
 
-            sw.Restart();
-            for (int i = 0; i < loops; i++)
-            {
-                gnew = new Guid(yarr);
-            }
-            sw.Stop();
-            Console.WriteLine($"New Guid: {sw.Elapsed.TotalMilliseconds}");
-            Console.WriteLine(gnew.ToString());
+            //Console.WriteLine($"-------------GUID TO BYTE ----------");
 
+            ////Console.ReadLine();
+            //sw.Restart();
+            //for (int i = 0; i < loops; i++)
+            //{
+            //    fixed (byte* b = yarr)
+            //    {
+            //        *((Guid*)b) = gu;
+            //    }
+            //    Array.Clear(yarr, 0, 16);
+            //}
+            //sw.Stop();
+            //Console.WriteLine($"Unsafe direct+arr.clear {sw.Elapsed.TotalMilliseconds}");
 
-            Console.WriteLine($"-------------GUID TO BYTE ----------");
+            //sw.Restart();
+            //for (int i = 0; i < loops; i++)
+            //{
+            //    fixed (byte* b = yarr)
+            //    {
+            //        *((Guid*)b) = gu;
+            //    }
+            //}
+            //sw.Stop();
+            //Console.WriteLine($"Unsafe direct {sw.Elapsed.TotalMilliseconds}");
 
-            //Console.ReadLine();
-            sw.Restart();
-            for (int i = 0; i < loops; i++)
-            {
-                fixed (byte* b = yarr)
-                {
-                    *((Guid*)b) = gu;
-                }
-                Array.Clear(yarr, 0, 16);
-            }
-            sw.Stop();
-            Console.WriteLine($"Unsafe direct+arr.clear {sw.Elapsed.TotalMilliseconds}");
+            //sw.Restart();
+            //for (int i = 0; i < loops; i++)
+            //{
+            //    FluffyBitConverter.Serialize(gu, yarr, 0);
+            //}
+            //sw.Stop();
+            //Console.WriteLine($"Unsafe {sw.Elapsed.TotalMilliseconds}");
 
-            sw.Restart();
-            for (int i = 0; i < loops; i++)
-            {
-                fixed (byte* b = yarr)
-                {
-                    *((Guid*)b) = gu;
-                }
-            }
-            sw.Stop();
-            Console.WriteLine($"Unsafe direct {sw.Elapsed.TotalMilliseconds}");
+            //sw.Restart();
+            //for (int i = 0; i < loops; i++)
+            //{
+            //    yarr = gu.ToByteArray();
+            //    Array.Clear(yarr, 0, 16);
+            //}
+            ////GC.Collect();
 
-            sw.Restart();
-            for (int i = 0; i < loops; i++)
-            {
-                FluffyBitConverter.Serialize(gu, yarr, 0);
-            }
-            sw.Stop();
-            Console.WriteLine($"Unsafe {sw.Elapsed.TotalMilliseconds}");
-
-            sw.Restart();
-            for (int i = 0; i < loops; i++)
-            {
-                yarr = gu.ToByteArray();
-                Array.Clear(yarr, 0, 16);
-            }
-            //GC.Collect();
-
-            sw.Stop();
-            Console.WriteLine($"Conventional {sw.Elapsed.TotalMilliseconds}");
+            //sw.Stop();
+            //Console.WriteLine($"Conventional {sw.Elapsed.TotalMilliseconds}");
 
             //for (int i = 0; i < loops; i++)
             //{
@@ -500,5 +470,15 @@ namespace PlayGround
                 this._k
             };
         }
+    }
+
+    public class Dummy
+    {
+        public string Yolo { get; set; }
+    }
+
+    public class Dummy1
+    {
+        public string Yolo { get; set; }
     }
 }

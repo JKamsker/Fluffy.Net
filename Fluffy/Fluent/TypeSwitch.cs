@@ -44,9 +44,19 @@ namespace Fluffy.Fluent
                 return _defaultFunc?.Invoke(@object);
             }
 
-            foreach (var checkable in checkables.Where(x => x.Check(@object)).Cast<IInvokable>())
+            foreach (var checkable in checkables)
             {
-                if (checkable.Invoke(@object, out var result))
+                if (!(checkable is IInvokable invokable))
+                {
+                    continue;
+                }
+
+                if (!checkable.Check(@object))
+                {
+                    continue;
+                }
+
+                if (invokable.Invoke(@object, out var result))
                 {
                     return result;
                 }
@@ -59,8 +69,6 @@ namespace Fluffy.Fluent
         {
             return On<T>(x => true);
         }
-
-
 
         public virtual IDecisionNode<T> On<T>(Predicate<T> condition)
         {
