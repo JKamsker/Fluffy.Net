@@ -37,6 +37,25 @@ namespace Fluffy.Fluent
             return _defaultFunc?.Invoke(@object);
         }
 
+        // Old & Slow
+        //public virtual object Handle(object @object)
+        //{
+        //    if (!_checkableDictionary.TryGetValue(@object.GetType(), out var checkables))
+        //    {
+        //        return _defaultFunc?.Invoke(@object);
+        //    }
+
+        //    foreach (var checkable in checkables.Where(x => x.Check(@object)).Cast<IInvokable>())
+        //    {
+        //        if (checkable.Invoke(@object, out var result))
+        //        {
+        //            return result;
+        //        }
+        //    }
+
+        //    return _defaultFunc?.Invoke(@object);
+        //}
+
         public virtual object Handle(object @object)
         {
             if (!_checkableDictionary.TryGetValue(@object.GetType(), out var checkables))

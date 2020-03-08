@@ -100,7 +100,7 @@ namespace Fluffy.Net.Packets.Modules.Formatted
             public DuplexResult()
             {
                 //TODO: CreationOptions
-                _completionSource = new TaskCompletionSource<T>();
+                _completionSource = new TaskCompletionSource<T>(CreationOptions);
                 _resetEvent = new ManualResetEvent(false);
             }
 

@@ -134,27 +134,31 @@ namespace PlayGround
                 Yolo = ""
             };
 
-
-            for (int j = 0; j < 100; j++)
+            for (int j = 0; j < 100_000; j++)
             {
                 var sw = Stopwatch.StartNew();
                 for (int i = 0; i < 1_000_000; i++)
                 {
-                    ts.HandleFast(dummy);
+                    ts.Handle(dummy);
                 }
                 sw.Stop();
                 Console.WriteLine($"Took {sw.Elapsed.TotalMilliseconds} ms");
             }
-          
+
             Console.ReadLine();
             //ts.On<Dummy>(x => x.Yolo.Contains("aa")).Do()
         }
 
+        private static IEnumerable<string> Yolo()
+        {
+            yield return "A";
+            yield return "B";
+            yield return "C";
+            yield return "D";
+        }
+
         private static unsafe void Main(string[] args)
         {
-            TestTypeSwitch();
-            return;
-
             var offset = 10;
 
             var header = new PacketHeader
