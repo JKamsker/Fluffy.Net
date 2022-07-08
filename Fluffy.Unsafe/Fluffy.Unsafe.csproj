@@ -48,6 +48,6 @@
   </PropertyGroup>
   
 	<ItemGroup>
-		<PackageReference Include="Microsoft.NETCore.App" Version="2.2.0"  Condition="'$(TargetFramework)' == 'netcoreapp2.2'"/>
+		<PackageReference Include="Microsoft.NETCore.App" Version="2.2.1"  Condition="'$(TargetFramework)' == 'netcoreapp2.2'"/>
 	</ItemGroup>
 </Project>
